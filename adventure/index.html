@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DLF Adventures</title>
+	<link rel="stylesheet" type="text/css" href="../src/adventure.css">
+	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="theme_black_bg">
+	<div id="menuPanel" class="centered">
+		<span id="homeIcon" class="fa fa-chevron-circle-left" onclick="onReturnHome()">&nbsp;home</span>
+		<h1 id="adventureTitle"></h1>
+		<p id="adventureDescription" class="hidden"></p>
+		<span id="moreDetailsLink" class="pointer additionalDetailsToggle small" onclick="toggleDetails('show')">About this adventure</span>
+		<span id="lessDetailsLink" class="pointer additionalDetailsToggle large hidden" onclick="toggleDetails('hide')">... hide details</span>
+		<hr id="adventureSeparator"/>
+
+		<div id="adventureMenuSection" class="dlf_center_block_xlarge centered">
+			<table style="width:100%">
+				<colgroup>
+					<col style="width:10%;">
+					<col/>
+					<col style="width:10%;">
+				</colgroup>
+				<tr>
+					<td>
+						<button id="prevVideoButton" style="float:left;padding:10%;" class="hidden dlf_button_round_corners dlf_button_gray" onclick="onPrevVideo()">PREV</button>
+					</td>
+					<td>
+						<h2 id="videoTitle" style="clear:both; display:inline-block; margin:0px;"></h2>
+					</td>
+					<td>
+						<button id="nextVideoButton" style="float:right;padding:10%;" class="hidden dlf_button_round_corners dlf_button_blue" onclick="onNextVideo()">NEXT</button>
+					</td>
+				</tr>
+			</table>
+			<h4 id="videoCount" class="pointer" style="margin-top:0px;" onclick="toggleVideoPicker()"></h4>
+			<div id="videoPickerSection" class="hidden"></div>
+		</div>
+		<p id="videoDescription" style="clear:both; margin:0px;"></p>
+	</div>
+	<hr>
+	<div id="videoFrameProtectedSection" class="dlf_center_block_xlarge centered hidden">
+		<h2 id="protectedMessage" class="adventureSubtitle">This video is protected, and requires a passphrase to view it.</h2>
+		<form id="protectedVideoForm" action="" method="POST" onsubmit="onValidatePassphrase(event)">
+			<input id="passphrase" type="password" name="p" placeholder="Enter the passphrase"><br/>
+			<input type="submit" name="submit" value="Submit">
+		</form>
+	</div>
+	<div id="videoFrameSection" style="clear:both;" class="hidden">
+		<div id="videoFramePanel" style="position: relative; padding-top: 50.25%;">
+			<img src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+		</div>
+	</div>
+
+</body>
+<!-- Common Code -->
+<script src="https://dejai.github.io/scripts/js/common.js"></script>
+<!-- My Trello code -->
+<script src="https://dejai.github.io/scripts/js/trellowrapper.js"></script>
+<!-- Stream Embed API -->
+<script src="https://embed.videodelivery.net/embed/sdk.latest.js"></script>
+<!-- My Bingo code -->
+<script type="text/javascript" src="../src/adventure.js"></script>
+</html>
