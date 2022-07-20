@@ -1,0 +1,311 @@
+/*********GENERAL (applies to all themes)**********************/
+
+
+/********* Headers/Titles/Icons ***********************/
+
+#homeIcon { text-align: left;
+    font-size: 20px;
+    cursor: pointer;
+    padding-top: 1%;
+    padding-left: 1%;
+	display: block;
+ }
+#adventureTitle { font-size:28px; }
+
+.adventureSubtitle { font-size: 24px; }
+
+.protectedIcon { color:goldenrod; }
+.openLinkIcon { font-size:smaller !important; }
+
+.adventureDate { font-size:smaller !important; font-style:italic;}
+
+
+
+/****************************************************/
+
+#videoFrameProtectedSection {
+	font-size:larger; 
+}
+
+#protectedVideoForm label { font-size:150%; }
+#protectedVideoForm input,button { font-size:130%; }
+
+#protectedMessage { color:red; }
+
+#adventuresPanel { padding-top:5%; }
+.additionalDetailsToggle {
+	font-style:italic;
+	font-size:smaller;color:
+	orange !important;
+	display:block;
+	margin:auto;
+
+}
+
+.additionalDetailsToggle.spaced { 
+	border-bottom: 2px dashed white; 
+	padding-bottom:1% !important;
+	margin-bottom:1% !important;
+ }
+
+
+.additionalDetailsToggle.small { width: 100%; }
+.additionalDetailsToggle.large { width: 100%; }
+
+.adventure_block { 
+	/* border:2px solid white; */
+	margin-bottom:2% !important;
+	/* border-bottom:2px dashed white; */
+	padding-bottom:2%;
+	width:90%;
+	margin:auto;
+	/* border-radius:77px; */
+}
+
+.adventureBlockSeparator { border:none; height:5px; background-color:white;}
+
+.adventure_block h2 { font-size: 18px; }
+.adventure_block a { text-decoration: none; color:aqua}
+.adventure_block a:visited { text-decoration: none; color:aqua }
+
+.video_editor { font-size:50%; font-style:italic; }
+
+#videoPickerSection {
+    width: 90%;
+    margin: auto;
+    opacity: 95%;
+    left: 25%;
+	/* transition: height 10s ease-in; */
+	/* height:0px; */
+	/* overflow:hidden; */
+}
+
+.videoPickerBlock 
+{
+	/* border: 1px solid white; */
+	margin-bottom:3% !important;
+	/* background-color:black !important; */
+	color:white !important;
+    opacity: 95%;
+}
+
+.videoPickerBlock .datacell { vertical-align: top;}
+.videoPickerBlock .title 
+{
+	margin-top:0px;
+	color:gray;
+	font-size:18px;
+}
+
+.videoPickerCircle {
+	height:25px;
+	width:25px;
+	line-height: 25px; 
+	background-color: darkgray;
+	color:black;
+	border-radius: 50%;
+	display: inline-block;
+}
+.videoPickerCircle.selected { background-color:limegreen !important; color: black; }
+.videoPickerBlock .title.selected { color:limegreen !important; }
+
+
+
+
+
+
+
+
+/* General purpose */
+	.hidden { display:none; }
+	.centered { text-align: center; }
+	.bingo_cell{ cursor: pointer; }
+	.pointer { cursor:pointer; }
+	#game_table { font-size:200%; }
+	.noselect {
+		-webkit-touch-callout: none; /* iOS Safari */
+		-webkit-user-select: none; /* Safari */
+		-khtml-user-select: none; /* Konqueror HTML */
+			-moz-user-select: none; /* Old versions of Firefox */
+			-ms-user-select: none; /* Internet Explorer/Edge */
+				user-select: none; /* Non-prefixed version, currently
+										supported by Chrome, Edge, Opera and Firefox */
+	}
+
+	
+	.bingo_ball_letter_b { background-color:blue; color:white; }
+	.bingo_ball_letter_i { background-color:red; color:white; }
+	.bingo_ball_letter_n { background-color:purple; color:white; }
+	.bingo_ball_letter_g { background-color:green; color:white; }
+	.bingo_ball_letter_o { background-color:yellow; color:black; }
+	
+	#bingo_version { position:fixed; bottom:1px; right:1px; color:red; font-style:italic;}
+
+	@keyframes bingo_blink {
+		25% { color: red; }
+		50% { color: red;}
+		75% { color: yellow; }
+		100% { color: yellow; }
+	}
+	.bingo_blink { animation: bingo_blink 1s step-start infinite; }
+
+
+/* Identify Yourself*/
+	.identify_yourself { display:block; text-align:center; padding:10%; width:70%; margin:auto; cursor:pointer; margin-top:10%; }
+
+/* Headings */
+	.dlf_title { font-size:80px; }
+
+/* Alignment */
+	.dlf_center_block_small { margin:auto; width:40%;}
+	.dlf_center_block_medium { margin:auto; width:60%;}
+	.dlf_center_block_large { margin:auto; width:80%;}
+	.dlf_center_block_xlarge { margin:auto; width:90%;}
+	.dlf_center_block_xxlarge { margin:auto; width:99%;}
+
+/* Tables */
+	.dlf_table { border-spacing: 0; }
+	.dlf_table_small { width:25%; }
+	.dlf_table_medium { width:50%; }
+	.dlf_table_large { width:100%; }
+	
+/* Hyperlinks */
+	.dlf_href_notextdec { text-decoration:none !important; }
+
+/* Paragraphs */
+	.dlf_paragraph_medium { font-size:80%; }
+	.dlf_paragraph_large { font-size: 150%; }
+	.dlf_paragraph_xlarge { font-size: 190%; }
+	.dlf_paragraph_xxlarge { font-size: 220%; }
+	.dlf_paragraph_xxxlarge { font-size: 250%; }
+
+/* Buttons */
+	/*Button Shape & hover*/
+	button { cursor: pointer; padding:2% 1%; border:none; }
+	[class*="dlf_button"] { font-weight:bolder; }
+	button:focus { outline: none; box-shadow: none; }
+	.dlf_button_round_corners { border-radius:77px; }
+
+	/*Button Sizes*/
+	.dlf_button_small { font-size: 50%; }
+	.dlf_button_large { font-size: 140%; }
+	.dlf_button_xlarge { font-size: 190%; }
+	.dlf_button_xxlarge { font-size: 200%; }
+	.dlf_button_xxxlarge { font-size: 250%; }
+	.button_mash { font-size:140%; cursor:pointer;  }
+
+	/* Button Colors */
+	.dlf_button_blue { background-color:blue !important; color:white !important;}
+	.dlf_button_red { background-color:red !important; color:white !important;}
+	.dlf_button_orange { background-color:orange !important; color:black !important;}
+	.dlf_button_limegreen { background-color:limegreen !important; color:black !important;}
+	.dlf_button_green { background-color:green !important; color:white !important;}
+	.dlf_button_purple { background-color:purple !important; color:white !important;}
+	.dlf_button_violet { background-color:violet !important; color:black !important;}
+	.dlf_button_gold { background-color:goldenrod !important; color:black !important;}
+	.dlf_button_yellow { background-color:yellow !important; color:black !important;}
+	.dlf_button_gray { background-color:gray !important; color:lightgray !important;}
+
+/* Select Inputs */
+	.dlf_select { padding:3%; border:none; }
+	.dlf_select:focus { outline:none; }
+	.dlf_select_round_corners { border-radius:77px; }
+
+	
+	.dlf_select_small { font-size: 50%; width:50%; }
+	.dlf_select_large { font-size: 140%; width:100%;}
+	.dlf_select_xlarge { font-size: 190%; width:100%;}
+	.dlf_select_xxlarge { font-size: 200%; width:100%;}
+	.dlf_select_xxxlarge { font-size: 250%; width:100%;}
+
+	.dlf_select_red { background-color:red; color:white; }
+	.dlf_select_blue { background-color:blue; color:white; }
+
+
+	#check_bingo_card { width:90%; }
+/* Colors */
+	.notify_red { color:red !important; }
+
+
+/*******************************************************************************************
+	THEME: Black Background
+********************************************************************************************/
+
+	/*BODY*/
+	body.theme_black_bg { background-color:black; color:white; }
+
+	/* Game Table*/
+	.game_table_header { background-color:white !important; color:black !important; }
+	.cell_unseen { color:gray; }
+	.cell_seen { background-color:limegreen; color:red; }
+
+	/* Game Settings */
+	#game_settings_section.theme_black_bg { background-color:gray; color:black; }
+	#game_settings_section.theme_black_bg #close_game_settings { color:white; background-color:red;}
+	#reset_game_button.theme_black_bg { background-color:red; color:white; }
+
+	/* Game Example */
+	#game_example_block.theme_black_bg { background-color:black; color:white; }
+	#game_example_block.theme_black_bg #close_example { background-color:red; color:white; }
+
+	.build_card_batch_example { font-size: 90%; background-color: lightgray; color:black; margin-left:5%; padding-left:1%;  }
+
+
+/**************************************************** 
+	MEDIA SCREENS
+*****************************************************/
+
+@media only screen and (min-device-width:1200px)
+{
+
+
+	.additionalDetailsToggle.small { width: 60%; }
+	.additionalDetailsToggle.large { width: 90%; }
+	#videoPickerSection { width: 50%; }
+
+
+
+	/* Headings */
+	.dlf_title { font-size:2em;}
+
+	/* Alignment */
+	.dlf_center_block_small { margin:auto; width:30%;}
+	.dlf_center_block_medium { margin:auto; width:50%;}
+	.dlf_center_block_large { margin:auto; width:70%;}
+	.dlf_center_block_xlarge { margin:auto; width:80%;}
+	.dlf_center_block_xxlarge { margin:auto; width:90%;}
+
+	/*Button Sizes*/
+	.dlf_button_large { font-size: initial; }
+	.dlf_button_xlarge { font-size: initial; }
+	.dlf_button_xxlarge { font-size: initial; }
+	.dlf_button_xxxlarge { font-size: initial; }
+
+	/* Select Input Sizes*/
+	.dlf_select_small { font-size: initial; }
+	.dlf_select_large { font-size: initial; }
+	.dlf_select_xlarge { font-size: initial; }
+	.dlf_select_xxlarge { font-size: initial; }
+	.dlf_select_xxxlarge { font-size: initial; }
+
+	/* Paragraph sizes */
+	.dlf_paragraph_medium { font-size: initial; }
+	.dlf_paragraph_large { font-size: initial; }
+	.dlf_paragraph_xlarge { font-size: initial; }
+	.dlf_paragraph_xxlarge { font-size: initial; }
+	.dlf_paragraph_xxxlarge { font-size: initial; }
+
+	/* Identify Yourself*/
+	.identify_yourself { padding:2%; margin-top:7%; }
+
+	/* Game Example*/
+	.example { padding-top:2%; padding-bottom:2%; }	
+
+	/* Game Card*/
+	#bingo_card_section { width:60%; }
+	#bingo_card_table .card_table_header { font-size:initial; }
+	#bingo_card_table td.number_cell { font-size:initial }
+	#bingo_card_table td.example { font-size:initial  }
+	.freeSpace { font-size:initial; }
+
+}

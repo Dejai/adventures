@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DLF Adventures</title>
+	<link rel="stylesheet" type="text/css" href="./src/adventure.css">
+	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body class="theme_black_bg">
+	<div id="menuPanel" class="centered">
+		<h1>Dejai's Adventures!</h1>
+		<p>A set of adventures I've enjoyed with family & friends!</p>
+	</div>
+	<hr>
+	<div class="centered">
+		<i id="randomAdventure" class="fa fa-random pointer" onclick="onSelectRandomAdventure()" style="font-size:20px; padding-top:2%; color:orange;" aria-hidden="true" title="Select a random adventure">
+			&nbsp;Random
+		</i>
+	</div>
+	<div id="adventuresPanel" class="centered">
+		<img src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+	</div>
+</body>
+<!-- Common Code -->
+<script src="https://dejai.github.io/scripts/js/common.js"></script>
+<!-- My Trello code -->
+<script src="https://dejai.github.io/scripts/js/trellowrapper.js"></script>
+<!-- My Videos Code -->
+<script type="text/javascript" src="./src/main.js"></script>
+</html>
