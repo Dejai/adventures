@@ -12,7 +12,7 @@
 		<span id="homeIcon" class="fa fa-chevron-circle-left" onclick="onReturnHome()">&nbsp;home</span>
 		<h1 id="adventureTitle"></h1>
 		<p id="adventureDescription" class="hidden"></p>
-		<span id="moreDetailsLink" class="pointer additionalDetailsToggle small" onclick="toggleDetails('show')">About this adventure</span>
+		<span id="moreDetailsLink" class="pointer additionalDetailsToggle small hidden" onclick="toggleDetails('show')">About this adventure</span>
 		<span id="lessDetailsLink" class="pointer additionalDetailsToggle large hidden" onclick="toggleDetails('hide')">... hide details</span>
 		<hr id="adventureSeparator"/>
 
@@ -40,9 +40,12 @@
 		</div>
 		<p id="videoDescription" style="clear:both; margin:0px;"></p>
 	</div>
-	<hr>
+	<hr id="videoSeparator" class="hidden">
+	<div class="centered">
+		<img id="loadingGif" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+	</div>
 	<div id="videoFrameProtectedSection" class="dlf_center_block_xlarge centered hidden">
-		<h2 id="protectedMessage" class="adventureSubtitle">This video is protected, and requires a passphrase to view it.</h2>
+		<h2 id="protectedMessage" class="adventureSubtitle">This adventure is protected, and requires a passphrase.</h2>
 		<form id="protectedVideoForm" action="" method="POST" onsubmit="onValidatePassphrase(event)">
 			<input id="passphrase" type="password" name="p" placeholder="Enter the passphrase"><br/>
 			<input type="submit" name="submit" value="Submit">

@@ -3,7 +3,7 @@ version: "3.7"
 services:
     app:
         build: .
-        container_name: videos_app
+        container_name: adventures_app
         ports:
             - 9000:80
         working_dir: /usr/local/apache2/htdocs/

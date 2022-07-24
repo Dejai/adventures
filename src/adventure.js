@@ -7,6 +7,8 @@ var STREAM_URL = "https://iframe.videodelivery.net/{{videoID}}?autoplay=true";
 var IFRAME_TEMPLATE = `<iframe id="videoIFrame" src="{{link}}&" style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>`;
 var VIDEO_PICKER_BARS = `<span id="videoPickerShowIcon" style="color:forestgreen; font-size:110%;" class="fa fa-bars"></span>&nbsp;`
 var VIDEO_PICKER_CLOSE = `<span id="videoPickerHideIcon" style="color:red; font-size:110%;" class="fa fa-times"></span>&nbsp;`
+var LOADING_GIF = `<img id="loadingGif" style="width:25px;height:25px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">`
+
 // Secure videos
 var SECURE_LABEL_ID = "6220aa911cbc61053bd65b54"
 var IS_PROTECTED = false;
@@ -15,6 +17,7 @@ var IS_PROTECTED = false;
 var VIDEOS = [];
 var CURR_INDEX = undefined;
 var CURR_VIDEO_ID = undefined;
+var CURR_ADVENTURE_ID = undefined;
 
 /*********************** GETTING STARTED *****************************/
 
@@ -28,6 +31,7 @@ var CURR_VIDEO_ID = undefined;
 
 		if(adventureID != undefined)
 		{
+			CURR_ADVENTURE_ID = adventureID; 
 			loadAdventureVideos(adventureID, videoID);
 		}
 
@@ -55,38 +59,6 @@ var CURR_VIDEO_ID = undefined;
 		{
 			console.log(err);
 		}
-	}
-
-	// Prevent the page accidentally closing
-	function onClosePage(event)
-	{
-		event.preventDefault();
-		event.returnValue='';
-	}
-
-	// Adds a listener for keystrokes (on keyup);
-	function listenerOnKeyUp(){
-		document.addEventListener("keyup", function(event){
-			switch(event.code)
-			{
-				case "Enter":
-					if(!GAME_STARTED && !CHECKING_FOR_BINGO)
-					{
-						onStartGame();
-					}
-					else if (GAME_STARTED && !CHECKING_FOR_BINGO)
-					{
-						onPickNumber();
-					}
-					else if (CHECKING_FOR_BINGO)
-					{
-						onCheckCardForBingo();
-					}
-					break;
-				default:
-					return;
-			}
-		});
 	}
 
 	// Returning to home page
@@ -143,7 +115,7 @@ var CURR_VIDEO_ID = undefined;
 					let partsObj = {"name":parts[0], "link":parts[1], "videoID":videoID, "desc":parts[2], "author":parts[3] }
 					VIDEOS.push(partsObj);
 
-					videoPickerContent +=  `<div class="videoPickerBlock centered dlf_center_block_large pointer" data-video-id="${videoID}" onclick="loadVideo(${VIDEOS.length-1})">
+					videoPickerContent +=  `<div class="videoPickerBlock centered dlf_center_block_large pointer" data-video-id="${videoID}" onclick="loadVideoByURL(${VIDEOS.length})">
 												<table style="width:100%;">
 													<tr>
 														<td class="datacell">
@@ -186,19 +158,34 @@ var CURR_VIDEO_ID = undefined;
 			return; 
 		}
 
-		// Get the video
+		// Get the video index
 		videoIndex = videoIndex >= VIDEOS.length ? VIDEOS.length-1 : videoIndex;
-		var video = VIDEOS[videoIndex];
 
-		// Only proceed if the video exists;
-		if(video != undefined)
+		// The target video object;
+		var video = VIDEOS[videoIndex];
+		let videoID = video["videoID"];
+		// Get/set the video ID;
+		CURR_VIDEO_ID = videoID;
+
+		// Set selected video index & video in video picker
+		setCurrentVideoIndex(videoIndex);
+		setSelectedVideo(videoID);
+
+		// Hide both sections
+		mydoc.hideContent("#videoFrameProtectedSection");
+		mydoc.hideContent("#videoFrameSection");
+		mydoc.hideContent("#videoSeparator");
+		mydoc.hideContent("#moreDetailsLink");
+		
+		// Check if video can be played;
+		if( canPlayVideo(videoIndex) )
 		{
 
-			// Toggle the next/prev buttons
-			toggleNextPrevButtons(videoIndex);
+			mydoc.showContent("#videoSeparator");
+			mydoc.showContent("#moreDetailsLink");
 
 			// Setup the video count
-			let videoCount = VIDEOS.length > 1 ? "<br/><span id='videoPickerIcon'>" + VIDEO_PICKER_BARS + `</span><span">(${videoIndex+1} of ${VIDEOS.length})</span>` : "";
+			let videoCount = VIDEOS.length > 1 ? "<br/><span id='videoPickerIcon'>" + VIDEO_PICKER_BARS + `</span><span>(${videoIndex+1} of ${VIDEOS.length})</span>` : "";
 			
 			// Setup the video title + editor
 			let author = video["author"] ?? "";
@@ -209,43 +196,50 @@ var CURR_VIDEO_ID = undefined;
 			mydoc.loadContent(videoTitle, "videoTitle");
 			mydoc.loadContent(videoCount, "videoCount");
 			mydoc.loadContent(video["desc"], "videoDescription");
+		
+			// Toggle the next/prev buttons
+			toggleNextPrevButtons(videoIndex);
 
-			// Get/set the video ID;
-			let videoID = video["videoID"];
-			CURR_VIDEO_ID = videoID;
+			let newVideoID = VIDEOS[videoIndex]["videoIDProtected"] ?? VIDEOS[videoIndex]["videoID"];
+			let newLink = STREAM_URL.replace("{{videoID}}", newVideoID);
+			let iFrame = IFRAME_TEMPLATE.replace("{{link}}", newLink);
+			mydoc.loadContent(iFrame, "videoFramePanel");
+			mydoc.showContent("#videoFrameSection");
 
-
-			// Hide both sections
-			mydoc.hideContent("#videoFrameProtectedSection");
-			mydoc.hideContent("#videoFrameSection");
-
-			// Check if video can be played;
-			if(canPlayVideo(videoIndex))
-			{
-				let newVideoID = VIDEOS[videoIndex]["videoIDProtected"] ?? VIDEOS[videoIndex]["videoID"];
-				let newLink = STREAM_URL.replace("{{videoID}}", newVideoID);
-				let iFrame = IFRAME_TEMPLATE.replace("{{link}}", newLink);
-				mydoc.loadContent(iFrame, "videoFramePanel");
-				mydoc.showContent("#videoFrameSection");
-
-				// Add listeners for the iFrame
-				addStreamListeners();
-			}
-			else
-			{
-				// Load empty iFrame section;
-				mydoc.loadContent("", "videoFramePanel");
-
-				// Show the section to enter passphrase;
-				mydoc.showContent("#videoFrameProtectedSection");
-			}
-
-			// Set current index
-			CURR_INDEX = videoIndex;
-
-			// Set selected video in video picker
-			setSelectedVideo(videoID);
+			// Add listeners for the iFrame
+			addStreamListeners();
 		}
+		else if ( getCookie("passphrase") != undefined )
+		{
+			mydoc.showContent("#loadingGif");
+			getSignedVideoID(CURR_VIDEO_ID);
+		}
+		else
+		{
+			// Load empty iFrame section;
+			mydoc.loadContent("", "videoFramePanel");
+
+			// Show the section to enter passphrase;
+			mydoc.showContent("#videoFrameProtectedSection");
+		}
+
+		
+	}
+
+	// Load specific video (via URL)
+	function loadVideoByURL(videoNumber)
+	{
+		// Hide the picker section
+		toggleVideoPicker(true);
+		
+		// Don't do anything if the index is the same as current; 
+		if( (videoNumber-1) == CURR_INDEX)
+		{
+			return; 
+		}
+
+		var newhref = location.origin + location.pathname + "?id=" + CURR_ADVENTURE_ID + "&video=" + videoNumber;
+		location.href = newhref;
 	}
 
 	// Validate if this video can be played
@@ -258,27 +252,159 @@ var CURR_VIDEO_ID = undefined;
 			// Assume it is false unless cookie exists(below); 
 			canPlay = false;
 
-			// Get cookies
-			let cookies = document.cookie.split(";");
-			let cookieMap = {};
-			cookies.forEach(cookie =>{
-				let splits = cookie.split("=");
-				let key = decodeURIComponent(splits[0]).trim();
-				let val = decodeURIComponent(splits[1]).trim();
-				cookieMap[key] = val;
-			});
-
 			// Check if there is a cookie for current video ID
 			let video = VIDEOS[videoIndex];
 			let videoID = video["videoID"];
-			if(cookieMap.hasOwnProperty(videoID))
+			var protectedVideoID = getCookie(videoID);
+
+			// If the protected video ID is set;
+			if(protectedVideoID != undefined)
 			{
 				// Set the videoID to be the signed value stored in cookie;
-				VIDEOS[videoIndex]["videoIDProtected"] = cookieMap[videoID]; 
+				VIDEOS[videoIndex]["videoIDProtected"] = protectedVideoID; 
 				canPlay = true;
 			}
 		}
 		return canPlay;
+	}
+
+
+/***************** GETTERS / SETTERS ********************** */
+
+	// Get a cookie based on a key
+	function getCookie(key)
+	{
+		// The default value is undefined;
+		var cookieValue = undefined; 
+
+		// Setup a  map of cookie key/name pair;
+		let cookieMap = {};
+		let cookies = document.cookie.split(";");
+		cookies.forEach(cookie =>{
+			let splits = cookie.split("=");
+			let key = decodeURIComponent(splits[0]).trim();
+			let val = decodeURIComponent(splits[1]).trim();
+			cookieMap[key] = val;
+		});
+
+		// If the cookie is set, then make it the value;
+		if( cookieMap.hasOwnProperty(key) )
+		{
+			cookieValue = cookieMap[key];
+		}
+
+		return cookieValue;
+	}
+
+	// Get the signed video ID
+	function getSignedVideoID(videoID)
+	{
+		// Get the passphrase from the cookie; 
+		let passphrase = getCookie("passphrase");
+
+		if( passphrase != undefined && passphrase != "undefined" )
+		{
+			// The needed content for the call;
+			var streamURL = `https://stream-security.the-dancinglion.workers.dev/${CURR_VIDEO_ID}/`;
+			var requestBody = {"Content-Type":"application/x-www-form-urlencoded"}
+			var data = `p=${passphrase}`;
+
+			// Make the call to get the signed URL
+			myajax.POST(streamURL,data, requestBody, (resp)=>{
+
+				let respData = myajax.GetJSON(resp.responseText);
+				
+				if(respData != undefined)
+				{
+					let token = respData?.result?.token ?? undefined
+
+					if(token != undefined)
+					{
+						// Set the video ID as a token
+						setCookie(CURR_VIDEO_ID, token, 60 );
+
+						// Reload the page to specific video
+						let videoNumber = CURR_INDEX + 1;
+						loadVideoByURL(videoNumber);
+					}
+				}
+				else
+				{
+					setResponseMessage("Incorrect passphrase! Video not loaded");
+				}
+			}, (resp)=>{
+				setResponseMessage("Something went wrong. Could not load video");
+			});
+		} 
+		else
+		{
+			setResponseMessage("Incorrect passphrase! Video not loaded");
+		}
+
+	}
+
+	// Set a cookie;
+	function setCookie(key, value, expirationMinutes=60)
+	{
+		// The cookie value;
+		let cookieValue = `${key}=${value}`;
+
+		// Set expiration time;
+		let expDate = new Date();
+		expDate.setTime(expDate.getTime() + (expirationMinutes*60*1000)); // Add 1 hour to current time;
+		let expires = expDate.toUTCString();
+
+		// // Set the cookie
+		document.cookie = `${cookieValue}; expires=${expires}; path=/`;
+	}
+
+	// Set the current video index;
+	function setCurrentVideoIndex(index)
+	{
+		// Set current index
+		CURR_INDEX = index;
+	}
+
+	// Set error message for protected input
+	function setResponseMessage(message)
+	{
+		// Maintain the original message in case it is needed again
+		var protectedMessage = document.getElementById("protectedMessage");
+		var originalMessage = protectedMessage?.innerText ?? "";
+
+		// Make sure the section is visible
+		mydoc.showContent("#videoFrameProtectedSection");
+
+		// Update the content;
+		MyNotification.notify("#protectedMessage", message);
+		// passphraseInput.value = "";
+		setTimeout(()=>{
+			MyNotification.notify("#protectedMessage", originalMessage);
+		},7000);
+
+	}
+
+	// Set the video that is selected in the video picker;
+	function setSelectedVideo(videoID)
+	{
+		let block = document.querySelector(`.videoPickerBlock[data-video-id='${videoID}']`);
+
+		if(block != undefined)
+		{
+			// Clear from all;
+			document.querySelectorAll(".videoPickerBlock .selected").forEach(ele =>{
+				ele.classList.remove("selected");
+			});
+
+			// Add to current; 
+			let circle = block.querySelector(".videoPickerCircle");
+			let title = block.querySelector(".title");
+			if(circle != undefined && title != undefined)
+			{
+				circle.classList.add("selected");
+				title.classList.add("selected");
+			}
+		}
 	}
 
 /***************** ACTIONS / EVENTS ********************** */
@@ -289,133 +415,35 @@ var CURR_VIDEO_ID = undefined;
 		// Prevent default behavior;
 		event.preventDefault();
 
+		// Show loading gif on form submission
+		setResponseMessage(LOADING_GIF);
+
 		// Key elements from form block:
 		var passphraseInput = document.getElementById("passphrase");
-		var protectedMessage = document.getElementById("protectedMessage");
-
-		// The original message;
-		var originalMessage = protectedMessage?.innerText ?? "";
-
-		// The needed content for the call;
-		var streamURL = `https://stream-security.the-dancinglion.workers.dev/${CURR_VIDEO_ID}/`;
-		var requestBody = {"Content-Type":"application/x-www-form-urlencoded"}
 		var passphrase = passphraseInput?.value ?? "";
-		var data = `p=${passphrase}`;
 
-		// Make the call to get the signed URL
-		myajax.POST(streamURL,data, requestBody, (resp)=>{
+		// Set the passphrase as a cookie that is then checked by the function to get the signed ID
+		setCookie("passphrase",passphrase, 50);
+
+		getSignedVideoID(passphrase);
 
 
-			let respData = myajax.GetJSON(resp.responseText);
-			console.log(respData);
-
-			if(respData != undefined)
-			{
-				let token = respData?.result?.token ?? undefined
-
-				if(token != undefined)
-				{
-					// Set expiration for 1 hour;
-					let expDate = new Date();
-					expDate.setTime(expDate.getTime() + (60*60*1000)); // Add 1 hour to current time;
-					let expires = expDate.toUTCString();
-					console.log(expires);
-
-					// // Set the cookie value
-					let cookieValue = `${CURR_VIDEO_ID}=${token}`;
-
-					// // Set the cookie
-					document.cookie = `${cookieValue}; expires=${expires}; path=/`;
-
-					// Reload the page to specific video
-					let currentVideo = CURR_INDEX + 1;
-					var newhref = location.href + `&video=${currentVideo}`;
-					location.href = newhref;
-				}
-			}
-			else
-			{
-				MyNotification.notify("#protectedMessage", "Incorrect passphrase! Video not loaded");
-				passphraseInput.value = "";
-				setTimeout(()=>{
-					MyNotification.notify("#protectedMessage", originalMessage);
-				},7000);
-			}
-
-		}, (resp)=>{
-			MyNotification.notify("#protectedMessage", "Something went wrong. Could not load video");
-			passphraseInput.value = "";
-			setTimeout(()=>{
-				MyNotification.notify("#protectedMessage", originalMessage);
-			},7000);
-			console.log(resp);
-		});
 	}
 
-	// Incorrect passphrase
-
-	// Toggle visibility of next/previous buttons
-	function toggleNextPrevButtons(videoIndex)
+	// Select the next video
+	function onNextVideo()
 	{
-		//This only matters if there is more than one video
-		if(VIDEOS.length > 1)
+		if(CURR_INDEX+1 >= VIDEOS.length)
 		{
-			mydoc.removeClass("#nextVideoButton","hidden");
-			mydoc.removeClass("#prevVideoButton","hidden");
-
-			// Last video in list
-			if(videoIndex == VIDEOS.length-1)
-			{
-				// Make next button gray;
-				mydoc.addClass("#nextVideoButton", "dlf_button_gray");
-				mydoc.removeClass("#nextVideoButton", "dlf_button_blue");
-
-				// Make prev button orange;
-				mydoc.addClass("#prevVideoButton", "dlf_button_orange");
-				mydoc.removeClass("#prevVideoButton", "dlf_button_gray");
-			}
-
-			// If first video ...
-			if(videoIndex == 0)
-			{
-
-				// Make prev button gray
-				mydoc.addClass("#prevVideoButton", "dlf_button_gray");
-				mydoc.removeClass("#prevVideoButton", "dlf_button_orange");
-
-				// Make next button blue;
-				mydoc.addClass("#nextVideoButton", "dlf_button_blue");
-				mydoc.removeClass("#nextVideoButton", "dlf_button_gray");
-			}
-
-			// If NOT zero and NOT last, then show both
-			if(videoIndex != 0 && videoIndex != VIDEOS.length-1)
-			{
-				// Make prev button orange
-				mydoc.addClass("#prevVideoButton", "dlf_button_orange");
-				mydoc.removeClass("#prevVideoButton", "dlf_button_gray");
-
-				// Make next button blue;
-				mydoc.addClass("#nextVideoButton", "dlf_button_blue");
-				mydoc.removeClass("#nextVideoButton", "dlf_button_gray");
-
-				// mydoc.removeClass("#nextVideoButton","invisible");
-				// mydoc.removeClass("#prevVideoButton","invisible");
-			}
-
-			// Set the button text based on index
-			mydoc.loadContent(`(video ${videoIndex+2} of ${VIDEOS.length})`, "videoCount");
-			// mydoc.loadContent(`NEXT (${videoIndex+2} / ${VIDEOS.length})`, "nextVideoButton");
-			// mydoc.loadContent(`PREV (${videoIndex} / ${VIDEOS.length})`, "prevVideoButton");
+			return;
 		}
-		else
-		{
-			mydoc.addClass("#nextVideoButton","hidden");
-			mydoc.addClass("#prevVideoButton","hidden");
-		}
-		
+		loadVideo(CURR_INDEX+1)
+	}
 
-
+	// Select the previous video
+	function onPrevVideo()
+	{
+		loadVideo(CURR_INDEX-1)
 	}
 
 	// Toggle the details about the adventure
@@ -448,20 +476,59 @@ var CURR_VIDEO_ID = undefined;
 		}
 	}
 
-	// Select the next video
-	function onNextVideo()
+	// Toggle visibility of next/previous buttons
+	function toggleNextPrevButtons(videoIndex)
 	{
-		if(CURR_INDEX+1 >= VIDEOS.length)
+		//This only matters if there is more than one video
+		if(VIDEOS.length > 1)
 		{
-			return;
-		}
-		loadVideo(CURR_INDEX+1)
-	}
+			mydoc.removeClass("#nextVideoButton","hidden");
+			mydoc.removeClass("#prevVideoButton","hidden");
 
-	// Select the previous video
-	function onPrevVideo()
-	{
-		loadVideo(CURR_INDEX-1)
+			// Last video in list
+			if(videoIndex == VIDEOS.length-1)
+			{
+				// Make next button gray;
+				mydoc.addClass("#nextVideoButton", "dlf_button_gray");
+				mydoc.removeClass("#nextVideoButton", "dlf_button_blue");
+
+				// Make prev button orange;
+				mydoc.addClass("#prevVideoButton", "dlf_button_orange");
+				mydoc.removeClass("#prevVideoButton", "dlf_button_gray");
+			}
+
+			// If first video ...
+			if(videoIndex == 0)
+			{
+				// Make prev button gray
+				mydoc.addClass("#prevVideoButton", "dlf_button_gray");
+				mydoc.removeClass("#prevVideoButton", "dlf_button_orange");
+
+				// Make next button blue;
+				mydoc.addClass("#nextVideoButton", "dlf_button_blue");
+				mydoc.removeClass("#nextVideoButton", "dlf_button_gray");
+			}
+
+			// If NOT zero and NOT last, then show both
+			if(videoIndex != 0 && videoIndex != VIDEOS.length-1)
+			{
+				// Make prev button orange
+				mydoc.addClass("#prevVideoButton", "dlf_button_orange");
+				mydoc.removeClass("#prevVideoButton", "dlf_button_gray");
+
+				// Make next button blue;
+				mydoc.addClass("#nextVideoButton", "dlf_button_blue");
+				mydoc.removeClass("#nextVideoButton", "dlf_button_gray");
+			}
+		}
+		else
+		{
+			mydoc.addClass("#nextVideoButton","hidden");
+			mydoc.addClass("#prevVideoButton","hidden");
+		}
+		
+
+
 	}
 
 	// Listener to show video picker section
@@ -474,44 +541,14 @@ var CURR_VIDEO_ID = undefined;
 		{
 			// Toggle the picker section
 			mydoc.showContent("#videoPickerSection");
-			// mydoc.addClass("#videoPickerSection","open");
-
 			mydoc.loadContent(VIDEO_PICKER_CLOSE,"videoPickerIcon");
-			// mydoc.hideContent("#videoCount");
 			mydoc.hideContent("#videoDescription");
 		}
 		else
 		{
 			mydoc.hideContent("#videoPickerSection");
-			// mydoc.removeClass("#videoPickerSection","open");
-
 			mydoc.loadContent(VIDEO_PICKER_BARS,"videoPickerIcon");
-			// mydoc.showContent("#videoCount");
 			mydoc.showContent("#videoDescription");
-		}
-	}
-
-
-	// Set the video that is selected in the video picker;
-	function setSelectedVideo(videoID)
-	{
-		let block = document.querySelector(`.videoPickerBlock[data-video-id='${videoID}']`);
-
-		if(block != undefined)
-		{
-			// Clear from all;
-			document.querySelectorAll(".videoPickerBlock .selected").forEach(ele =>{
-				ele.classList.remove("selected");
-			});
-
-			// Add to current; 
-			let circle = block.querySelector(".videoPickerCircle");
-			let title = block.querySelector(".title");
-			if(circle != undefined && title != undefined)
-			{
-				circle.classList.add("selected");
-				title.classList.add("selected");
-			}
 		}
 	}
 
