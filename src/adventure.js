@@ -109,8 +109,9 @@ var CURR_ADVENTURE_ID = undefined;
 					let id = video["id"];
 					let parts = video["name"].split(" ~ ");
 
-					let splits = parts[1].split("/");
-					let videoID = splits[splits.length-1];
+					// Parse video URL & get video ID;
+					let videoURL = new URL(parts[1]) ?? "";
+					let videoID = videoURL.pathname.replaceAll("/","");
 
 					let partsObj = {"name":parts[0], "link":parts[1], "videoID":videoID, "desc":parts[2], "author":parts[3] }
 					VIDEOS.push(partsObj);
