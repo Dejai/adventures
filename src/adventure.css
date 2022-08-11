@@ -14,7 +14,7 @@ body.theme_black_bg { background-color:black; color:white; }
 /********* Main Page ***********************/
 
 #findAdventureSection { border-top:2px solid white; border-bottom: 2px solid white; padding-bottom:2%; }
-.filterOption { border:1px solid white; border-radius:77px; cursor:pointer; padding:0.2%; margin:0.2%; }
+.filterOption { border:1px solid white; border-radius:77px; cursor:pointer; padding:1%; margin:3%; }
 .filterOption.filterOptionSelected { background-color:aqua; color:black; }
 
 #adventuresPanel { padding-top:5%; }
@@ -62,6 +62,7 @@ body.theme_black_bg { background-color:black; color:white; }
 {
 	.additionalDetailsToggle.small { width: 60%; }
 	.additionalDetailsToggle.large { width: 90%; }
+	.filterOption { margin:0.2%; padding:0.5%; }
 	#videoPickerSection { width: 35%; }
 	#videoNavigationSection { width: 35%; margin:auto; }
 	#homeIcon { display: block; float:left; font-size: 30px; padding:0px; }
