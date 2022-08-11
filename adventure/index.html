@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>DLF Adventures</title>
+	<title>Dejai's Adventures</title>
 	<link rel="stylesheet" type="text/css" href="../src/adventure.css">
 	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -9,38 +9,27 @@
 </head>
 <body class="theme_black_bg">
 	<div id="menuPanel" class="centered">
-		<span id="homeIcon" class="fa fa-chevron-circle-left" onclick="onReturnHome()">&nbsp;home</span>
+		<span id="homeIcon" class="fa fa-chevron-circle-left" onclick="onReturnHome()"></span>
 		<h1 id="adventureTitle"></h1>
 		<p id="adventureDescription" class="hidden"></p>
 		<span id="moreDetailsLink" class="pointer additionalDetailsToggle small hidden" onclick="toggleDetails('show')">About this adventure</span>
 		<span id="lessDetailsLink" class="pointer additionalDetailsToggle large hidden" onclick="toggleDetails('hide')">... hide details</span>
-		<hr id="adventureSeparator"/>
+		<hr id="adventureSeparator" style="clear:both;"/>
 
-		<div id="adventureMenuSection" class="dlf_center_block_xlarge centered">
-			<table style="width:100%">
-				<colgroup>
-					<col style="width:10%;">
-					<col/>
-					<col style="width:10%;">
-				</colgroup>
-				<tr>
-					<td>
-						<button id="prevVideoButton" style="float:left;padding:10%;" class="hidden dlf_button_round_corners dlf_button_gray" onclick="onPrevVideo()">PREV</button>
-					</td>
-					<td>
-						<h2 id="videoTitle" style="clear:both; display:inline-block; margin:0px;"></h2>
-					</td>
-					<td>
-						<button id="nextVideoButton" style="float:right;padding:10%;" class="hidden dlf_button_round_corners dlf_button_blue" onclick="onNextVideo()">NEXT</button>
-					</td>
-				</tr>
-			</table>
-			<h4 id="videoCount" class="pointer" style="margin-top:0px;" onclick="toggleVideoPicker()"></h4>
+		<div id="adventureMenuSection" class="dlf_center_block_xlarge centered" style="clear:both;">
+			<h2 id="videoTitle" style="clear:both; display:inline-block; margin-top:0px;"></h2>
+			<p id="videoDescription" style="clear:both; margin:0px;"></p>
+			<br/>
+			<div id="videoNavigationSection">
+				<button id="prevVideoButton" style="float:left;" class="hidden navButton dlf_button_round_corners dlf_button_gray" onclick="onPrevVideo()">prev</button>
+				<span id="videoCount" class="pointer" style="margin-top:0px;line-height:45px;" onclick="toggleVideoPicker()"></span>
+				<button id="nextVideoButton" style="float:right;" class="hidden navButton dlf_button_round_corners dlf_button_blue" onclick="onNextVideo()">next</button>
+			</div>
+			
 			<div id="videoPickerSection" class="hidden"></div>
 		</div>
-		<p id="videoDescription" style="clear:both; margin:0px;"></p>
 	</div>
-	<hr id="videoSeparator" class="hidden">
+	<hr id="videoSeparator" style="clear:both;" class="hidden">
 	<div class="centered">
 		<img id="loadingGif" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
 	</div>

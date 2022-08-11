@@ -13,10 +13,12 @@
 		<h1>Dejai's Adventures!</h1>
 		<p>A set of adventures I've enjoyed with family & friends!</p>
 	</div>
-	<hr>
-	<div class="centered">
-		<i id="randomAdventure" class="fa fa-random pointer" onclick="onSelectRandomAdventure()" style="font-size:20px; padding-top:2%; color:orange;" aria-hidden="true" title="Select a random adventure">
-			&nbsp;Random
+	<div id="findAdventureSection" class="centered hidden">
+		<p>Filter Adventures:</p>
+		<div id="filterSection"></div>
+		<br/>
+		<i id="randomAdventure" class="fa fa-random pointer" onclick="onSelectRandomAdventure()" style="font-size:18px; padding-top:2%; color:orange;" aria-hidden="true" title="Select a random adventure">
+			&nbsp;Random Adventure
 		</i>
 	</div>
 	<div id="adventuresPanel" class="centered">

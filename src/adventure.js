@@ -38,8 +38,6 @@ var CURR_ADVENTURE_ID = undefined;
 		addListener("#backIcon", "click",onReturnHome);
 	});
 
-
-
 /********************* LISTENERS *************************************/
 
 	// Add listeners to given selectors
@@ -57,7 +55,7 @@ var CURR_ADVENTURE_ID = undefined;
 
 		}catch(err)
 		{
-			console.log(err);
+			console.error(err);
 		}
 	}
 
@@ -186,7 +184,7 @@ var CURR_ADVENTURE_ID = undefined;
 			mydoc.showContent("#moreDetailsLink");
 
 			// Setup the video count
-			let videoCount = VIDEOS.length > 1 ? "<br/><span id='videoPickerIcon'>" + VIDEO_PICKER_BARS + `</span><span>(${videoIndex+1} of ${VIDEOS.length})</span>` : "";
+			let videoCount = VIDEOS.length > 1 ? "<span id='videoPickerIcon'>" + VIDEO_PICKER_BARS + `</span><span>(${videoIndex+1} of ${VIDEOS.length})</span>` : "";
 			
 			// Setup the video title + editor
 			let author = video["author"] ?? "";
@@ -228,19 +226,19 @@ var CURR_ADVENTURE_ID = undefined;
 	}
 
 	// Load specific video (via URL)
-	function loadVideoByURL(videoNumber)
+	function loadVideoByURL(videoNumber, forceLoad=false)
 	{
 		// Hide the picker section
 		toggleVideoPicker(true);
 		
 		// Don't do anything if the index is the same as current; 
-		if( (videoNumber-1) == CURR_INDEX)
+		if( (videoNumber-1) == CURR_INDEX && !forceLoad)
 		{
 			return; 
 		}
 
 		var newhref = location.origin + location.pathname + "?id=" + CURR_ADVENTURE_ID + "&video=" + videoNumber;
-		location.href = newhref;
+		location.replace(newhref);
 	}
 
 	// Validate if this video can be played
@@ -268,7 +266,6 @@ var CURR_ADVENTURE_ID = undefined;
 		}
 		return canPlay;
 	}
-
 
 /***************** GETTERS / SETTERS ********************** */
 
@@ -326,7 +323,7 @@ var CURR_ADVENTURE_ID = undefined;
 
 						// Reload the page to specific video
 						let videoNumber = CURR_INDEX + 1;
-						loadVideoByURL(videoNumber);
+						loadVideoByURL(videoNumber, true);
 					}
 				}
 				else
@@ -543,13 +540,11 @@ var CURR_ADVENTURE_ID = undefined;
 			// Toggle the picker section
 			mydoc.showContent("#videoPickerSection");
 			mydoc.loadContent(VIDEO_PICKER_CLOSE,"videoPickerIcon");
-			mydoc.hideContent("#videoDescription");
 		}
 		else
 		{
 			mydoc.hideContent("#videoPickerSection");
 			mydoc.loadContent(VIDEO_PICKER_BARS,"videoPickerIcon");
-			mydoc.showContent("#videoDescription");
 		}
 	}
 

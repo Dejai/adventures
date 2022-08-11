@@ -4,6 +4,11 @@
 var ADVENTURES = {};
 var SECURE_LABEL_ID = "6220aa911cbc61053bd65b54"
 
+// Template content
+var FILTER_TEMPLATE = `<span class="filterOption" data-label-id="{{labelID}}" onclick="onFilterByLabel(event)">{{filterName}}</span>`;
+
+// Labels for filters
+var LABEL_GROUP = {}
 
 /*********************** GETTING STARTED *****************************/
 
@@ -11,6 +16,8 @@ var SECURE_LABEL_ID = "6220aa911cbc61053bd65b54"
 mydoc.ready(function(){
 
 	MyTrello.SetBoardName("videos");
+
+	loadLabels();
 
 	getAdventures();
 
@@ -64,6 +71,65 @@ function onSelectRandomAdventure()
 	}
 }
 
+// Filter the functions based on label
+function onFilterByLabel(event)
+{
+	let target = event.target;
+	let labelID = target.getAttribute("data-label-id") ?? ""
+
+	if(labelID != "")
+	{
+		let addFilter = !target.classList.contains("filterOptionSelected");
+		if(addFilter)
+		{
+			// Remove from all other instances
+			document.querySelectorAll(".filterOptionSelected")?.forEach( ele =>{
+				ele.classList.remove("filterOptionSelected");
+			});
+			target.classList.add("filterOptionSelected");
+
+			let adventuresToShow = LABEL_GROUP[labelID]?.adventures ?? [];
+			onFilterAdventures(adventuresToShow);
+		}
+		else
+		{
+			target.classList.remove("filterOptionSelected");
+			onFilterAdventures(); 
+
+		}
+	}
+}
+
+// Filter based on a given set of adventures
+function onFilterAdventures(adventures = [])
+{
+
+	var adventureBlocks = document.querySelectorAll(".adventure_block");
+
+	// If any filters applied, then show only those adventures;
+	if(adventures.length > 0)
+	{
+		adventureBlocks.forEach( adv =>{
+			
+			let id = adv.getAttribute("data-adventure-id") ?? "";
+			if(adventures.includes(id))
+			{
+				adv.classList.remove("hidden");
+			}
+			else
+			{
+				adv.classList.add("hidden");
+			}
+		});
+	}
+	else
+	{
+		adventureBlocks.forEach( adv =>{
+			adv.classList.remove("hidden");
+		});
+	}
+}
+
 /********************** LOAD CONTENT *******************************/
 
 // Get list of adventures
@@ -74,12 +140,12 @@ function getAdventures()
 		let resp = JSON.parse(data.responseText);
 		if(resp.length > 0)
 		{
-			console.log("loading adventures");
 			loadAdventures(resp);
 		}
 	});
 }
 
+// Load the adventures
 function loadAdventures(adventureList)
 {
 	var adventureHTML = "";
@@ -120,12 +186,72 @@ function loadAdventures(adventureList)
 							<p id="moreDetails_${id}" data-details-id="${id}" class="hidden pointer" onclick="toggleDetails('${id}')">${moreDetails}</p>
 							<span id="lessDetailsLink_${id}" class="pointer additionalDetailsToggle spaced large hidden" onclick="toggleDetails('${id}')">... less details</span>
 						</div>
-						`
+						`;
+
+		addToLabelGroup(element);
+		
 	});
 
 	mydoc.loadContent(adventureHTML,"adventuresPanel");
+
+	// Once loaded, show the filter section
+	mydoc.showContent("#findAdventureSection");
+
 }
 
+// Load the labels to be used for filtering
+function loadLabels()
+{
+	MyTrello.get_labels( data =>{
+
+		var resp = myajax.GetJSON(data.responseText);
+		if(resp != undefined)
+		{
+
+			var labelSet = "";
+			resp = resp.sort(function(a,b){
+				return a.name.localeCompare(b.name)
+			});
+	
+			resp.forEach( label =>{
+
+				var labelName = label.name ?? "";
+				var labelColor = label.color;
+				var labelID = label.id; 
+
+				if(labelName != "" && labelID != SECURE_LABEL_ID)
+				{
+					// Setup labels & filters
+					labelSet += FILTER_TEMPLATE.replaceAll("{{filterName}}", labelName).replaceAll("{{labelID}}",labelID);
+				}
+			});
+			// Add the labels
+			mydoc.loadContent(labelSet,"filterSection");
+		}
+	})
+}
+
+/********************** HELPERS *******************************/
+
+
+// Add an adventure to a group based on its label(s)
+function addToLabelGroup(adventure)
+{
+	let labelList = adventure["idLabels"];
+	let adventureID = adventure["id"]; 
+
+	labelList.forEach( label =>{
+
+		// If group doesn't already have label;
+		if( !LABEL_GROUP.hasOwnProperty(label))
+		{
+			LABEL_GROUP[label] = {"filter":false, "adventures":[] };
+		}
+
+		// Add the adenture to this label's group
+		LABEL_GROUP[label]["adventures"].push(adventureID);
+	});
+}
 
 function toggleDetails(id)
 {
@@ -168,3 +294,4 @@ function getMonthYear(date)
 	return `${month}, ${year}`;
 
 }
+
