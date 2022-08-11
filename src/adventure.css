@@ -14,7 +14,7 @@ body.theme_black_bg { background-color:black; color:white; }
 /********* Main Page ***********************/
 
 #findAdventureSection { border-top:2px solid white; border-bottom: 2px solid white; padding-bottom:2%; }
-.filterOption { border:1px solid white; border-radius:77px; cursor:pointer; padding:1%; margin:3%; }
+.filterOption { border:1px solid white; border-radius:77px; cursor:pointer; padding:1%; margin:3%; display:inline-block; }
 .filterOption.filterOptionSelected { background-color:aqua; color:black; }
 
 #adventuresPanel { padding-top:5%; }
