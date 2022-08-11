@@ -109,7 +109,7 @@ var CURR_ADVENTURE_ID = undefined;
 
 					// Parse video URL & get video ID;
 					let videoURL = new URL(parts[1]) ?? "";
-					let videoID = videoURL.pathname.replaceAll("/","");
+					let videoID = videoURL.pathname.substring(1).split("/")[0];
 
 					let partsObj = {"name":parts[0], "link":parts[1], "videoID":videoID, "desc":parts[2], "author":parts[3] }
 					VIDEOS.push(partsObj);
@@ -234,6 +234,7 @@ var CURR_ADVENTURE_ID = undefined;
 		// Don't do anything if the index is the same as current; 
 		if( (videoNumber-1) == CURR_INDEX && !forceLoad)
 		{
+			console.log("RETURNING WITHOUT LOADING")
 			return; 
 		}
 
@@ -309,13 +310,12 @@ var CURR_ADVENTURE_ID = undefined;
 
 			// Make the call to get the signed URL
 			myajax.POST(streamURL,data, requestBody, (resp)=>{
-
+						
 				let respData = myajax.GetJSON(resp.responseText);
-				
+
 				if(respData != undefined)
 				{
 					let token = respData?.result?.token ?? undefined
-
 					if(token != undefined)
 					{
 						// Set the video ID as a token
@@ -325,10 +325,14 @@ var CURR_ADVENTURE_ID = undefined;
 						let videoNumber = CURR_INDEX + 1;
 						loadVideoByURL(videoNumber, true);
 					}
+					else
+					{
+						setResponseMessage("Something went wrong. Could not load video");
+					}
 				}
 				else
 				{
-					setResponseMessage("Incorrect passphrase! Video not loaded");
+					setResponseMessage("Incorrect passphrase! Video not loaded. ");
 				}
 			}, (resp)=>{
 				setResponseMessage("Something went wrong. Could not load video");
@@ -366,9 +370,17 @@ var CURR_ADVENTURE_ID = undefined;
 	// Set error message for protected input
 	function setResponseMessage(message)
 	{
+		console.log(message);
+		// Hide the loader
+		mydoc.hideContent("#loadingGif");
+
 		// Maintain the original message in case it is needed again
 		var protectedMessage = document.getElementById("protectedMessage");
+		console.log(protectedMessage);
+		console.log(protectedMessage.innerText);
+
 		var originalMessage = protectedMessage?.innerText ?? "";
+		console.log(originalMessage);
 
 		// Make sure the section is visible
 		mydoc.showContent("#videoFrameProtectedSection");
