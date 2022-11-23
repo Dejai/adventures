@@ -10,7 +10,7 @@ var VIDEO_PICKER_CLOSE = `<span id="videoPickerHideIcon" style="color:red; font-
 var LOADING_GIF = `<img id="loadingGif" style="width:25px;height:25px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">`
 
 // Secure videos
-var SECURE_LABEL_ID = "6220aa911cbc61053bd65b54"
+var SECURE_LABEL_ID = "6220aa911cbc61053bd65b52"
 var IS_PROTECTED = false;
 
 // Store the list of videos
