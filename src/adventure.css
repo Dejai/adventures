@@ -45,6 +45,10 @@ body.theme_black_bg { background-color:black; color:white; }
 #videoNavigationSection { width: 90%; margin:auto; }
 .navButton { font-size:18px; }
 
+.videoPickerIcon { cursor:pointer; }
+
+.videoPickerBlock.selected { background-color:limegreen; color:black; }
+
 
 #videoPickerSection { width: 90%; margin: auto; padding-top:2%; }
 .videoPickerBlock { margin-bottom:3% !important; color:white !important; opacity: 95%; }

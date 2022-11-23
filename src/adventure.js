@@ -1,38 +1,25 @@
 
 /************************ GLOBAL VARIABLES ****************************************/
-
-var STREAM_URL = "https://iframe.videodelivery.net/{{videoID}}?autoplay=true";
-
-// Template content;
-var IFRAME_TEMPLATE = `<iframe id="videoIFrame" src="{{link}}&" style="border: none; position: absolute; top: 0; left: 0; height: 100%; width: 100%;" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>`;
-var VIDEO_PICKER_BARS = `<span id="videoPickerShowIcon" style="color:forestgreen; font-size:110%;" class="fa fa-bars"></span>&nbsp;`
-var VIDEO_PICKER_CLOSE = `<span id="videoPickerHideIcon" style="color:red; font-size:110%;" class="fa fa-times"></span>&nbsp;`
 var LOADING_GIF = `<img id="loadingGif" style="width:25px;height:25px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">`
 
-// Secure videos
-var SECURE_LABEL_ID = "6220aa911cbc61053bd65b52"
-var IS_PROTECTED = false;
-
-// Store the list of videos
-var VIDEOS = [];
-var CURR_INDEX = undefined;
-var CURR_VIDEO_ID = undefined;
-var CURR_ADVENTURE_ID = undefined;
+// Main instance of adventure
+var MyAdventure = undefined;
 
 /*********************** GETTING STARTED *****************************/
 
 	// Once doc is ready
 	mydoc.ready(function(){
 
+		// Set name for trello;
 		MyTrello.SetBoardName("videos");
 
-		let adventureID = mydoc.get_query_param("id");
-		let videoID = mydoc.get_query_param("video");
+		// Get params from URL;
+		let adventureID = mydoc.get_query_param("id") ?? "";
+		let videoID = mydoc.get_query_param("video") ?? "";
 
 		if(adventureID != undefined)
 		{
-			CURR_ADVENTURE_ID = adventureID; 
-			loadAdventureVideos(adventureID, videoID);
+			onGetAdventure(adventureID, videoID);
 		}
 
 		addListener("#backIcon", "click",onReturnHome);
@@ -65,11 +52,18 @@ var CURR_ADVENTURE_ID = undefined;
 		location.href = "/";
 	}
 
-/********************** LOAD CONTENT *******************************/
+/********* SETUP: Create the key things used throughout the file *************************************/
 
-	// Get list of videos from this adventure
-	function loadAdventureVideos(adventureID, videoID)
+	// Create an instance of the Adventure class
+	function createAdventure(name, desc, labels )
 	{
+		MyAdventure = (MyAdventure != undefined) ? MyAdventure : new Adventure(name, desc, labels);
+	}
+
+	// Get this adventure card & its list of videos
+	function onGetAdventure(adventureID, videoID)
+	{
+
 		MyTrello.get_single_card(adventureID,(data)=>{
 
 			let resp = JSON.parse(data.responseText);
@@ -79,96 +73,62 @@ var CURR_ADVENTURE_ID = undefined;
 			if(resp != undefined)
 			{
 
-				// Check if this is a secure adventure
-				if(resp["idLabels"].includes(SECURE_LABEL_ID))
-				{
-					IS_PROTECTED = true;
-				}
-
+				// Creating the instance of adventure
 				let name = resp["name"];
-				mydoc.loadContent(name,"adventureTitle");
-
+				let labels = resp["idLabels"] ;
 				let desc = resp["desc"]?.replaceAll("\n", "<br/>");
-				mydoc.loadContent(desc,"adventureDescription");
 
+				// Create the adventure
+				createAdventure(name, desc, resp["idLabels"]);
+				console.log(MyAdventure);
+
+				// Set the key adventure details
+				setAdventureDetails()
+			
+				// Get/set the videos; Ordered
 				let checklistItems = resp["checklists"][0]["checkItems"] ?? [];
-
-				// Order videos by pos;
 				let videos = checklistItems.sort(function(a,b){
 					return a.pos - b.pos;
 				});
 
-				// video num count;
-				let count = 0;
-				videos.forEach(video =>{
+				// Loop through each video & create instance
+				videos.forEach( (video, idx, array) =>{
 
-					count++; //increment count
+					let videoObject = new Video(video)
+					MyAdventure.addVideo( videoObject );
 
-					let id = video["id"];
-					let parts = video["name"].split(" ~ ");
+					MyTemplates.getTemplate("templates/videoPick.html", videoObject, (template)=>{
+						videoPickerContent += template;
 
-					// Parse video URL & get video ID;
-					let videoURL = new URL(parts[1]) ?? "";
-					let videoID = videoURL.pathname.substring(1).split("/")[0];
+						if(idx == array.length-1)
+						{
+							mydoc.setContent("#videoPickerSection", {"innerHTML":videoPickerContent});
 
-					let partsObj = {"name":parts[0], "link":parts[1], "videoID":videoID, "desc":parts[2], "author":parts[3] }
-					VIDEOS.push(partsObj);
-
-					videoPickerContent +=  `<div class="videoPickerBlock centered dlf_center_block_large pointer" data-video-id="${videoID}" onclick="loadVideoByURL(${VIDEOS.length})">
-												<table style="width:100%;">
-													<tr>
-														<td class="datacell">
-															<span class="videoPickerCircle">${count}</span>
-														</td>
-														<td class="datacell" style="text-align: left; padding-left:10%;">
-															<p class="title">
-																${partsObj["name"]} 
-																&nbsp; <i class="fa fa-external-link openLinkIcon" aria-hidden="true"></i>
-															<p>
-															<p class="description">${partsObj["desc"]}
-														</td>
-													</tr>
-												</table>
-											</div>`;
-
+							// Load the video based on given index;
+							let index = !isNaN(Number(videoID)) ? Number(videoID)-1 : 0;
+							console.log("Try to load index: " + index);
+							loadVideo(index, initial=true); 
+						}
+					});
 				});
 			}
-
-			// Load the section for picking a video
-			mydoc.loadContent(videoPickerContent,"videoPickerSection");
-
-			// Load the video based on given index;
-			let index = !isNaN(Number(videoID)) ? Number(videoID)-1 : 0
-			loadVideo(index)
-			
 		});
 	}
 
 	// Load a video based on index
-	function loadVideo(videoIndex)
+	function loadVideo(videoIndex, initial=false)
 	{
 
 		// Hide the picker section
 		toggleVideoPicker(true);
 
-		// Don't do anything if the index is the same as current; 
-		if(videoIndex == CURR_INDEX)
-		{
-			return; 
-		}
+		// If we are on the same video, just return
+		if(MyAdventure.onSameVideo(videoIndex) && !initial)
+			return
 
-		// Get the video index
-		videoIndex = videoIndex >= VIDEOS.length ? VIDEOS.length-1 : videoIndex;
-
-		// The target video object;
-		var video = VIDEOS[videoIndex];
-		let videoID = video["videoID"];
-		// Get/set the video ID;
-		CURR_VIDEO_ID = videoID;
-
-		// Set selected video index & video in video picker
-		setCurrentVideoIndex(videoIndex);
-		setSelectedVideo(videoID);
+		// Set the index & then get it
+		MyAdventure.setCurrentVideoIndex(videoIndex);
+		video = MyAdventure.getCurrentVideo();
 
 		// Hide both sections
 		mydoc.hideContent("#videoFrameProtectedSection");
@@ -177,41 +137,53 @@ var CURR_ADVENTURE_ID = undefined;
 		mydoc.hideContent("#moreDetailsLink");
 		
 		// Check if video can be played;
-		if( canPlayVideo(videoIndex) )
+		if( MyAdventure.canPlayVideos() )
 		{
-
 			mydoc.showContent("#videoSeparator");
 			mydoc.showContent("#moreDetailsLink");
 
 			// Setup the video count
-			let videoCount = VIDEOS.length > 1 ? "<span id='videoPickerIcon'>" + VIDEO_PICKER_BARS + `</span><span>(${videoIndex+1} of ${VIDEOS.length})</span>` : "";
-			
+			let numberOfVideos = MyAdventure.Videos.length;
+			let videoNum = MyAdventure.CurrentVideoIndex+1;
+			let videoCount =  numberOfVideos > 1 ?`(${videoNum} of ${numberOfVideos})` : "";
+			mydoc.setContent("#videoIndexCount", {"innerHTML":videoCount});
+
 			// Setup the video title + editor
-			let author = video["author"] ?? "";
-			let videoEditor = author != "" ? `<br/><span class="video_editor"/>by: ${video["author"]}</span>` : "";
-			let videoTitle = video["name"] + videoEditor;
+			let author = video.Author ?? "";
+			let videoEditor = author != "" ? `<br/><span class="video_editor"/>by: ${author}</span>` : "";
+			let videoTitle = (video.Name ?? "") + videoEditor;
 
 			// Load the video details;
-			mydoc.loadContent(videoTitle, "videoTitle");
-			mydoc.loadContent(videoCount, "videoCount");
-			mydoc.loadContent(video["desc"], "videoDescription");
+			mydoc.setContent("#videoTitle", {"innerHTML":videoTitle});
+			mydoc.setContent("#videoDescription", {"innerHTML":video.Description});
 		
 			// Toggle the next/prev buttons
-			toggleNextPrevButtons(videoIndex);
+			toggleNextPrevButtons(MyAdventure.CurrentVideoIndex);
 
-			let newVideoID = VIDEOS[videoIndex]["videoIDProtected"] ?? VIDEOS[videoIndex]["videoID"];
-			let newLink = STREAM_URL.replace("{{videoID}}", newVideoID);
-			let iFrame = IFRAME_TEMPLATE.replace("{{link}}", newLink);
-			mydoc.loadContent(iFrame, "videoFramePanel");
-			mydoc.showContent("#videoFrameSection");
+			// Set the iFrame template for the video
+			MyTemplates.getTemplate("templates/videoFrame.html", {"VideoID": video.getVideoID() }, (template)=>{
+				console.log(template);
 
-			// Add listeners for the iFrame
-			addStreamListeners();
+				mydoc.setContent("#videoFramePanel", {"innerHTML":template});
+				mydoc.showContent("#videoFrameSection");
+
+				// Add listeners for the iFrame
+				addStreamListeners();
+
+				// Set the picked video
+				setSelectedVideo();
+
+				// Add the video ID to the URL for easy refresh
+				let newSearch = mydoc.getNewSearch({"video":videoNum});
+				let newPath = location.pathname + newSearch;
+				mydoc.addWindowHistory({"path":newPath}, true); // use replace to avoid confusion with back button
+
+			});			
 		}
 		else if ( getCookie("passphrase") != undefined )
 		{
 			mydoc.showContent("#loadingGif");
-			getSignedVideoID(CURR_VIDEO_ID);
+			getSignedVideoID();
 		}
 		else
 		{
@@ -220,52 +192,7 @@ var CURR_ADVENTURE_ID = undefined;
 
 			// Show the section to enter passphrase;
 			mydoc.showContent("#videoFrameProtectedSection");
-		}
-
-		
-	}
-
-	// Load specific video (via URL)
-	function loadVideoByURL(videoNumber, forceLoad=false)
-	{
-		// Hide the picker section
-		toggleVideoPicker(true);
-		
-		// Don't do anything if the index is the same as current; 
-		if( (videoNumber-1) == CURR_INDEX && !forceLoad)
-		{
-			console.log("RETURNING WITHOUT LOADING")
-			return; 
-		}
-
-		var newhref = location.origin + location.pathname + "?id=" + CURR_ADVENTURE_ID + "&video=" + videoNumber;
-		location.replace(newhref);
-	}
-
-	// Validate if this video can be played
-	function canPlayVideo(videoIndex)
-	{
-		let canPlay = true;
-
-		if(IS_PROTECTED)
-		{
-			// Assume it is false unless cookie exists(below); 
-			canPlay = false;
-
-			// Check if there is a cookie for current video ID
-			let video = VIDEOS[videoIndex];
-			let videoID = video["videoID"];
-			var protectedVideoID = getCookie(videoID);
-
-			// If the protected video ID is set;
-			if(protectedVideoID != undefined)
-			{
-				// Set the videoID to be the signed value stored in cookie;
-				VIDEOS[videoIndex]["videoIDProtected"] = protectedVideoID; 
-				canPlay = true;
-			}
-		}
-		return canPlay;
+		}		
 	}
 
 /***************** GETTERS / SETTERS ********************** */
@@ -296,7 +223,7 @@ var CURR_ADVENTURE_ID = undefined;
 	}
 
 	// Get the signed video ID
-	function getSignedVideoID(videoID)
+	function getSignedVideoID()
 	{
 		// Get the passphrase from the cookie; 
 		let passphrase = getCookie("passphrase");
@@ -304,7 +231,8 @@ var CURR_ADVENTURE_ID = undefined;
 		if( passphrase != undefined && passphrase != "undefined" )
 		{
 			// The needed content for the call;
-			var streamURL = `https://stream-security.the-dancinglion.workers.dev/${CURR_VIDEO_ID}/`;
+			let videoID = MyAdventure.getCurrentVideo()?.Video ?? "";
+			var streamURL = `https://stream-security.the-dancinglion.workers.dev/${videoID}/`;
 			var requestBody = {"Content-Type":"application/x-www-form-urlencoded"}
 			var data = `p=${passphrase}`;
 
@@ -319,11 +247,10 @@ var CURR_ADVENTURE_ID = undefined;
 					if(token != undefined)
 					{
 						// Set the video ID as a token
-						setCookie(CURR_VIDEO_ID, token, 60 );
+						setCookie(videoID, token, 60 );
 
 						// Reload the page to specific video
-						let videoNumber = CURR_INDEX + 1;
-						loadVideoByURL(videoNumber, true);
+						loadVideo(MyAdventure.getVideoIndex(videoID))
 					}
 					else
 					{
@@ -345,6 +272,17 @@ var CURR_ADVENTURE_ID = undefined;
 
 	}
 
+	// Set the adventure details
+	function setAdventureDetails()
+	{
+		if(MyAdventure != undefined)
+		{
+			console.log("Setting for adventure");
+			mydoc.setContent("#adventureTitle", {"innerHTML":MyAdventure.Name});
+			mydoc.setContent("#adventureDescription", {"innerHTML":MyAdventure.Description});
+		}
+	}
+
 	// Set a cookie;
 	function setCookie(key, value, expirationMinutes=60)
 	{
@@ -358,13 +296,6 @@ var CURR_ADVENTURE_ID = undefined;
 
 		// // Set the cookie
 		document.cookie = `${cookieValue}; expires=${expires}; path=/`;
-	}
-
-	// Set the current video index;
-	function setCurrentVideoIndex(index)
-	{
-		// Set current index
-		CURR_INDEX = index;
 	}
 
 	// Set error message for protected input
@@ -391,30 +322,22 @@ var CURR_ADVENTURE_ID = undefined;
 		setTimeout(()=>{
 			MyNotification.notify("#protectedMessage", originalMessage);
 		},7000);
-
 	}
 
 	// Set the video that is selected in the video picker;
-	function setSelectedVideo(videoID)
+	function setSelectedVideo()
 	{
-		let block = document.querySelector(`.videoPickerBlock[data-video-id='${videoID}']`);
 
-		if(block != undefined)
-		{
-			// Clear from all;
-			document.querySelectorAll(".videoPickerBlock .selected").forEach(ele =>{
-				ele.classList.remove("selected");
-			});
+		let videoID = MyAdventure.getCurrentVideo()?.VideoID ?? ""
 
-			// Add to current; 
-			let circle = block.querySelector(".videoPickerCircle");
-			let title = block.querySelector(".title");
-			if(circle != undefined && title != undefined)
-			{
-				circle.classList.add("selected");
-				title.classList.add("selected");
-			}
-		}
+		// Clear from all;
+		document.querySelectorAll(".videoPickerBlock.selected").forEach(ele =>{
+			ele.classList.remove("selected");
+		});
+
+		// Add that class to the current selected block
+		mydoc.addClass(`.videoPickerBlock[data-video-id='${videoID}']`, "selected");
+
 	}
 
 /***************** ACTIONS / EVENTS ********************** */
@@ -435,7 +358,7 @@ var CURR_ADVENTURE_ID = undefined;
 		// Set the passphrase as a cookie that is then checked by the function to get the signed ID
 		setCookie("passphrase",passphrase, 50);
 
-		getSignedVideoID(passphrase);
+		getSignedVideoID();
 
 
 	}
@@ -443,18 +366,40 @@ var CURR_ADVENTURE_ID = undefined;
 	// Select the next video
 	function onNextVideo()
 	{
-		if(CURR_INDEX+1 >= VIDEOS.length)
-		{
-			return;
-		}
-		loadVideo(CURR_INDEX+1)
+		// Don't do anything if we are at the end of the list of videos
+		if(MyAdventure.CurrentVideoIndex >= MyAdventure.Videos.length)
+			return
+
+		// Load next possible index
+		loadVideo(MyAdventure.CurrentVideoIndex+1);
 	}
 
 	// Select the previous video
 	function onPrevVideo()
 	{
-		loadVideo(CURR_INDEX-1)
+		// Don't do anything if we are at start
+		if(MyAdventure.CurrentVideoIndex == 0)
+			return 
+
+		// Load prev video by index
+		loadVideo(MyAdventure.CurrentVideoIndex-1);
 	}
+
+	// Pick a video from the list of videos
+	function onPickVideo(event)
+	{
+		let target = event.target;
+		let videoID = target.getAttribute("data-video-id") ?? "";
+		let videoIndex = MyAdventure.getVideoIndex(videoID) ?? -1;
+
+		// Make sure we have a video ID and index
+		if(videoID != "" && videoIndex >= 0)
+		{
+			loadVideo(videoIndex);
+		}
+	}
+
+/********** VISIBILITY ********************** */
 
 	// Toggle the details about the adventure
 	function toggleDetails(state)
@@ -490,13 +435,15 @@ var CURR_ADVENTURE_ID = undefined;
 	function toggleNextPrevButtons(videoIndex)
 	{
 		//This only matters if there is more than one video
-		if(VIDEOS.length > 1)
+		if(MyAdventure.Videos.length > 1)
 		{
-			mydoc.removeClass("#nextVideoButton","hidden");
-			mydoc.removeClass("#prevVideoButton","hidden");
+			// Show the key navigation for adventures with more than one 
+			mydoc.showContent("#nextVideoButton");
+			mydoc.showContent("#prevVideoButton");
+			mydoc.showContent("#videoIndexCountSection")
 
 			// Last video in list
-			if(videoIndex == VIDEOS.length-1)
+			if(videoIndex == MyAdventure.Videos.length-1)
 			{
 				// Make next button gray;
 				mydoc.addClass("#nextVideoButton", "dlf_button_gray");
@@ -520,7 +467,7 @@ var CURR_ADVENTURE_ID = undefined;
 			}
 
 			// If NOT zero and NOT last, then show both
-			if(videoIndex != 0 && videoIndex != VIDEOS.length-1)
+			if(videoIndex != 0 && videoIndex != MyAdventure.Videos.length-1)
 			{
 				// Make prev button orange
 				mydoc.addClass("#prevVideoButton", "dlf_button_orange");
@@ -549,14 +496,24 @@ var CURR_ADVENTURE_ID = undefined;
 
 		if(isHidden && !forceClose)
 		{
-			// Toggle the picker section
+			// THide things
+			mydoc.hideContent("#videoPickerShowIcon");
+			mydoc.hideContent("#videoFrameSection");
+
+			// Show things
 			mydoc.showContent("#videoPickerSection");
-			mydoc.loadContent(VIDEO_PICKER_CLOSE,"videoPickerIcon");
+			mydoc.showContent("#videoPickerHideIcon");
 		}
 		else
 		{
+			// Hide things
 			mydoc.hideContent("#videoPickerSection");
-			mydoc.loadContent(VIDEO_PICKER_BARS,"videoPickerIcon");
+			mydoc.hideContent("#videoPickerHideIcon");
+
+			// Show things
+			mydoc.showContent("#videoFrameSection");
+			mydoc.showContent("#videoPickerShowIcon");
+
 		}
 	}
 
@@ -585,16 +542,16 @@ var CURR_ADVENTURE_ID = undefined;
 	function onVideoEnded()
 	{
 
-		if(CURR_INDEX < VIDEOS.length-1)
+		if(MyAdventure.CurrentVideoIndex < MyAdventure.Videos.length-1)
 		{
-			loadVideo(CURR_INDEX+1);
+			loadVideo(MyAdventure.CurrentVideoIndex+1);
 		}
 	}
 
 	// When the video throws an error
 	function onVideoError()
 	{
-		if(IS_PROTECTED)
+		if(MyAdventure.isProtected())
 		{
 			mydoc.showContent("#videoFrameProtectedSection");
 		}
