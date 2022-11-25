@@ -134,7 +134,7 @@ var MyAdventure = undefined;
 	function onLoadVideo(videoIndex, initial=false)
 	{
 		// Hide the picker section
-		toggleVideoPicker(true);
+		onCloseVideoPicker();
 
 		// If we are on the same video, just return
 		if(MyAdventure.onSameVideo(videoIndex) && !initial)
@@ -171,6 +171,7 @@ var MyAdventure = undefined;
 			mydoc.setContent("#videoTitle", {"innerHTML":videoTitle});
 			mydoc.setContent("#videoDescription", {"innerHTML":video.Description});
 			setResponseMessage("");
+
 			// Toggle the next/prev buttons
 			toggleNextPrevButtons(MyAdventure.CurrentVideoIndex);
 
@@ -254,7 +255,7 @@ var MyAdventure = undefined;
 				if(token != undefined)
 				{
 					// Set the video ID cookie as the token
-					mydoc.setCookie(videoID, token, 60 );
+					mydoc.setCookie(videoID, token, MyStream.cookieLimit );
 					video.setProtectedID(token);
 				}
 				else
@@ -348,37 +349,7 @@ var MyAdventure = undefined;
 		location.replace(newPath);
 	}
 
-/********** VISIBILITY ********************** */
-
-	// Toggle the details about the adventure
-	function toggleDetails(state)
-	{
-
-		if(state == "show")
-		{
-			// Hide sections
-			mydoc.hideContent(`#adventureMenuSection`);
-			mydoc.hideContent(`#moreDetailsLink`);
-			mydoc.hideContent("#videoDescription");
-			mydoc.hideContent("#adventureSeparator");
-
-			// Show full content;
-			mydoc.showContent(`#adventureDescription`);
-			mydoc.showContent(`#lessDetailsLink`);
-		}
-		else
-		{
-			// Show menu sections
-			mydoc.showContent(`#adventureMenuSection`);
-			mydoc.showContent(`#moreDetailsLink`);
-			mydoc.showContent("#videoDescription");
-			mydoc.showContent("#adventureSeparator");
-
-			// Hide full content;
-			mydoc.hideContent(`#adventureDescription`);
-			mydoc.hideContent(`#lessDetailsLink`);
-		}
-	}
+/********** Video Nav Buttons: Toggling the next/prev buttons picker ********************** */
 
 	// Toggle visibility of next/previous buttons
 	function toggleNextPrevButtons(videoIndex)
@@ -437,32 +408,83 @@ var MyAdventure = undefined;
 
 	}
 
-	// Listener to show video picker section
-	function toggleVideoPicker(forceClose=false)
+/********** DETAILS: Toggling the video picker ********************** */
+
+	//Options for toggling the video picker
+	function onOpenVideoDetails() { toggleDetails("show"); }
+	function onCloseVideoDetails() { toggleDetails("hide"); }
+
+	// Toggle the details about the adventure
+	function toggleDetails(state)
 	{
-		let section = document.getElementById("videoPickerSection");
-		let isHidden = section.classList.contains("hidden");
 
-		if(isHidden && !forceClose)
+		if(state == "show")
 		{
-			// THide things
-			mydoc.hideContent("#videoPickerShowIcon");
+			// Hide sections
+			mydoc.hideContent(`#adventureMenuSection`);
+			mydoc.hideContent(`#moreDetailsLink`);
+			mydoc.hideContent("#videoDescription");
+			mydoc.hideContent("#adventureSeparator");
 			mydoc.hideContent("#videoFrameSection");
+			MyStream.onPauseVideo();
 
-			// Show things
-			mydoc.showContent("#videoPickerSection");
-			mydoc.showContent("#videoPickerHideIcon");
+			// Show full content;
+			mydoc.showContent(`#adventureDescription`);
+			mydoc.showContent(`#lessDetailsLink`);
 		}
 		else
 		{
-			// Hide things
-			mydoc.hideContent("#videoPickerSection");
-			mydoc.hideContent("#videoPickerHideIcon");
-
-			// Show things
+			// Show menu sections
+			mydoc.showContent(`#adventureMenuSection`);
+			mydoc.showContent(`#moreDetailsLink`);
+			mydoc.showContent("#videoDescription");
+			mydoc.showContent("#adventureSeparator");
 			mydoc.showContent("#videoFrameSection");
-			mydoc.showContent("#videoPickerShowIcon");
+			MyStream.onPlayVideo();
 
+			// Hide full content;
+			mydoc.hideContent(`#adventureDescription`);
+			mydoc.hideContent(`#lessDetailsLink`);
+		}
+	}
+
+
+/********** VIDEO PICKER: Toggling the video picker ********************** */
+
+	//Options for toggling the video picker
+	function onOpenVideoPicker() { toggleVideoPicker("show"); }
+	function onCloseVideoPicker() { toggleVideoPicker("hide"); }
+
+	// Listener to show video picker section
+	function toggleVideoPicker(state)
+	{
+
+		switch(state)
+		{
+			case "show":
+				// THide things
+				mydoc.hideContent("#videoPickerShowIcon");
+				mydoc.hideContent("#videoFrameSection");
+				mydoc.hideContent("#videoDescription")
+				MyStream.onPauseVideo();
+
+				// Show things
+				mydoc.showContent("#videoPickerSection");
+				mydoc.showContent("#videoPickerHideIcon");
+				break;
+
+			default:
+				// Default is to hide
+
+				// Hide things
+				mydoc.hideContent("#videoPickerSection");
+				mydoc.hideContent("#videoPickerHideIcon");
+				mydoc.showContent("#videoDescription")
+				MyStream.onPlayVideo();
+
+				// Show things
+				mydoc.showContent("#videoFrameSection");
+				mydoc.showContent("#videoPickerShowIcon");
 		}
 	}
 

@@ -89,3 +89,5 @@ class Video
 	// Set protected ID
 	setProtectedID(id){ this.VideoIDProtected = id; }
 }
+
+

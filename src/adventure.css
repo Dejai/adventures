@@ -1,6 +1,8 @@
 /********* Headers/Titles/Icons ***********************/
 body.theme_black_bg { background-color:black; color:white; }
 
+.homeLink { text-decoration:none; color:inherit; }
+
 #homeIcon { text-align: left; font-size: 20px; cursor: pointer; float:none; display:block; padding-top: 1%; padding-left: 1%; }
 #homeIcon::after { content:" home"; }
 

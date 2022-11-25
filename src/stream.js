@@ -8,6 +8,7 @@ const MyStream = {
 
     // Common attribtues
     baseURL: "https://stream-security.the-dancinglion.workers.dev",
+    cookieLimit: 60,
 
     stream: undefined, 
     
@@ -16,12 +17,24 @@ const MyStream = {
         this.stream = Stream(htmlElement);
     },
 
+    // What to do on video ending
     onVideoEnded: (callback)=>{
         this.stream.addEventListener("ended", callback);
     },
 
+    // What do if the video errors
     onVideoError: (callback)=>{
         this.stream.addEventListener("error", callback);
+    },
+
+    // Pause the video
+    onPauseVideo: (callback)=>{
+        this.stream?.pause();
+    },
+
+    // Play the video
+    onPlayVideo: ()=>{
+        this.stream?.play();
     },
 
     // Get a stream object

@@ -14,10 +14,8 @@
 
 	<!-- The Menu Section -->
 	<div id="menuPanel" class="centered">
-		<span id="homeIcon" class="fa fa-chevron-circle-left" onclick="onReturnHome()"></span>
-		
 		<!-- Adventure Title & Description -->
-		<h2 id="">Dejai's Adventures!<br/> Login</h2>
+		<h1 id=""><a href="/" class="homeLink" target="_self">Dejai's Adventures!</a><br/> Login</h1>
 		<hr id="adventureSeparator" style="clear:both;"/>
 
 	</div>
@@ -27,13 +25,13 @@
 	<!-- Main Video Sections -->
 	
 	<!-- Login form section -->
-	<div id="videoFrameProtectedSection" class="dlf_center_block_xlarge centered">
+	<div id="videoFrameProtectedSection" class="dlf_center_block_xlarge centered" style="width:40%">
 		<h2 id="resultsMessage" style="color:red;"></h2>
 
 		<!-- Form for login  -->
 		<form id="protectedVideoForm" class="centered" action="" method="POST" onsubmit="onValidatePassphrase(event)">
 			<label for="username">Username</label><br/>
-			<input id="username" type="text" style="width:50%" name="username" placeholder="Enter username, email, or phone" onblur="onCleanUserName()">
+			<input id="username" type="text" style="width:50%" name="username" placeholder="Enter username" onblur="onCleanUserName()">
 			<br/><br/>
 			<label for="passphrase">Passphrase</label><br/>
 			<input id="passphrase" type="password" style="width:50%" name="p" placeholder="Enter the passphrase">
@@ -41,18 +39,17 @@
 			<div class="centered">
 				<img id="submitLoadingGIF" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
 			</div>
-			<input id="submitButton" style="border:none; padding:0.5%;" class="pointer dlf_button dlf_button_round_corners dlf_button_blue" type="submit" name="submit" value="Create">
+			<input id="submitButton" style="border:none; padding:1%;" class="pointer dlf_button dlf_button_round_corners dlf_button_blue" type="submit" name="submit" value="Login">
 		</form>
-
-		<!-- Create user section -->
-		<div id="createUserSection" class="hidden">
-			<br/>
-			<h2 style="color:limegreen;">Would you like to create a new user account?</h2>
-			
-			<a href="/create" target="_self" style="font-size:20px;">
-				<button id="createUser" class="pointer dlf_button dlf_button_round_corners dlf_button_limegreen">Create Account</button>
+	</div>
+	<!-- Create user section -->
+	<div id="createUserSection" class="centered hidden2">
+		<br/>
+		<p>Don't have an account already? You can create one: 
+			<a href="/create" target="_self" style="text-decoration:none; color:orange;">
+				Create Account
 			</a>
-		</div>
+		</p>
 	</div>
 
 	

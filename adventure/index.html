@@ -19,8 +19,8 @@
 		<!-- Adventure Title & Description -->
 		<h1 id="adventureTitle"></h1>
 		<p id="adventureDescription" class="hidden"></p>
-		<span id="moreDetailsLink" class="pointer additionalDetailsToggle small hidden" onclick="toggleDetails('show')">About this adventure</span>
-		<span id="lessDetailsLink" class="pointer additionalDetailsToggle large hidden" onclick="toggleDetails('hide')">... hide details</span>
+		<span id="moreDetailsLink" class="pointer additionalDetailsToggle small hidden" onclick="onOpenVideoDetails()">About this adventure</span>
+		<span id="lessDetailsLink" class="pointer additionalDetailsToggle large hidden" onclick="onCloseVideoDetails()">... hide details</span>
 		<hr id="adventureSeparator" style="clear:both;"/>
 
 		<!-- Adventure Submenu -->
@@ -33,10 +33,10 @@
 				<!-- <span id="videoCount" class="pointer" style="margin-top:0px;line-height:45px;" onclick="toggleVideoPicker()"></span> -->
 				<button id="nextVideoButton" style="float:right;" class="hidden navButton dlf_button_round_corners dlf_button_blue" onclick="onNextVideo()">next</button>
 			</div>
-			<div id="videoIndexCountSection" class="hidden pointer" style="padding:1% 0% 1% 2%;" onclick="toggleVideoPicker()">
+			<div id="videoIndexCountSection" class="hidden pointer" style="padding:1% 0% 1% 2%;">
 				<span id="videoIndexCount"></span>
-				<span id="videoPickerShowIcon" style="color:forestgreen; font-size:110%;" class="fa fa-chevron-circle-down videoPickerIcon"></span>
-				<span id="videoPickerHideIcon" style="color:red; font-size:110%;" class="fa fa-times videoPickerIcon hidden"></span>
+				<span id="videoPickerShowIcon" style="color:forestgreen; font-size:110%;" class="fa fa-chevron-circle-down videoPickerIcon" onclick="onOpenVideoPicker()"></span>
+				<span id="videoPickerHideIcon" style="color:red; font-size:110%;" class="fa fa-times videoPickerIcon hidden" onclick="onCloseVideoPicker()"></span>
 			</div>
 			<p id="videoDescription" style="clear:both; margin:0px;padding:1%;"></p>
 			

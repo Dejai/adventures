@@ -21,6 +21,8 @@ mydoc.ready(function(){
 
 	getAdventures();
 
+	checkLoggedIn();
+
 });
 
 /********************* LISTENERS *************************************/
@@ -232,6 +234,17 @@ function loadLabels()
 	})
 }
 
+// check for already logged in
+function checkLoggedIn()
+{
+	let user = mydoc.getCookie("AdventureUser") ?? "";
+	if(user != "")
+	{
+		let name = user.split( " ~ ")[0];
+		let userWelcome = `Hi, ${name}`;
+		mydoc.setContent("#loginSection", {"innerHTML":userWelcome});
+	}
+}
 /********************** HELPERS *******************************/
 
 

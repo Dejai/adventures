@@ -4,20 +4,13 @@ var LOADING_GIF = `<img id="loadingGif" style="width:25px;height:25px;" src="htt
 
 // Main instance of adventure
 var MyAdventure = undefined;
-var LoginAttempts = 0;
 
 /*********************** GETTING STARTED *****************************/
 
 	// Once doc is ready
 	mydoc.ready(function(){
-
 		// Set name for trello;
 		MyTrello.SetBoardName("videos");
-
-		// Get params from URL;
-		// let videoID = mydoc.get_query_param("video") ?? "";
-		// let errorNum = mydoc.get_query_param("error") ?? ""
-
 	});
 
 /********************* LISTENERS *************************************/
@@ -69,12 +62,6 @@ var LoginAttempts = 0;
 		mydoc.setContent("#resultsMessage", {"innerHTML":message} );
 		mydoc.hideContent("#submitLoadingGIF");
 		mydoc.showContent("#submitButton");
-		LoginAttempts += 1;
-
-		if(LoginAttempts >= 3)
-		{
-			mydoc.showContent("#createUserSection")
-		}
 	}
 
 	// Validate passphrase & get the secure token
@@ -131,7 +118,8 @@ var LoginAttempts = 0;
 						if(state == "Success" && digest == savedDigest)
 						{
 							// Set Adventure login
-							mydoc.setCookie("AdventureLogin",cookie,600);
+							mydoc.setCookie("AdventureLogin", cookie, MyStream.cookieLimit);
+							mydoc.setCookie("AdventureUser", playerCards[0]["name"] , MyStream.cookieLimit);
 							onNavigateAfterLogin();
 						}
 						else
