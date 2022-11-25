@@ -4,6 +4,7 @@ var LOADING_GIF = `<img id="loadingGif" style="width:25px;height:25px;" src="htt
 
 // Main instance of adventure
 var MyAdventure = undefined;
+var LoginAttempts = 0;
 
 /*********************** GETTING STARTED *****************************/
 
@@ -14,31 +15,12 @@ var MyAdventure = undefined;
 		MyTrello.SetBoardName("videos");
 
 		// Get params from URL;
-		let videoID = mydoc.get_query_param("video") ?? "";
-		let errorNum = mydoc.get_query_param("error") ?? ""
+		// let videoID = mydoc.get_query_param("video") ?? "";
+		// let errorNum = mydoc.get_query_param("error") ?? ""
 
 	});
 
 /********************* LISTENERS *************************************/
-
-	// Add listeners to given selectors
-	function addListener(selector, event, listener)
-	{
-		try
-		{
-			let objects = document.querySelectorAll(selector);
-			if(objects != undefined)
-			{
-				objects.forEach(obj =>{
-					obj.addEventListener(event, listener);
-				});
-			}
-
-		}catch(err)
-		{
-			console.error(err);
-		}
-	}
 
 	// Returning to home page
 	function onReturnHome(){
@@ -63,6 +45,38 @@ var MyAdventure = undefined;
 		}
 	}
 
+	// Navigating after login
+	function onNavigateAfterLogin()
+	{
+		let adventureID = mydoc.get_query_param("id") ?? "";
+
+		if(adventureID != "")
+		{
+			console.log("Adventure ID: " + adventureID);
+			let newPath = location.href.replace("/login", "/adventure");
+			console.log("New path: " + newPath);
+			location.href = newPath;
+		}
+		else
+		{
+			location.href = "/";
+		}
+	}
+
+	// Show message if bad attempt
+	function onBadAttempt(message)
+	{
+		mydoc.setContent("#resultsMessage", {"innerHTML":message} );
+		mydoc.hideContent("#submitLoadingGIF");
+		mydoc.showContent("#submitButton");
+		LoginAttempts += 1;
+
+		if(LoginAttempts >= 3)
+		{
+			mydoc.showContent("#createUserSection")
+		}
+	}
+
 	// Validate passphrase & get the secure token
 	function onValidatePassphrase(event)
 	{
@@ -70,8 +84,8 @@ var MyAdventure = undefined;
 		event.preventDefault();
 
 		// Show spinning ; Hide button;
-		// mydoc.showContent("#submitLoadingGIF");
-		// mydoc.hideContent("#submitButton");
+		mydoc.showContent("#submitLoadingGIF");
+		mydoc.hideContent("#submitButton");
 
 		// Get parts from form & key setup for URL
 		var username = mydoc.getContent("#username")?.value ?? "";
@@ -92,8 +106,6 @@ var MyAdventure = undefined;
 				let playerCards = response.filter( (obj)=>{
 					return (obj.name.toUpperCase().includes(username.toUpperCase()));
 				});
-
-				console.log(playerCards);
 
 				if (playerCards.length == 1)
 				{
@@ -124,30 +136,15 @@ var MyAdventure = undefined;
 						}
 						else
 						{
-							console.log("No match");
+							onBadAttempt("Invalid username/password combo.");
 						}
 					});
+				}
+				else
+				{
+					onBadAttempt("Invalid username/password combo.");
 				}
 			});
 		});
 	}
 
-	// Navigating after login
-	function onNavigateAfterLogin()
-	{
-		let adventureID = mydoc.get_query_param("id") ?? "";
-
-		
-
-		if(adventureID != "")
-		{
-			console.log("Adventure ID: " + adventureID);
-			let newPath = location.href.replace("/login", "/adventure");
-			console.log("New path: " + newPath);
-			location.href = newPath;
-		}
-		else
-		{
-			location.href = "/";
-		}
-	}

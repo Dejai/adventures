@@ -26,8 +26,11 @@
 
 	<!-- Main Video Sections -->
 	
+	<!-- Login form section -->
 	<div id="videoFrameProtectedSection" class="dlf_center_block_xlarge centered">
-		<!-- <h2 id="protectedMessage" class="adventureSubtitle">This adventure requires that you login first</h2> -->
+		<h2 id="resultsMessage" style="color:red;"></h2>
+
+		<!-- Form for login  -->
 		<form id="protectedVideoForm" class="centered" action="" method="POST" onsubmit="onValidatePassphrase(event)">
 			<label for="username">Username</label><br/>
 			<input id="username" type="text" style="width:50%" name="username" placeholder="Enter username, email, or phone" onblur="onCleanUserName()">
@@ -38,9 +41,22 @@
 			<div class="centered">
 				<img id="submitLoadingGIF" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
 			</div>
-			<input id="submitButton" type="submit" name="submit" value="Submit">
+			<input id="submitButton" style="border:none; padding:0.5%;" class="pointer dlf_button dlf_button_round_corners dlf_button_blue" type="submit" name="submit" value="Create">
 		</form>
+
+		<!-- Create user section -->
+		<div id="createUserSection" class="hidden">
+			<br/>
+			<h2 style="color:limegreen;">Would you like to create a new user account?</h2>
+			
+			<a href="/create" target="_self" style="font-size:20px;">
+				<button id="createUser" class="pointer dlf_button dlf_button_round_corners dlf_button_limegreen">Create Account</button>
+			</a>
+		</div>
 	</div>
+
+	
+	
 </body>
 <!-- Common Code -->
 <script src="https://dejai.github.io/scripts/js/common.js"></script>

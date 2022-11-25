@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Base of the path -->
+	<base href="../" target="_blank">
+
+	<title>Dejai's Adventures</title>
+	<link rel="stylesheet" type="text/css" href="src/adventure.css">
+	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body class="theme_black_bg">
+
+	<!-- The Menu Section -->
+	<div id="menuPanel" class="centered">
+		<span id="homeIcon" class="fa fa-chevron-circle-left" onclick="onReturnHome()"></span>
+		
+		<!-- Adventure Title & Description -->
+		<h2 id="">Dejai's Adventures!<br/> Create</h2>
+		<hr id="adventureSeparator" style="clear:both;"/>
+
+	</div>
+
+	<hr id="videoSeparator" style="clear:both;" class="hidden">
+
+	<!-- Main Video Sections -->
+	
+	<!-- Login form section -->
+	<div id="videoFrameProtectedSection" class="dlf_center_block_xlarge centered">
+		<h2 id="resultsMessage" style="color:red;"></h2>
+
+		<!-- Form for creating user  -->
+		<form id="protectedVideoForm" class="centered" action="" method="POST" onsubmit="onCreateNewUser(event)">
+            <div style="width:50%; margin:auto;" class="centered">
+                <table style="width:100%; text-align:left; ">
+                    <colgroup>
+                        <col style="width:30%;">
+                        <col style="width:50%;">
+                    </colgroup>
+                    <tr>
+                        <td>
+                            <label for="username">Name: </label>
+                        </td>
+                        <td>
+                            <input id="username" type="text" style="width:100%" name="username" placeholder="Enter your name" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="username">Nickname: </label>
+                        </td>
+                        <td>
+                            <input id="nickname" type="text" style="width:100%" name="nickname" placeholder="Enter a nickname" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="phoneNumber">Phone Number: </label>
+                        </td>
+                        <td>
+                            <input id="phoneNumber" type="text" style="width:100%" name="phoneNumber" placeholder="Enter your phone number">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="centered">
+				<img id="submitLoadingGIF" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+			</div>
+			<input id="submitButton" class="pointer dlf_button dlf_button_round_corners dlf_button_limegreen" type="submit" name="submit" value="Create">
+		</form>
+
+        <!-- Success path -->
+        <div id="successMessage" style="color:limegreen" class="hidden">
+            <h2>User Successfully Created</h2>
+            <p>You will get a text message, to confirm when you have access.</p>
+            <br/>
+            <a href="/" target="_self" style="text-decoration:none; color:lightblue;">Go Home</a>
+        </div>
+        <h2 id="successMessage" style="color:limegreen;"></h2>
+	</div>
+	
+</body>
+<!-- Common Code -->
+<script src="https://dejai.github.io/scripts/js/common.js"></script>
+<!-- My Trello code -->
+<script src="https://dejai.github.io/scripts/js/trellowrapper.js"></script>
+<!-- Stream Embed API -->
+<script src="https://embed.videodelivery.net/embed/sdk.latest.js"></script>
+<!-- My Adventure code -->
+<script type="text/javascript" src="src/models.js"></script>
+<script type="text/javascript" src="src/stream.js"></script>
+<script type="text/javascript" src="src/create.js"></script>
+</html>
