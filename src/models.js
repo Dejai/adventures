@@ -91,3 +91,22 @@ class Video
 }
 
 
+// Class to store the presentation of an adventure
+class AdventureDisplay
+{
+	constructor(id,name,desc,monthYear,labels,isProtected)
+	{
+		this.AdventureID = id;
+		this.Name = name;
+		this.Description = desc;
+		this.MonthYear = monthYear;
+		this.IsProtected = (isProtected) ? "Yes" : "No";
+		this.Labels = labels
+
+		// Special adjustment for details
+		this.FirstParagraph = this.Description.split("\n")[0];
+		this.MoreDetails = this.Description.replaceAll("\n", "<br/>");
+	}
+
+	hasLabel(labelID){ return this.Labels.includes(labelID); }
+}

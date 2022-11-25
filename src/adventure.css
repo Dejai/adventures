@@ -8,7 +8,8 @@ body.theme_black_bg { background-color:black; color:white; }
 
 #adventureTitle { font-size:28px; }
 .adventureSubtitle { font-size: 24px; }
-.protectedIcon { color:goldenrod; }
+.protectedIconYes { color:goldenrod; }
+.protectedIconNo { display:none !important; }
 .openLinkIcon { font-size:smaller !important; }
 .adventureDate { font-size:smaller !important; font-style:italic;}
 
