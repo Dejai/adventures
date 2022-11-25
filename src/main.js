@@ -138,6 +138,7 @@ function getAdventures()
 	MyTrello.get_cards_by_list_name("Adventures",(data)=>{
 
 		let resp = JSON.parse(data.responseText);
+		console.log(resp);
 		if(resp.length > 0)
 		{
 			loadAdventures(resp);

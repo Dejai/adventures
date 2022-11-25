@@ -51,13 +51,22 @@
 	<div class="centered">
 		<img id="loadingGif" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
 	</div>
+
+	<!-- Needing to login to watch this adventure -->
 	<div id="videoFrameProtectedSection" class="dlf_center_block_xlarge centered hidden">
-		<h2 id="protectedMessage" class="adventureSubtitle">This adventure is protected, and requires a passphrase.</h2>
-		<form id="protectedVideoForm" action="" method="POST" onsubmit="onValidatePassphrase(event)">
+		<h2 id="protectedMessage" class="adventureSubtitle">
+			You have to login to view this adventure
+		</h2>
+		<!-- <a href="login/" target="_self"> -->
+		<button class="dlf_button dlf_button_round_corners dlf_button_blue" onclick="onNavigateToLogin()">LOGIN</button>
+		<!-- </a> -->
+		<!-- <form id="protectedVideoForm" action="" method="POST" onsubmit="onValidatePassphrase(event)">
 			<input id="passphrase" type="password" name="p" placeholder="Enter the passphrase"><br/>
 			<input type="submit" name="submit" value="Submit">
-		</form>
+		</form> -->
 	</div>
+
+	<!-- The video frame of this adventure -->
 	<div id="videoFrameSection" style="clear:both;" class="hidden">
 		<div id="videoFramePanel" style="position: relative; padding-top: 30.25%;">
 			<img src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
@@ -73,5 +82,6 @@
 <script src="https://embed.videodelivery.net/embed/sdk.latest.js"></script>
 <!-- My Adventure code -->
 <script type="text/javascript" src="src/models.js"></script>
+<script type="text/javascript" src="src/stream.js"></script>
 <script type="text/javascript" src="src/adventure.js"></script>
 </html>

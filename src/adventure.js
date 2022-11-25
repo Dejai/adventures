@@ -15,11 +15,10 @@ var MyAdventure = undefined;
 
 		// Get params from URL;
 		let adventureID = mydoc.get_query_param("id") ?? "";
-		let videoID = mydoc.get_query_param("video") ?? "";
 
 		if(adventureID != undefined)
 		{
-			onGetAdventure(adventureID, videoID);
+			onGetAdventure(adventureID);
 		}
 
 		addListener("#backIcon", "click",onReturnHome);
@@ -61,8 +60,10 @@ var MyAdventure = undefined;
 	}
 
 	// Get this adventure card & its list of videos
-	function onGetAdventure(adventureID, videoID)
+	function onGetAdventure(adventureID)
 	{
+
+		mydoc.showContent("#loadingGif");
 
 		MyTrello.get_single_card(adventureID,(data)=>{
 
@@ -79,8 +80,7 @@ var MyAdventure = undefined;
 				let desc = resp["desc"]?.replaceAll("\n", "<br/>");
 
 				// Create the adventure
-				createAdventure(name, desc, resp["idLabels"]);
-				console.log(MyAdventure);
+				createAdventure(name, desc, labels);
 
 				// Set the key adventure details
 				setAdventureDetails()
@@ -104,10 +104,8 @@ var MyAdventure = undefined;
 						{
 							mydoc.setContent("#videoPickerSection", {"innerHTML":videoPickerContent});
 
-							// Load the video based on given index;
-							let index = !isNaN(Number(videoID)) ? Number(videoID)-1 : 0;
-							console.log("Try to load index: " + index);
-							loadVideo(index, initial=true); 
+							// Load the initial video;
+							onLoadInitialVideo();
 						}
 					});
 				});
@@ -115,10 +113,26 @@ var MyAdventure = undefined;
 		});
 	}
 
-	// Load a video based on index
-	function loadVideo(videoIndex, initial=false)
+	// Loading the initial video after loading adventure
+	function onLoadInitialVideo()
 	{
+		// The index of the video to load
+		let videoID = mydoc.get_query_param("video") ?? "";
+		let index = !isNaN(Number(videoID)) ? Number(videoID)-1 : 0;
 
+		if(MyAdventure.isProtected())
+		{
+			onLoadProtectedVideos(index);
+		}
+		else
+		{
+			onLoadVideo(index, true);	
+		}
+	}
+
+	// Load a video based on index
+	function onLoadVideo(videoIndex, initial=false)
+	{
 		// Hide the picker section
 		toggleVideoPicker(true);
 
@@ -131,13 +145,13 @@ var MyAdventure = undefined;
 		video = MyAdventure.getCurrentVideo();
 
 		// Hide both sections
-		mydoc.hideContent("#videoFrameProtectedSection");
+		// mydoc.hideContent("#videoFrameProtectedSection");
 		mydoc.hideContent("#videoFrameSection");
 		mydoc.hideContent("#videoSeparator");
 		mydoc.hideContent("#moreDetailsLink");
-		
+
 		// Check if video can be played;
-		if( MyAdventure.canPlayVideos() )
+		if( MyAdventure.canPlayVideo() )
 		{
 			mydoc.showContent("#videoSeparator");
 			mydoc.showContent("#moreDetailsLink");
@@ -153,22 +167,21 @@ var MyAdventure = undefined;
 			let videoEditor = author != "" ? `<br/><span class="video_editor"/>by: ${author}</span>` : "";
 			let videoTitle = (video.Name ?? "") + videoEditor;
 
-			// Load the video details;
+			// Load the video details; Hide loading
 			mydoc.setContent("#videoTitle", {"innerHTML":videoTitle});
 			mydoc.setContent("#videoDescription", {"innerHTML":video.Description});
-		
+			setResponseMessage("");
 			// Toggle the next/prev buttons
 			toggleNextPrevButtons(MyAdventure.CurrentVideoIndex);
 
 			// Set the iFrame template for the video
 			MyTemplates.getTemplate("templates/videoFrame.html", {"VideoID": video.getVideoID() }, (template)=>{
-				console.log(template);
 
 				mydoc.setContent("#videoFramePanel", {"innerHTML":template});
 				mydoc.showContent("#videoFrameSection");
 
 				// Add listeners for the iFrame
-				addStreamListeners();
+				onConfigureStream();
 
 				// Set the picked video
 				setSelectedVideo();
@@ -180,96 +193,80 @@ var MyAdventure = undefined;
 
 			});			
 		}
-		else if ( getCookie("passphrase") != undefined )
+		else
 		{
-			mydoc.showContent("#loadingGif");
-			getSignedVideoID();
+			// Show the section to enter passphrase;
+			setResponseMessage("Could not load this video");
+		}		
+	}
+
+	// Get the signed URL for all protected videos, then load the one based on given index
+	function onLoadProtectedVideos(index)
+	{
+		let passphrase = mydoc.getCookie("AdventureLogin") ?? "";
+
+		if(passphrase != "")
+		{
+			// Loop through al videos & set 
+			MyAdventure.Videos.forEach( (video, idx, array)=>{
+				
+				// Get the signed video ID;
+				getSignedVideoID(video, passphrase);
+
+				if(index != undefined && (idx == array.length-1))
+				{
+					setTimeout(()=>{
+						// Load the video based on given index;
+						onLoadVideo(index, initial=true); 
+					},1500);
+				}
+			});
 		}
 		else
 		{
-			// Load empty iFrame section;
-			mydoc.loadContent("", "videoFramePanel");
-
 			// Show the section to enter passphrase;
+			setResponseMessage("");
 			mydoc.showContent("#videoFrameProtectedSection");
-		}		
+		}
+
 	}
 
 /***************** GETTERS / SETTERS ********************** */
 
-	// Get a cookie based on a key
-	function getCookie(key)
+	// Get signed video ID
+	function getSignedVideoID(video, passphrase)
 	{
-		// The default value is undefined;
-		var cookieValue = undefined; 
+		var requestBody = `p=${passphrase}`;
+		var videoID = video?.VideoID ?? "";
+		var cookie = mydoc.getCookie( (video?.VideoID ?? "") ) ?? "";
 
-		// Setup a  map of cookie key/name pair;
-		let cookieMap = {};
-		let cookies = document.cookie.split(";");
-		cookies.forEach(cookie =>{
-			let splits = cookie.split("=");
-			let key = decodeURIComponent(splits[0]).trim();
-			let val = decodeURIComponent(splits[1]).trim();
-			cookieMap[key] = val;
-		});
+		// If cookie is already set, don't bother trying to get it again
+		if(cookie != "")
+			return
 
-		// If the cookie is set, then make it the value;
-		if( cookieMap.hasOwnProperty(key) )
-		{
-			cookieValue = cookieMap[key];
-		}
-
-		return cookieValue;
-	}
-
-	// Get the signed video ID
-	function getSignedVideoID()
-	{
-		// Get the passphrase from the cookie; 
-		let passphrase = getCookie("passphrase");
-
-		if( passphrase != undefined && passphrase != "undefined" )
-		{
-			// The needed content for the call;
-			let videoID = MyAdventure.getCurrentVideo()?.Video ?? "";
-			var streamURL = `https://stream-security.the-dancinglion.workers.dev/${videoID}/`;
-			var requestBody = {"Content-Type":"application/x-www-form-urlencoded"}
-			var data = `p=${passphrase}`;
-
-			// Make the call to get the signed URL
-			myajax.POST(streamURL,data, requestBody, (resp)=>{
-						
-				let respData = myajax.GetJSON(resp.responseText);
-
-				if(respData != undefined)
+		// Get signed URL for a video
+		MyStream.getSignedURL(videoID, requestBody,(streamResp)=>{
+			
+			if(streamResp != undefined)
+			{
+				// Validate token from signed URL response;
+				let token = streamResp?.result?.token ?? undefined;
+				if(token != undefined)
 				{
-					let token = respData?.result?.token ?? undefined
-					if(token != undefined)
-					{
-						// Set the video ID as a token
-						setCookie(videoID, token, 60 );
-
-						// Reload the page to specific video
-						loadVideo(MyAdventure.getVideoIndex(videoID))
-					}
-					else
-					{
-						setResponseMessage("Something went wrong. Could not load video");
-					}
+					// Set the video ID cookie as the token
+					mydoc.setCookie(videoID, token, 60 );
+					video.setProtectedID(token);
 				}
 				else
 				{
-					setResponseMessage("Incorrect passphrase! Video not loaded. ");
+					setResponseMessage("Something went wrong. No token");
 				}
-			}, (resp)=>{
-				setResponseMessage("Something went wrong. Could not load video");
-			});
-		} 
-		else
-		{
-			setResponseMessage("Incorrect passphrase! Video not loaded");
-		}
-
+			}
+			else
+			{
+				setResponseMessage("Something went wrong. Could not get signed video ID");
+			}
+		});
 	}
 
 	// Set the adventure details
@@ -277,51 +274,17 @@ var MyAdventure = undefined;
 	{
 		if(MyAdventure != undefined)
 		{
-			console.log("Setting for adventure");
 			mydoc.setContent("#adventureTitle", {"innerHTML":MyAdventure.Name});
 			mydoc.setContent("#adventureDescription", {"innerHTML":MyAdventure.Description});
 		}
 	}
 
-	// Set a cookie;
-	function setCookie(key, value, expirationMinutes=60)
-	{
-		// The cookie value;
-		let cookieValue = `${key}=${value}`;
-
-		// Set expiration time;
-		let expDate = new Date();
-		expDate.setTime(expDate.getTime() + (expirationMinutes*60*1000)); // Add 1 hour to current time;
-		let expires = expDate.toUTCString();
-
-		// // Set the cookie
-		document.cookie = `${cookieValue}; expires=${expires}; path=/`;
-	}
-
 	// Set error message for protected input
 	function setResponseMessage(message)
 	{
-		console.log(message);
 		// Hide the loader
 		mydoc.hideContent("#loadingGif");
-
-		// Maintain the original message in case it is needed again
-		var protectedMessage = document.getElementById("protectedMessage");
-		console.log(protectedMessage);
-		console.log(protectedMessage.innerText);
-
-		var originalMessage = protectedMessage?.innerText ?? "";
-		console.log(originalMessage);
-
-		// Make sure the section is visible
-		mydoc.showContent("#videoFrameProtectedSection");
-
-		// Update the content;
-		MyNotification.notify("#protectedMessage", message);
-		// passphraseInput.value = "";
-		setTimeout(()=>{
-			MyNotification.notify("#protectedMessage", originalMessage);
-		},7000);
+		mydoc.setContent("#protectedMessage", message);
 	}
 
 	// Set the video that is selected in the video picker;
@@ -342,27 +305,6 @@ var MyAdventure = undefined;
 
 /***************** ACTIONS / EVENTS ********************** */
 
-	// Validate passphrase & get the secure token
-	function onValidatePassphrase(event)
-	{
-		// Prevent default behavior;
-		event.preventDefault();
-
-		// Show loading gif on form submission
-		setResponseMessage(LOADING_GIF);
-
-		// Key elements from form block:
-		var passphraseInput = document.getElementById("passphrase");
-		var passphrase = passphraseInput?.value ?? "";
-
-		// Set the passphrase as a cookie that is then checked by the function to get the signed ID
-		setCookie("passphrase",passphrase, 50);
-
-		getSignedVideoID();
-
-
-	}
-
 	// Select the next video
 	function onNextVideo()
 	{
@@ -371,7 +313,7 @@ var MyAdventure = undefined;
 			return
 
 		// Load next possible index
-		loadVideo(MyAdventure.CurrentVideoIndex+1);
+		onLoadVideo(MyAdventure.CurrentVideoIndex+1);
 	}
 
 	// Select the previous video
@@ -382,7 +324,7 @@ var MyAdventure = undefined;
 			return 
 
 		// Load prev video by index
-		loadVideo(MyAdventure.CurrentVideoIndex-1);
+		onLoadVideo(MyAdventure.CurrentVideoIndex-1);
 	}
 
 	// Pick a video from the list of videos
@@ -395,8 +337,15 @@ var MyAdventure = undefined;
 		// Make sure we have a video ID and index
 		if(videoID != "" && videoIndex >= 0)
 		{
-			loadVideo(videoIndex);
+			onLoadVideo(videoIndex);
 		}
+	}
+
+	// Navigate to page for login
+	function onNavigateToLogin()
+	{
+		let newPath = location.href.replace("/adventure", "/login");
+		location.replace(newPath);
 	}
 
 /********** VISIBILITY ********************** */
@@ -519,42 +468,24 @@ var MyAdventure = undefined;
 
 /*********************** Stream API Helper *****************************/
 
-	// Get the stream element
-	function getStreamElement()
-	{
-		var player = Stream(document.getElementById('videoIFrame'));
-		return player;
-	}
-
 	// Add stream listeners
-	function addStreamListeners()
-	{
-		var stream = getStreamElement();
-
-		// What to do when the video ends;
-		stream.addEventListener('ended',onVideoEnded);
-
-		// What to do if there is an error
-		stream.addEventListener('error',onVideoError);
-	}
-
-	// When the video ends, load the next one
-	function onVideoEnded()
+	function onConfigureStream()
 	{
 
-		if(MyAdventure.CurrentVideoIndex < MyAdventure.Videos.length-1)
-		{
-			loadVideo(MyAdventure.CurrentVideoIndex+1);
-		}
-	}
+		// Set the stream element
+		MyStream.setStreamElement( document.getElementById("videoIFrame") );
 
-	// When the video throws an error
-	function onVideoError()
-	{
-		if(MyAdventure.isProtected())
-		{
-			mydoc.showContent("#videoFrameProtectedSection");
-		}
-	}
+		// Set listener for video ended
+		MyStream.onVideoEnded( ()=>{
+			if(MyAdventure.CurrentVideoIndex < MyAdventure.Videos.length-1)
+			{
+				onLoadVideo(MyAdventure.CurrentVideoIndex+1);
+			}
+		});
 
+		// Set listener for video error
+		MyStream.onVideoError( ()=>{
+			console.log("Something went wrong");
+		});
+	}
 	

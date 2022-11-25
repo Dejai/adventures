@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Base of the path -->
+	<base href="../" target="_blank">
+
+	<title>Dejai's Adventures</title>
+	<link rel="stylesheet" type="text/css" href="src/adventure.css">
+	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="theme_black_bg">
+
+	<!-- The Menu Section -->
+	<div id="menuPanel" class="centered">
+		<span id="homeIcon" class="fa fa-chevron-circle-left" onclick="onReturnHome()"></span>
+		
+		<!-- Adventure Title & Description -->
+		<h2 id="">Dejai's Adventures!<br/> Login</h2>
+		<hr id="adventureSeparator" style="clear:both;"/>
+
+	</div>
+
+	<hr id="videoSeparator" style="clear:both;" class="hidden">
+
+	<!-- Main Video Sections -->
+	
+	<div id="videoFrameProtectedSection" class="dlf_center_block_xlarge centered">
+		<!-- <h2 id="protectedMessage" class="adventureSubtitle">This adventure requires that you login first</h2> -->
+		<form id="protectedVideoForm" class="centered" action="" method="POST" onsubmit="onValidatePassphrase(event)">
+			<label for="username">Username</label><br/>
+			<input id="username" type="text" style="width:50%" name="username" placeholder="Enter username, email, or phone" onblur="onCleanUserName()">
+			<br/><br/>
+			<label for="passphrase">Passphrase</label><br/>
+			<input id="passphrase" type="password" style="width:50%" name="p" placeholder="Enter the passphrase">
+			<br/><br/>
+			<div class="centered">
+				<img id="submitLoadingGIF" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+			</div>
+			<input id="submitButton" type="submit" name="submit" value="Submit">
+		</form>
+	</div>
+</body>
+<!-- Common Code -->
+<script src="https://dejai.github.io/scripts/js/common.js"></script>
+<!-- My Trello code -->
+<script src="https://dejai.github.io/scripts/js/trellowrapper.js"></script>
+<!-- Stream Embed API -->
+<script src="https://embed.videodelivery.net/embed/sdk.latest.js"></script>
+<!-- My Adventure code -->
+<script type="text/javascript" src="src/models.js"></script>
+<script type="text/javascript" src="src/stream.js"></script>
+<script type="text/javascript" src="src/login.js"></script>
+</html>

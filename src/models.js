@@ -12,7 +12,7 @@ class Adventure
 		this.CurrentVideoIndex = 0;
 
 		// This is set for every adventure & used to determine if an adventure is protected
-		this.ProtectedLabelID = "6220aa911cbc61053bd65b52"
+		this.ProtectedLabelID = "6220aa911cbc61053bd65b52";
 	}
 
 	// Add a new video
@@ -21,7 +21,6 @@ class Adventure
 	// Set the current video
 	setCurrentVideoIndex(idx)
 	{
-        console.log("Setting index to: " + idx);
 		let index = (idx == undefined) ? this.CurrentVideoIndex : idx; 
 		this.CurrentVideoIndex = (index > this.Videos.length || index < 0) ? 0 : index;
 	}
@@ -47,22 +46,22 @@ class Adventure
 	// Check if we're on the same vieo
 	onSameVideo(idx){ return ( (idx ?? -1) == this.CurrentVideoIndex); }
 
-	// Can play video in this adventure
-	canPlayVideos()
+	// Can play the current video in this adventure
+	canPlayVideo()
 	{
 		let canPlay = true;
-		// if(this.isProtected())
-		// {
-		// 	canPlay = false;
-		// 	let video = this.getCurrentVideo() ?? {};
-		// 	let videoIDProtected = mydoc.getCookie( (video?.VideoID ?? "") ) ?? "";
+		if(this.isProtected())
+		{
+			canPlay = false;
+			let video = this.getCurrentVideo() ?? {};
+			let videoIDProtected = mydoc.getCookie( (video?.VideoID ?? "") ) ?? "";
 
-		// 	if(videoIDProtected != "")
-		// 	{
-		// 		video.VideoIDProtected = videoIDProtected;
-		// 		canPlay = true;
-		// 	}
-		// }
+			if(videoIDProtected != "")
+			{
+				video.VideoIDProtected = videoIDProtected;
+				canPlay = true;
+			}
+		}
 		return canPlay;
 	}
 }
@@ -86,4 +85,7 @@ class Video
 
 	// Get Video ID
 	getVideoID(){ return (this.VideoIDProtected ?? this.VideoID)}
+
+	// Set protected ID
+	setProtectedID(id){ this.VideoIDProtected = id; }
 }
