@@ -1,7 +1,5 @@
 
 /************************ GLOBAL VARIABLES ****************************************/
-var LOADING_GIF = `<img id="loadingGif" style="width:25px;height:25px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">`
-
 // Main instance of adventure
 var MyAdventure = undefined;
 
@@ -40,9 +38,7 @@ var MyAdventure = undefined;
 
 		if(adventureID != "")
 		{
-			console.log("Adventure ID: " + adventureID);
 			let newPath = location.href.replace("/login", "/adventure");
-			console.log("New path: " + newPath);
 			location.href = newPath;
 		}
 		else
@@ -65,6 +61,9 @@ var MyAdventure = undefined;
 		// Prevent default behavior;
 		event.preventDefault();
 
+		// Clear errors (if any);
+		mydoc.setContent("#resultsMessage", {"innerHTML":""} );
+
 		// Show spinning ; Hide button;
 		mydoc.showContent("#submitLoadingGIF");
 		mydoc.hideContent("#submitButton");
@@ -72,6 +71,7 @@ var MyAdventure = undefined;
 		// Get parts from form & key setup for URL
 		var username = mydoc.getContent("#username")?.value ?? "";
 		var passphrase = mydoc.getContent("#passphrase")?.value ?? "";
+		var userObj = {userName: username, passPhrase: passphrase};
 
 		// Load the saved user cards & validate
 		MyTrello.get_list_by_name( "Users", (listData)=>{
@@ -84,50 +84,49 @@ var MyAdventure = undefined;
 				
 				let response = JSON.parse(data2.responseText);
 
-				// Get list of games
-				let playerCards = response.filter( (obj)=>{
+				// Get the cards that match the given name 
+				let matchingUsers = response.filter( (obj)=> {
 					return (obj.name.toUpperCase().includes(username.toUpperCase()));
 				});
 
-				if (playerCards.length == 1)
-				{
-					
-					// Expected digest
-					let savedDigest = playerCards[0]["desc"];
-					// Key request parts
-					let requestBody = `u=${username}&p=${passphrase}`;
-					console.log(requestBody);
+				console.log("Matching users");
+				console.log(matchingUsers);
 
-					// Validate the digest
-					MyStream.validateUser(requestBody, (streamResponse)=>{
-
-						console.log(streamResponse);
-
-						// Key part of responses
-						let state = streamResponse?.state ?? "";
-						let digest = streamResponse?.digest ?? "";
-						let cookie = streamResponse?.cookie ?? "";
-
-						console.log(passphrase + " = " + digest);
-
-						if(state == "Success" && digest == savedDigest)
-						{
-							// Set Adventure login
-							mydoc.setCookie("AdventureLogin", cookie, MyStream.cookieLimit);
-							mydoc.setCookie("AdventureUser", playerCards[0]["name"] , MyStream.cookieLimit);
-							onNavigateAfterLogin();
-						}
-						else
-						{
-							onBadAttempt("Invalid username/password combo.");
-						}
-					});
-				}
-				else
-				{
-					onBadAttempt("Invalid username/password combo.");
-				}
+				// Validate all possible users
+				onValidateDigest(matchingUsers, userObj);
 			});
 		});
 	}
 
+	// Validate the digest for user
+	async function onValidateDigest(matchingUsers, userObj)
+	{
+		let requestBody = `u=${userObj.userName}&p=${userObj.passPhrase}`;
+
+		// Validate the digest for details given
+		MyStream.validateUser(requestBody, (streamResponse)=>{
+
+			// Key part of responses
+			let state = streamResponse?.state ?? "";
+			let digest = streamResponse?.digest ?? "";
+			let cookie = streamResponse?.cookie ?? "";
+
+			// Filter matching users down to one with matching digest
+			var singleUser = matchingUsers.filter( (user)=>{
+				return (user.desc == digest);
+			});
+
+			if(state == "Success" && singleUser.length == 1)
+			{
+				// Set Adventure login
+				console.log("Success");
+				mydoc.setCookie("AdventureLogin", cookie, MyStream.cookieLimit);
+				mydoc.setCookie("AdventureUser", singleUser[0]["name"] , MyStream.cookieLimit);
+				onNavigateAfterLogin();
+			}
+			else
+			{
+				onBadAttempt("Invalid username/password combo.");
+			}
+		});
+	}
