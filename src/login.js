@@ -22,20 +22,15 @@ var MyAdventure = undefined;
 
 /***************** ACTIONS / EVENTS ********************** */
 
-	// Dynamically updating username field
-	function onCleanUserName()
+	// Dynamically updating fields
+	function onCleanValue()
 	{
-		let value = mydoc.getContent("#username")?.value ?? "";
-
-		// Determine if value has any bad chars
-		let badChars = ["-", "(", ")"];
-		let badCharsInValue = badChars.filter( (char)=>{ return (value.includes(char)); });
-
-		if(value != "" && badCharsInValue)
-		{
-			newValue = value.replaceAll("-","").replaceAll("(","").replaceAll(")","");
-			mydoc.setContent("#username", {"value":newValue});
-		}
+		let identifiers = ["#username", "#passphrase"];
+		identifiers.forEach( (identifier)=>{
+			let original = mydoc.getContent(identifier)?.value ?? "";
+			let cleanValue = MyStream.cleanValue(original);
+			mydoc.setContent(identifier, {"value":cleanValue});
+		});
 	}
 
 	// Navigating after login

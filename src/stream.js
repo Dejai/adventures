@@ -76,6 +76,15 @@ const MyStream = {
                 callback(response);
             
         }, (err)=>{ Logger.log(err) });
+    },
+
+    // Clean the value
+    cleanValue: (value)=> {
+        return value.replaceAll("-", "")
+				.replaceAll("(", "")
+				.replaceAll(")", "")
+				.replaceAll("+", "")
+                .replaceAll(" ", "");
     }
 
 }

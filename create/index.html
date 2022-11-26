@@ -33,13 +33,13 @@
 		<form id="protectedVideoForm" class="centered" action="" method="POST" onsubmit="onCreateNewUser(event)">
             <div style="width:40%; margin:auto;" class="centered">
                 <label for="username">Name: </label><br/>
-                <input id="username" type="text" style="width:100%" name="username" placeholder="Enter your name" required>
+                <input id="username" type="text" style="width:100%" name="username" placeholder="Enter your name" onblur="onCleanValue()" required>
                 <br/><br/>
-                <label for="username">Nickname: </label><br/>
-                <input id="nickname" type="text" style="width:100%" name="nickname" placeholder="Enter a nickname" required>
+                <label for="nickname">Nickname: </label><br/>
+                <input id="nickname" type="text" style="width:100%" name="nickname" placeholder="Enter a nickname" onblur="onCleanValue()" required>
                 <br/><br/>
                 <label for="phoneNumber">Phone Number: </label><br/>
-                <input id="phoneNumber" type="text" style="width:100%" name="phoneNumber" placeholder="Enter your phone number">
+                <input id="phoneNumber" type="text" style="width:100%" name="phoneNumber" placeholder="Enter your phone number" onblur="onCleanValue()" required>
             </div>
             <div class="centered">
 				<img id="submitLoadingGIF" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
@@ -53,9 +53,9 @@
         <!-- Success path -->
         <div id="successMessage" style="color:limegreen" class="hidden">
             <h2>User Successfully Created</h2>
-            <p>You will get a text message, to confirm when you have access.</p>
+            <p>You will get a text message, to confirm when our access setup is complete.</p>
             <br/>
-            <a href="/" target="_self" style="text-decoration:none; color:orange;">Home</a>
+            <a href="/" target="_self" style="text-decoration:none; color:orange;">Go Home</a>
         </div>
         <h2 id="successMessage" style="color:limegreen;"></h2>
 	</div>

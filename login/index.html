@@ -31,10 +31,10 @@
 		<!-- Form for login  -->
 		<form id="protectedVideoForm" class="centered" action="" method="POST" onsubmit="onValidatePassphrase(event)">
 			<label for="username">Username</label><br/>
-			<input id="username" type="text" style="width:50%" name="username" placeholder="Enter username" onblur="onCleanUserName()">
+			<input id="username" type="text" style="width:50%" name="username" placeholder="Enter username/nickname" onblur="onCleanValue()">
 			<br/><br/>
 			<label for="passphrase">Passphrase</label><br/>
-			<input id="passphrase" type="password" style="width:50%" name="p" placeholder="Enter the passphrase">
+			<input id="passphrase" type="password" style="width:50%" name="p" placeholder="Enter the passphrase" onblur="onCleanValue()">
 			<br/><br/>
 			<div class="centered">
 				<img id="submitLoadingGIF" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
