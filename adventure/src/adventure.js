@@ -355,7 +355,9 @@ var MyAdventure = undefined;
 	// Navigate to page for login
 	function onNavigateToLogin()
 	{
-		let newPath = location.href.replace("/adventure", "/login");
+		let host = location.host;
+		let search = location.search;
+		let newPath = `https://${host}/login/${search}`;
 		location.replace(newPath);
 	}
 
