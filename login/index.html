@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Base of the path -->
+	<base href="../" target="_blank">
+
+	<title>Dejai's Adventures</title>
+	<link rel="stylesheet" type="text/css" href="src/main.css">
+	<link rel="stylesheet" type="text/css" href="login/src/login.css">
+	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="theme_black_bg">
+
+	<!-- The Menu Section -->
+	<div id="menuPanel" class="centered">
+		<!-- Adventure Title & Description -->
+		<h1 id=""><a href="/" class="homeLink" target="_self">Dejai's Adventures!</a><br/> Login</h1>
+		<hr id="adventureSeparator" style="clear:both;"/>
+
+	</div>
+
+	<hr id="videoSeparator" style="clear:both;" class="hidden">
+
+	<!-- Main Video Sections -->
+	
+	<!-- Login form section -->
+	<div id="videoFrameProtectedSection" class="dlf_center_block_xlarge centered">
+		<h2 id="resultsMessage" style="color:red;"></h2>
+
+		<!-- Form for login  -->
+		<form id="loginForm" class="centered" action="" method="POST" onsubmit="onValidatePassphrase(event)">
+			<div id="inputSection">
+				<label for="username">Username</label><br/>
+				<input id="username" type="text" name="username" placeholder="Enter username/nickname" onblur="onCleanValue()">
+				<br/><br/>
+				<label for="passphrase">Passphrase</label><br/>
+				<input id="passphrase" type="password" name="p" placeholder="Enter the passphrase" onblur="onCleanValue()">
+			</div>
+			<br/>
+			<div class="centered">
+				<img id="submitLoadingGIF" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+			</div>
+			<input id="submitButton" style="border:none; " class="pointer dlf_button dlf_button_round_corners dlf_button_blue" type="submit" name="submit" value="Login">
+		</form>
+	</div>
+	<!-- Create user section -->
+	<div id="createUserSection" class="centered hidden2">
+		<br/>
+		<p>Don't have an account already? 
+			<a href="/create" target="_self" style="text-decoration:none; color:orange;">
+				Create an Account
+			</a>
+		</p>
+	</div>
+	
+</body>
+<!-- Common Code -->
+<script src="https://dejai.github.io/scripts/js/common.js"></script>
+<!-- My Trello code -->
+<script src="https://dejai.github.io/scripts/js/trellowrapper.js"></script>
+<!-- Stream Embed API -->
+<script src="https://embed.videodelivery.net/embed/sdk.latest.js"></script>
+<!-- My Adventure code -->
+<script type="text/javascript" src="src/models.js"></script>
+<script type="text/javascript" src="src/stream.js"></script>
+<script type="text/javascript" src="login/src/login.js"></script>
+</html>

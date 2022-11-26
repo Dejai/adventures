@@ -1,16 +1,12 @@
-# BINGO
+# Dejai's Adventures
 
-* This simple site can be used to call the random numbers for a game of BINGO. 
-* It includes several different variations of the games that can be played, including "Inner Box", "Outer Box", and "Full House"
+* A simple site to showcase some adventures I've been on with friends and family. 
 
 ## Running Locally
-You can run this site locally using the following steps:
+You can run this site locally using Python: 
 
 * Open commandline terminal 
 * Navigate to folder containing this code
-* Run one of the following commands: 
-	* **Using Python:** `python -m SimpleHTTPServer`
-	 OR
-	* **Using Docker:** `docker-compose up -d --build`
+* Run the following command (with whichever port you want): 
+	* `python3 -m http.server 9000`
 * Open site in browser at `localhost:9000` 
-	* Note: You can change the port in the *docker-compose.yml* file.

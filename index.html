@@ -2,21 +2,27 @@
 <html>
 <head>
 	<title>Dejai's Adventures</title>
-	<link rel="stylesheet" type="text/css" href="./src/adventure.css">
+	<link rel="stylesheet" type="text/css" href="./src/main.css">
 	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
-<body class="theme_black_bg">
-	<div id="menuPanel" class="centered">
-		<h1>Dejai's Adventures!</h1>
+<body class="theme_black_bg">		
+	<div id="menuPanel" class="centered" style="position:relative;">
+		<h1 style="position:relative; margin-top:1px;">Dejai's Adventures!</h1>
 		<p>A set of adventures I've enjoyed with family & friends!</p>
+		<p id="loginSection" style="text-align:center; color:orange; margin-top:0px;">
+			<a href="login/" style="margin:0px; color:inherit; font-size:20px; text-decoration:none; ">
+				Login
+			</a>
+		</p>	
 	</div>
-	<div id="findAdventureSection" class="centered hidden">
-		<p>Filter Adventures:</p>
-		<div id="filterSection"></div>
-		<br/>
+	<div id="findAdventureSection" style="clear:both;" class="centered hidden">
+		<div id="searchBarSection">
+			<div id="searchBar" class="searchBar searchPlaceholder" data-adv-placeholder="Search adventures ..." contenteditable="true" onkeyup="onSearchAdventures()" onfocus="onSearchFocus()" onblur="onSearchBlur()"></div>
+			<i id="searchClearIcon" class="fa fa-times-circle pointer hidden" aria-hidden="true" style="color:red;" onclick="onClearSearch()"></i>
+		</div>
 		<i id="randomAdventure" class="fa fa-random pointer" onclick="onSelectRandomAdventure()" style="font-size:18px; padding-top:2%; color:orange;" aria-hidden="true" title="Select a random adventure">
 			&nbsp;Random Adventure
 		</i>
@@ -30,5 +36,6 @@
 <!-- My Trello code -->
 <script src="https://dejai.github.io/scripts/js/trellowrapper.js"></script>
 <!-- My Videos Code -->
+<script type="text/javascript" src="./src/models.js"></script>
 <script type="text/javascript" src="./src/main.js"></script>
 </html>

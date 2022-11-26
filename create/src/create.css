@@ -1,0 +1,12 @@
+
+
+/* Create Form */
+#createUserForm { font-size:larger; }
+#createUserForm #inputSection { width: 100%; margin:auto; }
+#inputSection input { width: 100%; font-size:110%; }
+#createUserForm #submitButton { font-size: 120%; }
+
+@media only screen and (min-device-width:1200px)
+{
+    #createUserForm #inputSection { width: 40%; }
+}

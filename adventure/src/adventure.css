@@ -1,0 +1,24 @@
+#videoFrameProtectedSection { font-size:larger; }
+
+/**** TITLES / DESCRIPTIONS: Section related to the title & description for a video **********/
+#adventureDescription { clear:both; }
+#videoTitle { clear:both; padding:1%; display:inline; margin:0px; }
+.videoAuthor { font-size:50%; font-style:italic; }
+
+/**** VIDEO NAV: Navigating between videos **********/
+#videoNavigationSection { width: 90%; margin:auto; }
+.navButton { font-size:18px; }
+
+/**** VIDEO PICKER: Selecting a video to watch ******/
+#videoPickerSection { width: 90%; margin: auto; padding-top:2%; }
+.videoPickerBlock { padding:1%; width:70%; margin:auto; border:1px solid gray; border-radius:77px; margin-bottom:2%;  }
+.videoPickerBlock .title { margin-top:0px; color:aqua; font-size:18px; }
+.videoPickerBlock.selected { background-color:limegreen; color:black !important; }
+.videoPickerBlock.selected .title { color:black !important; }
+
+@media only screen and (min-device-width:1200px)
+{
+    #videoTitle{ display:inline-block }
+	#videoPickerSection { width: 35%; }
+	#videoNavigationSection { width: 35%; margin:auto; }
+}

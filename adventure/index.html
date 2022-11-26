@@ -1,47 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<!-- Base of the path -->
+	<base href="../" target="_blank">
+
 	<title>Dejai's Adventures</title>
-	<link rel="stylesheet" type="text/css" href="../src/adventure.css">
+	<link rel="stylesheet" type="text/css" href="src/main.css">
+	<link rel="stylesheet" type="text/css" href="adventure/src/adventure.css">
 	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body class="theme_black_bg">
+
+	<!-- The Menu Section -->
 	<div id="menuPanel" class="centered">
 		<span id="homeIcon" class="fa fa-chevron-circle-left" onclick="onReturnHome()"></span>
+		
+		<!-- Adventure Title & Description -->
 		<h1 id="adventureTitle"></h1>
 		<p id="adventureDescription" class="hidden"></p>
-		<span id="moreDetailsLink" class="pointer additionalDetailsToggle small hidden" onclick="toggleDetails('show')">About this adventure</span>
-		<span id="lessDetailsLink" class="pointer additionalDetailsToggle large hidden" onclick="toggleDetails('hide')">... hide details</span>
+		<span id="moreDetailsLink" class="pointer additionalDetailsToggle small hidden" onclick="onOpenVideoDetails()">About this adventure</span>
+		<span id="lessDetailsLink" class="pointer additionalDetailsToggle large hidden" onclick="onCloseVideoDetails()">... hide details</span>
 		<hr id="adventureSeparator" style="clear:both;"/>
 
+		<!-- Adventure Submenu -->
 		<div id="adventureMenuSection" class="dlf_center_block_xlarge centered" style="clear:both;">
-			<h2 id="videoTitle" style="clear:both; display:inline-block; margin-top:0px;"></h2>
-			<p id="videoDescription" style="clear:both; margin:0px;"></p>
-			<br/>
 			<div id="videoNavigationSection">
 				<button id="prevVideoButton" style="float:left;" class="hidden navButton dlf_button_round_corners dlf_button_gray" onclick="onPrevVideo()">prev</button>
-				<span id="videoCount" class="pointer" style="margin-top:0px;line-height:45px;" onclick="toggleVideoPicker()"></span>
 				<button id="nextVideoButton" style="float:right;" class="hidden navButton dlf_button_round_corners dlf_button_blue" onclick="onNextVideo()">next</button>
+				<span id="videoTitleSection"><h2 id="videoTitle"></h2></span>
 			</div>
+			<div id="videoIndexCountSection" class="hidden pointer" style="padding:1% 0% 1% 2%;">
+				<span id="videoIndexCount"></span>
+				<span id="videoPickerShowIcon" style="color:forestgreen; font-size:110%;" class="fa fa-chevron-circle-down pointer" onclick="onOpenVideoPicker()"></span>
+				<span id="videoPickerHideIcon" style="color:red; font-size:110%;" class="fa fa-times pointer hidden" onclick="onCloseVideoPicker()"></span>
+			</div>
+			<p id="videoDescription" style="clear:both; margin:0px;padding:1%;"></p>
 			
-			<div id="videoPickerSection" class="hidden"></div>
 		</div>
+		<!-- Adventure Picker -->
+		<div id="videoPickerSection" class="hidden"></div>
 	</div>
+
 	<hr id="videoSeparator" style="clear:both;" class="hidden">
+
+	<!-- Main Video Sections -->
 	<div class="centered">
 		<img id="loadingGif" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
 	</div>
+
+	<!-- Needing to login to watch this adventure -->
 	<div id="videoFrameProtectedSection" class="dlf_center_block_xlarge centered hidden">
-		<h2 id="protectedMessage" class="adventureSubtitle">This adventure is protected, and requires a passphrase.</h2>
-		<form id="protectedVideoForm" action="" method="POST" onsubmit="onValidatePassphrase(event)">
-			<input id="passphrase" type="password" name="p" placeholder="Enter the passphrase"><br/>
-			<input type="submit" name="submit" value="Submit">
-		</form>
+		<h2 id="protectedMessage" class="adventureSubtitle">
+			You have to login to view this adventure
+		</h2>
+		<button class="dlf_button dlf_button_round_corners dlf_button_blue" onclick="onNavigateToLogin()">LOGIN</button>
 	</div>
+
+	<!-- The video frame of this adventure -->
 	<div id="videoFrameSection" style="clear:both;" class="hidden">
-		<div id="videoFramePanel" style="position: relative; padding-top: 50.25%;">
+		<div id="videoFramePanel" style="position: relative; padding-top: 30.25%;">
 			<img src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
 		</div>
 	</div>
@@ -53,6 +72,8 @@
 <script src="https://dejai.github.io/scripts/js/trellowrapper.js"></script>
 <!-- Stream Embed API -->
 <script src="https://embed.videodelivery.net/embed/sdk.latest.js"></script>
-<!-- My Bingo code -->
-<script type="text/javascript" src="../src/adventure.js"></script>
+<!-- My Adventure code -->
+<script type="text/javascript" src="src/models.js"></script>
+<script type="text/javascript" src="src/stream.js"></script>
+<script type="text/javascript" src="adventure/src/adventure.js"></script>
 </html>
