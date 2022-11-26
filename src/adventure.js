@@ -270,6 +270,16 @@ var MyAdventure = undefined;
 		});
 	}
 
+	// Clear signed video IDs
+	function clearSignedVideoIDs()
+	{
+		MyAdventure.Videos.forEach( (video)=>{
+			console.log("Clearing video protected id");
+			video.VideoIDProtected = undefined;
+			mydoc.setCookie(video.VideoID, "");
+		});
+	}
+
 	// Set the adventure details
 	function setAdventureDetails()
 	{
@@ -507,7 +517,13 @@ var MyAdventure = undefined;
 
 		// Set listener for video error
 		MyStream.onVideoError( ()=>{
-			console.log("Something went wrong");
+			// If allowed, do a reset & retry of loading (up to 3 times)
+			if(MyAdventure.RetryCount < 3)
+			{
+				clearSignedVideoIDs();
+				onLoadInitialVideo();
+				MyAdventure.RetryCount += 1;
+			}
 		});
 	}
 	

@@ -1,0 +1,11 @@
+
+/* Login Form */
+#loginForm { font-size:larger; }
+#loginForm #inputSection { width: 100%; margin:auto; }
+#inputSection input { width: 100%; font-size:110%; }
+#loginForm #submitButton { font-size: 110%; border:none; padding:2%; }
+
+@media only screen and (min-device-width:1200px)
+{
+    #loginForm #inputSection { width: 40%; }
+}

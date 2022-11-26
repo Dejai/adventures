@@ -13,6 +13,9 @@ class Adventure
 
 		// This is set for every adventure & used to determine if an adventure is protected
 		this.ProtectedLabelID = "6220aa911cbc61053bd65b52";
+
+		// Used to allow a retry if videos didn't load
+		this.RetryCount = 0;
 	}
 
 	// Add a new video
