@@ -11,8 +11,6 @@ var ListOfAdventures = [];
 
 		MyTrello.SetBoardName("videos");
 
-		loadLabels();
-
 		getAdventures();
 
 		checkLoggedIn();
@@ -77,44 +75,6 @@ var ListOfAdventures = [];
 		// Once loaded, show the filter section
 		mydoc.showContent("#findAdventureSection");
 
-	}
-
-	// Load the labels to be used for filtering
-	function loadLabels()
-	{
-		MyTrello.get_labels( data =>{
-
-			var resp = myajax.GetJSON(data.responseText);
-			if(resp != undefined)
-			{
-
-				var labelSet = "";
-				resp = resp.sort(function(a,b){
-					return a.name.localeCompare(b.name)
-				});
-		
-				resp.forEach( (label, idx, arr) =>{
-
-					var labelName = label.name ?? "";
-					var labelColor = label.color;
-					var labelID = label.id; 
-
-					if(labelName != "" && labelID != SECURE_LABEL_ID)
-					{
-						obj = {"FilterName":labelName, "LabelID":labelID};
-						MyTemplates.getTemplate("templates/filterOption.html", obj, (template)=>{
-							labelSet += template;
-
-							if(idx == arr.length-1)
-							{
-								// Add the labels
-								mydoc.setContent("#filterSection", {"innerHTML":labelSet});
-							}
-						});
-					}
-				});
-			}
-		})
 	}
 
 	// check for already logged in
