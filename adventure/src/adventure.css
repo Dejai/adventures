@@ -1,38 +1,24 @@
-
-
-#videoTitle { clear:both; padding:1%; display:inline; margin:0px; }
-
-#adventureDescription { clear:both; }
-
 #videoFrameProtectedSection { font-size:larger; }
-#protectedVideoForm label { font-size:150%; }
-#protectedVideoForm input,button { font-size:130%; }
-#protectedMessage { color:red; }
 
-.video_editor { font-size:50%; font-style:italic; }
+/**** TITLES / DESCRIPTIONS: Section related to the title & description for a video **********/
+#adventureDescription { clear:both; }
+#videoTitle { clear:both; padding:1%; display:inline; margin:0px; }
+.videoAuthor { font-size:50%; font-style:italic; }
 
+/**** VIDEO NAV: Navigating between videos **********/
 #videoNavigationSection { width: 90%; margin:auto; }
 .navButton { font-size:18px; }
 
-.videoPickerIcon { cursor:pointer; }
-
-.videoPickerBlock.selected { background-color:limegreen; color:black; }
-
-
+/**** VIDEO PICKER: Selecting a video to watch ******/
 #videoPickerSection { width: 90%; margin: auto; padding-top:2%; }
-.videoPickerBlock { margin-bottom:3% !important; color:white !important; opacity: 95%; }
-.videoPickerBlock .datacell { vertical-align: top;}
-.videoPickerBlock .title { margin-top:0px; color:gray; font-size:18px; }
-.videoPickerCircle { height:25px; width:25px; line-height: 25px; background-color: darkgray; color:black; border-radius: 50%; display: inline-block; }
-.videoPickerCircle.selected { background-color:limegreen !important; color: black; }
-.videoPickerBlock .title.selected { color:limegreen !important; }
-
+.videoPickerBlock { padding:1%; width:70%; margin:auto; border:1px solid gray; border-radius:77px; margin-bottom:2%;  }
+.videoPickerBlock .title { margin-top:0px; color:aqua; font-size:18px; }
+.videoPickerBlock.selected { background-color:limegreen; color:black !important; }
+.videoPickerBlock.selected .title { color:black !important; }
 
 @media only screen and (min-device-width:1200px)
 {
     #videoTitle{ display:inline-block }
-
-
 	#videoPickerSection { width: 35%; }
 	#videoNavigationSection { width: 35%; margin:auto; }
 }

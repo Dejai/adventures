@@ -149,7 +149,6 @@ var ListIDs = {};
 		mydoc.setContent("#resultsMessage", {"innerHTML":""});
 		mydoc.showContent("#successMessage");
 		mydoc.showContent("#createUserSection");
-		mydoc.hideContent("#protectedVideoForm");
 		mydoc.hideContent("#submitLoadingGIF");
 	}
 

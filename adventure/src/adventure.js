@@ -164,7 +164,7 @@ var MyAdventure = undefined;
 
 			// Setup the video title + editor
 			let author = video.Author ?? "";
-			let videoEditor = author != "" ? `<br/><span class="video_editor"/>by: ${author}</span>` : "";
+			let videoEditor = author != "" ? `<br/><span class="videoAuthor"/>by: ${author}</span>` : "";
 			let videoTitle = (video.Name ?? "") + videoEditor;
 
 			// Load the video details; Hide loading
