@@ -2,8 +2,37 @@
 
 #videoTitle { clear:both; padding:1%; display:inline; margin:0px; }
 
+#adventureDescription { clear:both; }
+
+#videoFrameProtectedSection { font-size:larger; }
+#protectedVideoForm label { font-size:150%; }
+#protectedVideoForm input,button { font-size:130%; }
+#protectedMessage { color:red; }
+
+.video_editor { font-size:50%; font-style:italic; }
+
+#videoNavigationSection { width: 90%; margin:auto; }
+.navButton { font-size:18px; }
+
+.videoPickerIcon { cursor:pointer; }
+
+.videoPickerBlock.selected { background-color:limegreen; color:black; }
+
+
+#videoPickerSection { width: 90%; margin: auto; padding-top:2%; }
+.videoPickerBlock { margin-bottom:3% !important; color:white !important; opacity: 95%; }
+.videoPickerBlock .datacell { vertical-align: top;}
+.videoPickerBlock .title { margin-top:0px; color:gray; font-size:18px; }
+.videoPickerCircle { height:25px; width:25px; line-height: 25px; background-color: darkgray; color:black; border-radius: 50%; display: inline-block; }
+.videoPickerCircle.selected { background-color:limegreen !important; color: black; }
+.videoPickerBlock .title.selected { color:limegreen !important; }
+
 
 @media only screen and (min-device-width:1200px)
 {
     #videoTitle{ display:inline-block }
+
+
+	#videoPickerSection { width: 35%; }
+	#videoNavigationSection { width: 35%; margin:auto; }
 }
