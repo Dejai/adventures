@@ -1,0 +1,9 @@
+
+
+#videoTitle { clear:both; padding:1%; display:inline; margin:0px; }
+
+
+@media only screen and (min-device-width:1200px)
+{
+    #videoTitle{ display:inline-block }
+}

@@ -5,7 +5,8 @@
 	<base href="../" target="_blank">
 
 	<title>Dejai's Adventures</title>
-	<link rel="stylesheet" type="text/css" href="src/adventure.css">
+	<link rel="stylesheet" type="text/css" href="src/main.css">
+	<link rel="stylesheet" type="text/css" href="adventure/src/adventure.css">
 	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,11 +28,8 @@
 		<div id="adventureMenuSection" class="dlf_center_block_xlarge centered" style="clear:both;">
 			<div id="videoNavigationSection">
 				<button id="prevVideoButton" style="float:left;" class="hidden navButton dlf_button_round_corners dlf_button_gray" onclick="onPrevVideo()">prev</button>
-				<span id="videoTitleSection" style="">
-					<h2 id="videoTitle" style="clear:both;padding:1%; display:inline-block; margin:0px;"></h2>
-				</span>
-				<!-- <span id="videoCount" class="pointer" style="margin-top:0px;line-height:45px;" onclick="toggleVideoPicker()"></span> -->
 				<button id="nextVideoButton" style="float:right;" class="hidden navButton dlf_button_round_corners dlf_button_blue" onclick="onNextVideo()">next</button>
+				<span id="videoTitleSection"><h2 id="videoTitle"></h2></span>
 			</div>
 			<div id="videoIndexCountSection" class="hidden pointer" style="padding:1% 0% 1% 2%;">
 				<span id="videoIndexCount"></span>
@@ -57,13 +55,7 @@
 		<h2 id="protectedMessage" class="adventureSubtitle">
 			You have to login to view this adventure
 		</h2>
-		<!-- <a href="login/" target="_self"> -->
 		<button class="dlf_button dlf_button_round_corners dlf_button_blue" onclick="onNavigateToLogin()">LOGIN</button>
-		<!-- </a> -->
-		<!-- <form id="protectedVideoForm" action="" method="POST" onsubmit="onValidatePassphrase(event)">
-			<input id="passphrase" type="password" name="p" placeholder="Enter the passphrase"><br/>
-			<input type="submit" name="submit" value="Submit">
-		</form> -->
 	</div>
 
 	<!-- The video frame of this adventure -->
@@ -83,5 +75,5 @@
 <!-- My Adventure code -->
 <script type="text/javascript" src="src/models.js"></script>
 <script type="text/javascript" src="src/stream.js"></script>
-<script type="text/javascript" src="src/adventure.js"></script>
+<script type="text/javascript" src="adventure/src/adventure.js"></script>
 </html>
