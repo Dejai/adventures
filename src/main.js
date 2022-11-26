@@ -216,7 +216,8 @@ function checkLoggedIn()
 	let user = mydoc.getCookie("AdventureUser") ?? "";
 	if(user != "")
 	{
-		let name = user.split( " ~ ")[0];
+		let names = user.split( " ~ ");
+		let name = names[ Math.floor(Math.random()*names.length)];
 		let userWelcome = `Hi, ${name}`;
 		mydoc.setContent("#loginSection", {"innerHTML":userWelcome});
 	}
