@@ -6,6 +6,7 @@
 
 	<title>Dejai's Adventures</title>
 	<link rel="stylesheet" type="text/css" href="src/adventure.css">
+	<link rel="stylesheet" type="text/css" href="create/src/create.css">
 	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +17,7 @@
 	<!-- The Menu Section -->
 	<div id="menuPanel" class="centered">
 		<!-- Adventure Title & Description -->
-		<h1 id=""><a href="/" class="homeLink" target="_self">Dejai's Adventures!</a><br/> Create</h1>
+		<h1 id=""><a href="/" class="homeLink" target="_self">Dejai's Adventures!</a><br/> Create Account</h1>
 		<hr id="adventureSeparator" style="clear:both;"/>
 
 	</div>
@@ -30,16 +31,16 @@
 		<h2 id="resultsMessage" style="color:red;"></h2>
 
 		<!-- Form for creating user  -->
-		<form id="protectedVideoForm" class="centered" action="" method="POST" onsubmit="onCreateNewUser(event)">
-            <div style="width:40%; margin:auto;" class="centered">
+		<form id="createUserForm" class="centered" action="" method="POST" onsubmit="onCreateNewUser(event)">
+            <div id="inputSection" class="centered">
                 <label for="username">Name: </label><br/>
-                <input id="username" type="text" style="width:100%" name="username" placeholder="Enter your name" onblur="onCleanValue()" required>
+                <input id="username" type="text" name="username" placeholder="Enter your name" onblur="onCleanValue()" required>
                 <br/><br/>
                 <label for="nickname">Nickname: </label><br/>
-                <input id="nickname" type="text" style="width:100%" name="nickname" placeholder="Enter a nickname" onblur="onCleanValue()" required>
+                <input id="nickname" type="text" name="nickname" placeholder="Enter a nickname" onblur="onCleanValue()" required>
                 <br/><br/>
                 <label for="phoneNumber">Phone Number: </label><br/>
-                <input id="phoneNumber" type="text" style="width:100%" name="phoneNumber" placeholder="Enter your phone number" onblur="onCleanValue()" required>
+                <input id="phoneNumber" type="text" name="phoneNumber" placeholder="Enter your phone number" onblur="onCleanValue()" required>
             </div>
             <div class="centered">
 				<img id="submitLoadingGIF" class="hidden" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
@@ -70,5 +71,5 @@
 <!-- My Adventure code -->
 <script type="text/javascript" src="src/models.js"></script>
 <script type="text/javascript" src="src/stream.js"></script>
-<script type="text/javascript" src="src/create.js"></script>
+<script type="text/javascript" src="create/src/create.js"></script>
 </html>
