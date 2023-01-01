@@ -146,9 +146,8 @@ var ListIDs = {};
 	// Successful creation of user
 	function onCreatUserSuccess()
 	{
-		mydoc.setContent("#resultsMessage", {"innerHTML":""});
-		mydoc.showContent("#successMessage");
-		mydoc.showContent("#createUserSection");
-		mydoc.hideContent("#submitLoadingGIF");
+		let path = "/create/requested";
+		mydoc.addWindowHistory({"path":path}, true);
+		location.href = path;
 	}
 
