@@ -38,10 +38,9 @@ var ListOfAdventures = [];
 	// Load the adventures
 	function loadAdventures(adventureList)
 	{
-		var adventureHTML = "";
+		var adventureHTML = [];
 			
-		adventureList.forEach( (element, idx, arr) => {
-
+		adventureList.forEach( (element, idx, adventureArray) => {
 
 			let id = element["id"];
 			let name = element["name"];
@@ -57,20 +56,20 @@ var ListOfAdventures = [];
 			// Keep track of this aventure
 			ListOfAdventures.push(adventure);
 
-
 			MyTemplates.getTemplate("templates/adventureItem.html", adventure, (template)=>{
 
-				adventureHTML += template;
+				// Add template to list of templates
+				adventureHTML.push(template);
 
-				if(idx == arr.length-1)
+				// If list of templates is equal to list of given objects:
+				if(adventureHTML.length == adventureArray.length)
 				{
-					mydoc.setContent("#adventuresPanel", {"innerHTML":adventureHTML});
+					let formattedHTML = adventureHTML.join("");
+					mydoc.setContent("#adventuresPanel", {"innerHTML":formattedHTML});
 				}
 
 			});
 		});
-
-		mydoc.loadContent(adventureHTML,"adventuresPanel");
 
 		// Once loaded, show the filter section
 		mydoc.showContent("#findAdventureSection");

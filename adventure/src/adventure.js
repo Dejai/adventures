@@ -69,8 +69,6 @@ var MyAdventure = undefined;
 
 			let resp = JSON.parse(data.responseText);
 
-			let videoPickerContent = "";
-
 			if(resp != undefined)
 			{
 
@@ -91,6 +89,8 @@ var MyAdventure = undefined;
 					return a.pos - b.pos;
 				});
 
+				let videoPickerContent = [];
+				
 				// Loop through each video & create instance
 				videos.forEach( (video, idx, array) =>{
 
@@ -98,11 +98,12 @@ var MyAdventure = undefined;
 					MyAdventure.addVideo( videoObject );
 
 					MyTemplates.getTemplate("templates/videoPick.html", videoObject, (template)=>{
-						videoPickerContent += template;
+						videoPickerContent.push(template);
 
-						if(idx == array.length-1)
+						if(videoPickerContent.length == array.length)
 						{
-							mydoc.setContent("#videoPickerSection", {"innerHTML":videoPickerContent});
+							let formattedHTML = videoPickerContent.join("");
+							mydoc.setContent("#videoPickerSection", {"innerHTML":formattedHTML});
 
 							// Load the initial video;
 							onLoadInitialVideo();
@@ -355,9 +356,10 @@ var MyAdventure = undefined;
 	// Navigate to page for login
 	function onNavigateToLogin()
 	{
+		let protocol = location.protocol;
 		let host = location.host;
 		let search = location.search;
-		let newPath = `https://${host}/login/${search}`;
+		let newPath = `${protocol}//${host}/login/${search}`;
 		location.replace(newPath);
 	}
 
