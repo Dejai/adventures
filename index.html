@@ -2,40 +2,73 @@
 <html>
 <head>
 	<title>Dejai's Adventures</title>
-	<link rel="stylesheet" type="text/css" href="./src/main.css">
-	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dlf_styles.css">
+	<link rel="stylesheet" type="text/css" href="./src/css/main.css?v=2">
+	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dtk-styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
-<body class="theme_black_bg">		
-	<div id="menuPanel" class="centered" style="position:relative;">
-		<h1 style="position:relative; margin-top:1px;">Dejai's Adventures!</h1>
-		<p>A set of adventures I've enjoyed with family & friends!</p>
-		<p id="loginSection" style="text-align:center; color:orange; margin-top:0px;">
-			<a href="login/" style="margin:0px; color:inherit; font-size:20px; text-decoration:none; ">
-				Login
-			</a>
-		</p>	
-	</div>
-	<div id="findAdventureSection" style="clear:both;" class="centered hidden">
-		<div id="searchBarSection">
-			<div id="searchBar" class="searchBar searchPlaceholder" data-adv-placeholder="Search adventures ..." contenteditable="true" onkeyup="onSearchAdventures()" onfocus="onSearchFocus()" onblur="onSearchBlur()"></div>
-			<i id="searchClearIcon" class="fa fa-times-circle pointer hidden" aria-hidden="true" style="color:red;" onclick="onClearSearch()"></i>
+<body class="dtk-theme-blackbg">	
+	<div>
+		<div class="menuSection dtk-menu-sticky dtk-theme-blackbg">
+			<div class="menuItems">
+				<div class="menuItem left">
+					<div class="subMenuItem left" style="display:inline-block;">
+						<h1 style="margin:0px;">Dejai's Adventures</h1>
+					</div>
+					<div class="subMenuItem right">
+						<div class="searchSection hidden showOnAdventuresLoaded">
+							<div id="searchBarSection" class="searchBarSection hidden showOnAdventuresLoaded">
+								<div id="searchBar" class="searchBar searchPlaceholder" data-adv-placeholder="Search adventures ..." contenteditable="true" onkeyup="onSearchAdventures()" onfocus="onSearchFocus()" onblur="onSearchBlur()"></div>
+								<i id="searchClearIcon" class="fa fa-times-circle pointer hidden" aria-hidden="true" style="color:red;" onclick="onClearSearch()"></i>
+							</div>
+							<i id="randomAdventure" class="fa fa-random pointer" onclick="onSelectRandomAdventure()" style="font-size:18px; padding-top:2%; color:orange;" aria-hidden="true" title="Select a random adventure">
+								&nbsp;Random Adventure
+							</i>
+						</div>
+					</div>
+				</div>
+				<div class="menuItem right">
+					<p id="loginSection" style="color:orange;">		
+						<a class="authLink dlf_href_notextdec" href="" style="margin:0px;color:inherit;font-size: smaller;"></a>
+					</p>
+				</div>
+			</div>
+			<br style="clear:both;"/>
 		</div>
-		<i id="randomAdventure" class="fa fa-random pointer" onclick="onSelectRandomAdventure()" style="font-size:18px; padding-top:2%; color:orange;" aria-hidden="true" title="Select a random adventure">
-			&nbsp;Random Adventure
-		</i>
-	</div>
-	<div id="adventuresPanel" class="centered">
-		<img src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+
+		<div class="dtk-menu-sticky dtk-theme-blackbg" style="display:none;">
+			
+			<div class="titleSection" style="clear:both;">
+				<h1 class="title">Dejai's Adventures!</h1>
+				<p style="clear:both;">A set of adventures, enjoyed with family & friends!</p>
+			</div>
+			<div id="findAdventureSection" style="clear:both;" class="lefted">
+				<div class="searchSection hidden showOnAdventuresLoaded">
+					<div id="searchBarSection" class="searchBarSection hidden showOnAdventuresLoaded">
+						<div id="searchBar" class="searchBar searchPlaceholder" data-adv-placeholder="Search adventures ..." contenteditable="true" onkeyup="onSearchAdventures()" onfocus="onSearchFocus()" onblur="onSearchBlur()"></div>
+						<i id="searchClearIcon" class="fa fa-times-circle pointer hidden" aria-hidden="true" style="color:red;" onclick="onClearSearch()"></i>
+					</div>
+					<i id="randomAdventure" class="fa fa-random pointer" onclick="onSelectRandomAdventure()" style="font-size:18px; padding-top:2%; color:orange;" aria-hidden="true" title="Select a random adventure">
+						&nbsp;Random Adventure
+					</i>
+				</div>
+			</div>
+		</div>
+		<div id="thumbnailPanel">
+		</div>
+		<div id="adventuresPanel" style="width:95%; margin:auto; overflow-y:scroll;">
+		</div>
+		<p class="hideOnLoaded" style="text-align:center;">
+			<img id="loading_gif" src="https://dejai.github.io/scripts/assets/img/loading1.gif" style="width:10%;height:10%;">
+		</p>
 	</div>
 </body>
-<!-- Common Code -->
-<script src="https://dejai.github.io/scripts/js/common.js"></script>
-<!-- My Trello code -->
-<script src="https://dejai.github.io/scripts/js/trellowrapper.js"></script>
+<!-- Common Scripts -->
+<script src="https://dejai.github.io/scripts/js/v2/my.js?v=5"></script>
+<script src="https://dejai.github.io/scripts/js/v2/trellowrapper.js?v=15"></script>
+<script src="https://dejai.github.io/scripts/js/v2/cloudflarewrapper.js?v=15"></script>
 <!-- My Videos Code -->
-<script type="text/javascript" src="./src/models.js"></script>
-<script type="text/javascript" src="./src/main.js"></script>
+<script type="text/javascript" src="./src/js/models.js"></script>
+<script type="text/javascript" src="./src/js/main.js?v=4"></script>
 </html>

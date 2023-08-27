@@ -5,9 +5,22 @@ body.theme_black_bg { background-color:black; color:white; }
 #homeIcon { text-align: left; font-size: 20px; cursor: pointer; float:none; display:block; padding-top: 1%; padding-left: 1%; }
 #homeIcon::after { content:" home"; }
 
+.psuedoHyperlink { cursor:pointer; text-decoration:none; color:blue; }
+
+ /* Menu Sections */
+ .menuSection { border-bottom: 2px solid white; }
+ .menuItems { text-align:center; clear:both; }
+ .menuItem.left { float:left; width:80%;text-align:left; }
+ .menuItem .subMenuItem { display: block; }
+ .menuItem .subMenuItem.left { width: 100%; }
+ .menuItem .subMenuItem.right { width: 100%; }
+ .menuItem.right { float:right; width:15%; text-align:left; text-align:right; }
+
 /****** HOME PAGE: The Title section ********/
 #adventureTitle { font-size:28px; }
 .adventureSubtitle { font-size: 24px; }
+.titleSection { margin-top:1%; text-align:center; }
+.titleSection h1.title { float:left; }
 
 /****** HOME PAGE: The Filter/Search section ********/
 #findAdventureSection { border-top:2px solid white; border-bottom: 2px solid white; padding-bottom:2%; padding-top:2%;  }
@@ -15,7 +28,8 @@ body.theme_black_bg { background-color:black; color:white; }
 
 .filterOption.filterOptionSelected { background-color:aqua; color:black; }
 
-#searchBarSection { text-align:left; border-radius:77px; border:1px solid gray; background-color:white; padding:1%; width:90%; margin:auto; font-size:20px; }
+#searchBarSection { text-align:left; border-radius:77px; border:1px solid gray; background-color:white; padding:1%; width:50%; font-size:20px; }
+.searchBarSection { display:inline-block; }
 .searchBar { text-align:left; width:85%; display:inline-block; }
 #searchClearIcon { float:right; color: red !important; }
 .searchBar:focus { border: none; outline: none; }
@@ -24,7 +38,7 @@ body.theme_black_bg { background-color:black; color:white; }
 
 
 /****** HOME PAGE: The Adventure List section ********/
-.adventure_block { float:left; width: 90%; border:2px dashed gray; padding:1%; height:200px; overflow-y:scroll; margin:3%; }
+.adventure_block { float:left; width: 90%; border:2px dashed gray; padding:1%; height:200px; margin:3%; }
 .adventure_block.hidden { opacity: 0px;}
 .adventure_block h2 { font-size: 18px; }
 .adventure_block a { text-decoration: none; color:aqua}
@@ -41,7 +55,25 @@ body.theme_black_bg { background-color:black; color:white; }
 
 @media only screen and (min-device-width:1200px)
 {
-	#searchBarSection { width:30%;}
+
+	/* Menu Item */
+	.menuItems { text-align:center; clear:both; }
+	.menuItem.left { float:left; width:60%; text-align:left; }
+
+	.menuItem .subMenuItem { display: inline-block; }
+	.menuItem .subMenuItem.left { width: 35%; }
+	.menuItem .subMenuItem.right { width: 40%; }
+
+	.menuItem.right { width:15%; text-align:right; }
+
+	/* Title */
+	.titleSection { margin-top:1%; text-align:center; }
+	.titleSection h1.title { float:none; }
+
+	/* .searchSection { margin:auto; width: 60%; } */
+	#searchBarSection { width:55%;}
+	.searchBarSection { margin:auto; margin-right:1% !important; }
+
 	.adventure_block { width: 25%; height:150px; }
 	.filterOption { margin:0.2%; padding:0.5%; }
 	#homeIcon { display: block; float:left; font-size: 30px; padding:0px; }

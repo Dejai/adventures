@@ -1,7 +1,5 @@
 <div class="centered adventure_block" data-adventure-id="{{AdventureID}}">
     <h2>
-        <i class="fa fa-lock pointer protectedIcon{{IsProtected}}" title="This adventure requires a passcode" aria-hidden="true"></i>
-        &nbsp;
         <a href="./adventure/?id={{AdventureID}}">
             {{Name}}
             &nbsp;
@@ -9,6 +7,7 @@
             <br/>
             <span class="adventureDate">({{MonthYear}})</span>
         </a><br/>
+        <img src="{{Thumbnail}}" alt="img" style="width:200px; height:200px;"/>
     </h2>
     <p id="firstParagraph_{{AdventureID}}">{{FirstParagraph}}</p>
     <span id="moreDetailsLink_{{AdventureID}}" class="pointer additionalDetailsToggle spaced small" onclick="toggleDetails('{{AdventureID}}')">... more details</span>

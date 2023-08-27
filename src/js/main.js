@@ -4,88 +4,77 @@ var SECURE_LABEL_ID = "6220aa911cbc61053bd65b54"
 // List of adventures
 var ListOfAdventures = [];
 
+const MyTrello = new TrelloWrapper("videos");
+
 /*********************** GETTING STARTED *****************************/
 
 	// Once doc is ready
-	mydoc.ready(function(){
+	MyDom.ready( async() => {
 
-		MyTrello.SetBoardName("videos");
-
-		getAdventures();
-
-		checkLoggedIn();
-
-		// Set search bar
-        onSearchBlur();
-
+		// Get login details
+		await MyAuth.onGetLoginDetails();
+		
+		// Load the adventures
+		onLoadAdventures();
 	});
 
 
 /******** GETTING STARTED: Loading the Adventures & Labels; Check if logged in user***************************/
-	// Get list of adventures
-	function getAdventures()
-	{
-		MyTrello.get_cards_by_list_name("Adventures",(data)=>{
 
-			let resp = JSON.parse(data.responseText);
-			if(resp.length > 0)
-			{
-				loadAdventures(resp);
-			}
-		});
+	// On picture loaded
+	function onPictureLoaded(){
+		console.log("Picture loaded");
 	}
 
-	// Load the adventures
-	function loadAdventures(adventureList)
-	{
-		var adventureHTML = [];
-			
-		adventureList.forEach( (element, idx, adventureArray) => {
+	// onNavigateToAdventure
+	function onNavigateToAdventure(event){
+		var target = event.target;
+		console.log(event);
+		console.log(target);
+		var parent = target.closest(".adventureBlockParent");
+		var adventureID = parent.getAttribute("data-adventure-id");
+		if(adventureID != undefined){
+			MyUrls.navigateTo(`/adventure/?id=${adventureID}`);
+		}
+	}
 
-			let id = element["id"];
-			let name = element["name"];
-			let desc = element["desc"];
-			let isProtected = element["idLabels"].includes(SECURE_LABEL_ID);
-			let date = element["start"];
-			let labels = element["idLabels"];
-			let monthYear = getMonthYear(new Date(date));
+	// Load the set of adventures on the home page
+	async function onLoadAdventures(){
 
-			// Create a new adventure display object
-			let adventure = new AdventureDisplay(id, name, desc, monthYear, labels, isProtected);
+		try {
+			MyTrello.GetCardsByListName("Adventures", async (response)=> {
 
-			// Keep track of this aventure
-			ListOfAdventures.push(adventure);
+				var displayElements = response.map(x => new Adventure2(x));
+				console.log(displayElements);
+				displayElements.sort( (a,b) => {
+					return (b.Date - a.Date);
+				});
+				console.log(displayElements);
 
-			MyTemplates.getTemplate("templates/adventureItem.html", adventure, (template)=>{
-
-				// Add template to list of templates
-				adventureHTML.push(template);
-
-				// If list of templates is equal to list of given objects:
-				if(adventureHTML.length == adventureArray.length)
+				// Load the videos
+				for(var idx = 0; idx < displayElements.length; idx++)
 				{
-					let formattedHTML = adventureHTML.join("");
-					mydoc.setContent("#adventuresPanel", {"innerHTML":formattedHTML});
+					var adventure = displayElements[idx];
+					var adventureID = adventure?.AdventureID ?? "No Adventure ID";
+					var adventureVideos = await CloudflareWrapper.GetVideos(adventureID);
+					if(adventureVideos.length > 0){
+						var firstVideo = new StreamVideo(adventureVideos[0]);
+						adventure.CoverThumbnail = firstVideo.Thumbnail;
+					}
+					// Add adventure as we go
+					MyTemplates.getTemplate("src/templates/adventureItem2.html", adventure, (template) => {
+						MyDom.setContent("#adventuresPanel", {"innerHTML":template}, true);
+					});
 				}
-
+				// Once loaded, show things that should be visible now
+				MyDom.showContent(".showOnAdventuresLoaded");
+				MyDom.hideContent(".hideOnLoaded");
+				// Blur the search (to set the default text);
+				onSearchBlur();
 			});
-		});
-
-		// Once loaded, show the filter section
-		mydoc.showContent("#findAdventureSection");
-
-	}
-
-	// check for already logged in
-	function checkLoggedIn()
-	{
-		let user = mydoc.getCookie("AdventureUser") ?? "";
-		if(user != "")
-		{
-			let names = user.split( " ~ ");
-			let name = names[ Math.floor(Math.random()*names.length)];
-			let userWelcome = `Hi, ${name}`;
-			mydoc.setContent("#loginSection", {"innerHTML":userWelcome});
+		} catch (err) {
+			MyDom.setContent("#adventuresPanel", {"innerHTML":"<h3>Could not load adventures</h3>"} );
+			MyLogger.LogError(err);
 		}
 	}
 
@@ -95,7 +84,7 @@ var ListOfAdventures = [];
     function onGetSearchValues()
     {
         let placeholder = document.getElementById("searchBar")?.getAttribute("data-adv-placeholder");
-        let filterValue = mydoc.getContent("#searchBar")?.innerText ?? "";
+        let filterValue = MyDom.getContent("#searchBar")?.innerText ?? "";
         filterValue = (filterValue == "" || filterValue == placeholder) ? " " : filterValue;
 
         return { "Filter": filterValue, "Placeholder": placeholder }
@@ -107,7 +96,7 @@ var ListOfAdventures = [];
         let search = onGetSearchValues();
 
 		// Show option to clear search;
-		if(search.Filter != " "){ mydoc.showContent("#searchClearIcon"); }
+		if(search.Filter != " "){ MyDom.showContent("#searchClearIcon"); }
 
         document.querySelectorAll(".adventure_block")?.forEach( (item)=>{
             
@@ -133,10 +122,10 @@ var ListOfAdventures = [];
 		
         if(search.Filter == " ")
         {
-            mydoc.setContent("#searchBar", {"innerText":""});
+            MyDom.setContent("#searchBar", {"innerText":""});
         }
-        mydoc.addClass("#searchBar", "searchText");
-        mydoc.removeClass("#searchBar", "searchPlaceholder");
+        MyDom.addClass("#searchBar", "searchText");
+        MyDom.removeClass("#searchBar", "searchPlaceholder");
     }
 
     // Blurring from the search bar
@@ -145,17 +134,17 @@ var ListOfAdventures = [];
         let search = onGetSearchValues();
         if(search.Filter == " ")
         {
-            mydoc.addClass("#searchBar", "searchPlaceholder");
-            mydoc.removeClass("#searchBar", "searchText");
-            mydoc.setContent("#searchBar", {"innerText":search.Placeholder});
-			mydoc.hideContent("#searchClearIcon");
+            MyDom.addClass("#searchBar", "searchPlaceholder");
+            MyDom.removeClass("#searchBar", "searchText");
+            MyDom.setContent("#searchBar", {"innerText":search.Placeholder});
+			MyDom.hideContent("#searchClearIcon");
         }        
     }
 
 	// Clear the search
 	function onClearSearch()
 	{
-        mydoc.setContent("#searchBar" ,{"innerText":""});
+        MyDom.setContent("#searchBar" ,{"innerText":""});
 		onSearchAdventures();
 		onSearchBlur();
 	}
@@ -175,16 +164,11 @@ var ListOfAdventures = [];
 			switch(event.code)
 			{
 				case "Enter":
-					if(!GAME_STARTED && !CHECKING_FOR_BINGO)
-					{
+					if(!GAME_STARTED && !CHECKING_FOR_BINGO) {
 						onStartGame();
-					}
-					else if (GAME_STARTED && !CHECKING_FOR_BINGO)
-					{
+					} else if (GAME_STARTED && !CHECKING_FOR_BINGO) {
 						onPickNumber();
-					}
-					else if (CHECKING_FOR_BINGO)
-					{
+					} else if (CHECKING_FOR_BINGO) {
 						onCheckCardForBingo();
 					}
 					break;
@@ -201,6 +185,7 @@ var ListOfAdventures = [];
 		let adventureID = ListOfAdventures[randIndex]?.AdventureID ?? "";
 		let adventureLink = document.querySelector(`.adventure_block[data-adventure-id='${adventureID}'] a`);
 
+		console.log(adventureLink);
 		if(adventureLink != undefined)
 		{
 			adventureLink.click();
@@ -244,12 +229,12 @@ var ListOfAdventures = [];
 			// let id = adv.getAttribute("data-adventure-id") ?? "";
 			if(labelID == undefined || adventure.hasLabel(labelID))
 			{
-				mydoc.showContent(`[data-adventure-id='${adventure.AdventureID}']`);
+				MyDom.showContent(`[data-adventure-id='${adventure.AdventureID}']`);
 			}
 			// If it does not have the label, hide it;
 			else if( !adventure.hasLabel(labelID) )
 			{
-				mydoc.hideContent(`[data-adventure-id='${adventure.AdventureID}']`);
+				MyDom.hideContent(`[data-adventure-id='${adventure.AdventureID}']`);
 			}
 		});
 	}
@@ -268,22 +253,22 @@ var ListOfAdventures = [];
 			if(isHidden)
 			{
 				// Hide first paragraph
-				mydoc.hideContent(`#firstParagraph_${id}`);
-				mydoc.hideContent(`#moreDetailsLink_${id}`);
+				MyDom.hideContent(`#firstParagraph_${id}`);
+				MyDom.hideContent(`#moreDetailsLink_${id}`);
 
 				// Show full content;
-				mydoc.showContent(`#moreDetails_${id}`);
-				mydoc.showContent(`#lessDetailsLink_${id}`);
+				MyDom.showContent(`#moreDetails_${id}`);
+				MyDom.showContent(`#lessDetailsLink_${id}`);
 			}
 			else
 			{
 				// Show first paragraph
-				mydoc.showContent(`#firstParagraph_${id}`);
-				mydoc.showContent(`#moreDetailsLink_${id}`);
+				MyDom.showContent(`#firstParagraph_${id}`);
+				MyDom.showContent(`#moreDetailsLink_${id}`);
 
 				// Hide full content;
-				mydoc.hideContent(`#moreDetails_${id}`);
-				mydoc.hideContent(`#lessDetailsLink_${id}`);
+				MyDom.hideContent(`#moreDetails_${id}`);
+				MyDom.hideContent(`#lessDetailsLink_${id}`);
 			}
 		}
 	}
