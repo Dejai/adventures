@@ -22,16 +22,17 @@ const MyTrello = new TrelloWrapper("videos");
 /******** GETTING STARTED: Loading the Adventures & Labels; Check if logged in user***************************/
 
 	// On picture loaded
-	function onPictureLoaded(){
-		console.log("Picture loaded");
+	function onPictureLoaded(img){
+		var parent = img.closest(".adventureBlock");
+		setTimeout( () => { 
+			parent.classList.add("visible");
+		}, 500);
 	}
 
 	// onNavigateToAdventure
 	function onNavigateToAdventure(event){
 		var target = event.target;
-		console.log(event);
-		console.log(target);
-		var parent = target.closest(".adventureBlockParent");
+		var parent = target.closest(".adventureBlock");
 		var adventureID = parent.getAttribute("data-adventure-id");
 		if(adventureID != undefined){
 			MyUrls.navigateTo(`/adventure/?id=${adventureID}`);
@@ -44,7 +45,7 @@ const MyTrello = new TrelloWrapper("videos");
 		try {
 			MyTrello.GetCardsByListName("Adventures", async (response)=> {
 
-				var displayElements = response.map(x => new Adventure2(x));
+				var displayElements = response.map(x => new Adventure(x));
 				console.log(displayElements);
 				displayElements.sort( (a,b) => {
 					return (b.Date - a.Date);
@@ -62,13 +63,14 @@ const MyTrello = new TrelloWrapper("videos");
 						adventure.CoverThumbnail = firstVideo.Thumbnail;
 					}
 					// Add adventure as we go
-					MyTemplates.getTemplate("src/templates/adventureItem2.html", adventure, (template) => {
+					MyTemplates.getTemplate("src/templates/adventureBlock.html", adventure, (template) => {
 						MyDom.setContent("#adventuresPanel", {"innerHTML":template}, true);
 					});
 				}
 				// Once loaded, show things that should be visible now
 				MyDom.showContent(".showOnAdventuresLoaded");
 				MyDom.hideContent(".hideOnLoaded");
+
 				// Blur the search (to set the default text);
 				onSearchBlur();
 			});
@@ -86,7 +88,6 @@ const MyTrello = new TrelloWrapper("videos");
         let placeholder = document.getElementById("searchBar")?.getAttribute("data-adv-placeholder");
         let filterValue = MyDom.getContent("#searchBar")?.innerText ?? "";
         filterValue = (filterValue == "" || filterValue == placeholder) ? " " : filterValue;
-
         return { "Filter": filterValue, "Placeholder": placeholder }
     }
 
@@ -181,14 +182,12 @@ const MyTrello = new TrelloWrapper("videos");
 	// Select random adventure
 	function onSelectRandomAdventure()
 	{
-		let randIndex = Math.floor(Math.random()*4);
-		let adventureID = ListOfAdventures[randIndex]?.AdventureID ?? "";
-		let adventureLink = document.querySelector(`.adventure_block[data-adventure-id='${adventureID}'] a`);
-
-		console.log(adventureLink);
-		if(adventureLink != undefined)
-		{
-			adventureLink.click();
+		let adventureBlocks = document.querySelectorAll(".adventureBlockLink");
+		let numAdventures = adventureBlocks.length;
+		if(numAdventures > 0) {
+			var randIndex = Math.floor(Math.random()*numAdventures);
+			var randLink = adventureBlocks[randIndex];
+			randLink.click();
 		}
 	}
 

@@ -4,6 +4,7 @@
 #adventureDescription { clear:both; }
 #videoTitle { clear:both; padding:1%; display:inline; margin:0px; }
 .videoAuthor { font-size:50%; font-style:italic; }
+.showDescriptionIcon { color: limegreen; vertical-align: middle; }
 
 /**** VIDEO NAV: Navigating between videos **********/
 #videoNavigationSection { width: 90%; margin:auto; }

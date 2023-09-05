@@ -29,10 +29,6 @@ const MyStream = new StreamManager();
 
 /********* SETUP: Create the key things used throughout the file *************************************/
 
-	function onVideoPreviewLoaded(){
-		
-	}
-
 	// Get this adventure card & its list of videos
 	async function onGetAdventure(adventureID)
 	{
@@ -40,46 +36,48 @@ const MyStream = new StreamManager();
 		try {
 			MyTrello.GetCard(adventureID, async (resp) => {				
 				
-				var adventure = new Adventure2(resp);
+				var adventure = new Adventure(resp);
 				
-
 				// Set the name & description
 				MyDom.setContent("#adventureTitle", {"innerHTML":adventure.Name});
 				MyDom.setContent("#adventureDescription", {"innerHTML":adventure.Description});
+				MyDom.showContent("#moreDetailsIcon");
 
+				// Get the adventure Videos for this adventure
 				var adventureVideos = await CloudflareWrapper.GetVideos(adventure.AdventureID);
-				var adventureVideos2 = adventureVideos.map(x => new StreamVideo(x));
-				adventureVideos2.forEach( (vid)=> {
+				var streamVideos = adventureVideos.map(x => new StreamVideo(x));
+				streamVideos.forEach( (vid)=> {
 					adventure.addContent(vid);
-				});
-				if(adventureVideos2.length > 0) {
-					
-				}
-
-				await MyTemplates.getTemplate("src/templates/adventure/videoPreview.html", adventureVideos2, (template) => {
-					MyDom.setContent("#videoListTest", {"innerHTML": template});
 				});
 
 				// Set the current adventure
 				MyAdventurePage.setAdventure(adventure);
 
-				// If param ID is set or there is only, load that video immediately 
-				var contentID = MyUrls.getSearchParam("content");
-				
-				// If there is only one video, also set immediately;
-				contentID = (MyAdventurePage.getContentCount() == 1) ? MyAdventurePage.getContentByIndex(0)?.ContentID : contentID;
-				if(MyAdventurePage.getContentCount() == 1) {
-					console.log("Enough");
-				}
+				// List the adventures
+				if(MyAdventurePage.getContentCount() > 0)
+				{
+					// Load the video preview templates
+					await MyTemplates.getTemplate("src/templates/adventure/contentPreview.html", streamVideos, (template) => {
+						MyDom.setContent("#listOfContent", {"innerHTML": template});
+					});
 
+					// If param ID is set or there is only, load that video immediately 
+					var contentID = MyUrls.getSearchParam("content");
+					
+					// If there is only one video, also set immediately;
+					if( (MyAdventurePage.getContentCount() == 1) ){
+						contentID = MyAdventurePage.getContentByIndex(0)?.ContentID ?? contentID;
+						MyDom.removeClass("#backToContentList", "showOnContentLoaded")
+					}
 
-				if(contentID != undefined){
-					onLoadContent(contentID);
-				} else {
-					MyDom.showContent(".showOnAdventureLoaded");
+					// Use the content ID to load the content
+					if(contentID != undefined) {
+						MyDom.removeClass("#listOfContent", "showOnContentLoaded");
+						onLoadContent(contentID);
+					} else {
+						setContentView("default");
+					}
 				}
-				MyDom.hideContent(".hideOnAdventureLoaded");
-				console.log(MyAdventurePage);
 				
 			});
 		} catch (error){
@@ -87,15 +85,15 @@ const MyStream = new StreamManager();
 		}
 	}
 
-	function onLoadVideo2(event){
-		var target = event.target; 
-		var container = target.closest(".videoPreviewBlock");
-		var contentID = container.getAttribute("data-content-id");
+	// Link from content list to content view
+	function onOpenContent(event){
+		var target = event.target;
+		var contentID = target.getAttribute("data-content-id");
 
 		// First check if the content is already loaded (if so, just show the content screen)
 		var existingContent = document.querySelector(`iframe[data-content-id='${contentID}']`);
+
 		if(existingContent != undefined){
-			
 			setContentView("content");
 			MyStream.onPlayVideo();
 		} else if (contentID != undefined){
@@ -107,6 +105,7 @@ const MyStream = new StreamManager();
 	function onLoadContent(contentID)
 	{
 		var content = MyAdventurePage.getContentByID(contentID);
+		MyAdventurePage.setContentIdx(contentID);
 		
 		if(content instanceof StreamVideo){
 			MyTemplates.getTemplate("src/templates/adventure/videoIFrame.html", content, (template)=>{
@@ -120,19 +119,6 @@ const MyStream = new StreamManager();
 		onModifyUrl({"content": contentID});
 	}
 
-	// Unload content: When going back to list view
-	function onUnloadContent(){
-		
-		onModifyUrl({"content": ""});
-	}
-
-	// Modify URL based on view; Adding/removing content ID
-	function onModifyUrl(keyValuePairs={}) {
-		var newSearch = MyUrls.getModifiedSearchString(keyValuePairs);
-		let newPath = location.pathname + newSearch;
-		MyUrls.addWindowHistory({"path":newPath}, true); // use replace to avoid confusion with back button
-	}
-
 	// Show the description
 	function onShowDescription(){
 		setContentView("description");
@@ -144,7 +130,7 @@ const MyStream = new StreamManager();
 	}
 
 	// Set the current view of things
-	function setContentView(state)
+	function setContentView(state="default")
 	{
 		// Defaults to list view of content
 		switch(state)
@@ -152,6 +138,9 @@ const MyStream = new StreamManager();
 			case "content":
 				MyDom.showContent(".showOnContentView");
 				MyDom.hideContent(".hideOnContentView");
+				//Showing/hiding the next/prev buttons
+				var _next = MyAdventurePage.hasNextContent() ? MyDom.showContent("#nextButton") : MyDom.hideContent("#nextButton");
+				var _prev = MyAdventurePage.hasPrevContent() ? MyDom.showContent("#prevButton") : MyDom.hideContent("#prevButton");
 				break;
 			case "description":
 				MyDom.showContent(".showOnDescriptionView");
@@ -162,10 +151,49 @@ const MyStream = new StreamManager();
 				MyDom.showContent(".showOnListView");
 				MyDom.hideContent(".hideOnListView");
 				MyStream.onPauseVideo();
-				onUnloadContent();
+				onModifyUrl({"content": ""});
 				break;
 		}
+		// Make sure to set the current view state to whatever we are setting
+		MyAdventurePage.setViewState(state);
 	}
+
+	// Navigate back to the list
+	function onBackToList(){
+		setContentView("list");
+	}
+
+	// Get and set content based on index plus/minus
+	function onChangeContent(direction)
+	{
+		var currIdx = MyAdventurePage.Adventure?.CurrentContentIdx;
+		var nextIdx = (direction == "prev") ? currIdx-1 : currIdx+1;
+
+		var content = MyAdventurePage.getContentByIndex(nextIdx);
+		if(content != undefined){ 
+			onLoadContent(content?.ContentID);
+		} else {
+			MyLogger.LogError("Could not load next content");
+		}
+	}
+
+	// On navigate back to a content list
+	function onPrev(){
+		onChangeContent("prev");
+	}
+
+	// On going to the next video
+	function onNext(){
+		onChangeContent("next");
+	}
+
+	// Modify URL based on view; Adding/removing content ID
+	function onModifyUrl(keyValuePairs={}) {
+		var newSearch = MyUrls.getModifiedSearchString(keyValuePairs);
+		let newPath = location.pathname + newSearch;
+		MyUrls.addWindowHistory({"path":newPath}, true); // use replace to avoid confusion with back button
+	}
+
 
 ////////////////////////
 

@@ -17,65 +17,70 @@
 			<div class="menuItem left">
 				<div class="subMenuItem left" style="display:inline-block;">
 					<h1 style="margin:0px;" class="pointer">
-						<span id="homeIcon2" class="fa fa-chevron-circle-left pointer" style="font-size:smaller;" onclick="onReturnHome()"> Dejai's Adventures:</span>
+						<span class="fa fa-chevron-circle-left pointer" style="font-size:smaller;" onclick="onReturnHome()"></span>
+						<span id="homeIcon2" style="font-size:smaller;" onclick="onReturnHome()"> Dejai's Adventures:</span>
 					</h1>
 				</div>
 				<div class="subMenuItem right">
-					<span id="adventureTitle"></span> <br/>
-					<span class="" onclick="onShowDescription()">About this adventure</span>
+					<h3 id="adventureTitle2">
+						<span id="adventureTitle"></span>
+						<span id="moreDetailsIcon" class="hidden" style="padding-left:2%">
+							<i class="showDescriptionIcon fa fa-info-circle" aria-hidden="true" onclick="onShowDescription()"></i>						
+						</span>
+					</h3> 
 				</div>
 			</div>
 			<div class="menuItem right">
 				<p id="loginSection" style="color:orange;">		
-					<a class="authLink dlf_href_notextdec" href="" style="margin:0px;color:inherit;font-size: smaller;" target="_top"></a>
+					<a class="authLink dtk-href-no-textdec" href="" style="margin:0px;color:inherit;font-size: smaller;"></a>
 				</p>
 			</div>
 		</div>
-		<br style="clear:both;"/>
+		<hr style="clear:both;"/>
 	</div>
 
-	<!-- The Menu Section -->
-	<div id="menuPanel" class="centered">
-		<!-- Adventure Title & Description -->
-		<!-- <h1 id="adventureTitle"></h1> -->
-
-		<!-- Adventure Submenu -->
-		<div id="adventureMenuSection" class="dlf_center_block_xlarge centered" style="clear:both;">
-			<div id="videoNavigationSection">
-				<button id="prevVideoButton" style="float:left;" class="hidden navButton dlf_button_round_corners dlf_button_gray" onclick="onPrevVideo()">prev</button>
-				<button id="nextVideoButton" style="float:right;" class="hidden navButton dlf_button_round_corners dlf_button_blue" onclick="onNextVideo()">next</button>
-				<span id="videoTitleSection"><h2 id="videoTitle"></h2></span>
-			</div>
-			<div id="videoIndexCountSection" class="hidden pointer" style="padding:1% 0% 1% 2%;">
-				<span id="videoIndexCount"></span>
-				<span id="videoPickerShowIcon" style="color:forestgreen; font-size:110%;" class="fa fa-chevron-circle-down pointer" onclick="onOpenVideoPicker()"></span>
-				<span id="videoPickerHideIcon" style="color:red; font-size:110%;" class="fa fa-times pointer hidden" onclick="onCloseVideoPicker()"></span>
-			</div>
-			<p id="videoDescription" style="clear:both; margin:0px;padding:1%;"></p>
-			
-		</div>
-		<!-- Adventure Picker -->
-		<div id="videoPickerSection" class="hidden"></div>
+	<!-- The back button when looking at content or description -->
+	<div class="hidden showOnContentView showOnDescriptionView hideOnListView" >
+		<span id="backToList" onclick="onBackToList()" style="color:#1F51FF;">
+			<i class="fa fa-long-arrow-left" aria-hidden="true" ></i>&nbsp;Back
+		</span>
 	</div>
+	<br style="clear:both;"/>
+
+	<!-- The description of this adventure -->
+	<div class="hidden showOnDescriptionView hideOnListView hideOnContentView">
+		<h2 style="margin-top:0%;">Details</h2>
+		<p id="adventureDescription"></p>
+	</div>
+
+	<!-- <span id="backToContentList" onclick="onBackToContentList()" class="psuedoHyperlink hidden showOnContentLoaded">Back to content list</span> -->
 
 	<!-- Main Video Sections -->
-	<img id="loadingGif" class="hidden hideOnAdventureLoaded" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+	<div id="messageSection" class="centered">
+		<img id="loadingGif" class="hidden hideOnListView hideOnContentView hideOnDescriptionView" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+		<h3 id="errorMessage" class="hidden showOnErrorMessage"></h3>
+		<button class="loginButton hidden showOnLoginRequired">Login</button>
+	</div>
 
-	<div id="videoListTest" class="centered hidden showOnAdventureLoaded showOnListView hideOnDescriptionView hideOnContentView">
+	<div id="listOfContent" class="centered hidden showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView">
 	</div>
 
 	<!-- The video frame of this adventure -->
 	<div id="videoFrameSection" style="clear:both;" class="hidden showOnContentView hideOnDescriptionView hideOnListView">
-		<span onclick="onBackToContentList()" style="position:absolute;z-index:100;" class="psuedoHyperlink">Back to content list</span>
 		<div id="videoFramePanel" style="position: relative; padding-top: 30.25%;">
 		</div>
 	</div>
 
-	<!-- The description of this adventure -->
-	<div class="hidden showOnDescriptionView hideOnListView hideOnContentView">
-		<span onclick="onBackToContentList()" style="position:absolute;z-index:100;" class="psuedoHyperlink">Back to content list</span>
-		<p id="adventureDescription"></p>
+	<div class="hidden showOnContentView hideOnDescriptionView hideOnListView" style="color:#1F51FF;">
+		<span id="prevButton" style="float:left;" onclick="onPrev()">
+			<i class="fa fa-long-arrow-left" aria-hidden="true" ></i>&nbsp;Prev
+		</span>
+		<span id="nextButton" class="hidden" style="float:right;" onclick="onNext()">
+			Next&nbsp;<i class="fa fa-long-arrow-right" aria-hidden="true" ></i>
+		</span>
 	</div>
+
+	
 
 </body>
 <!-- Stream Embed API -->

@@ -1,83 +1,44 @@
-// Class to store the adventure
-class Adventure 
-{
-	constructor(cardDetails)
-	{
-		this.Name = cardDetails["name"] ?? "";
-		this.Description = cardDetails["desc"] ?? ""; 
-		this.Labels = cardDetails["labels"] ?? labels;
-		this.Checklists = cardDetails["checklists"] ?? [];
-
-		// Keep track of all videos in this adventure
-		this.Videos = [];
-		this.#setVideos();
-		this.CurrentVideoIndex = 0;
-
-		// This is set for every adventure & used to determine if an adventure is protected
-		this.ProtectedLabelID = "6220aa911cbc61053bd65b52";
-
-		// Used to allow a retry if videos didn't load
-		this.RetryCount = 0;
-	}
-
-	// Set the video objects based on checklist
-	#setVideos(){
-		this.Checklists?.[0]?.checkItems?.forEach((checklist)=>{
-			this.Videos.push(new Video(checklist));
-		});
-	}
-
-	// Set the current video
-	setCurrentVideoIndex(idx)
-	{
-		let index = (idx == undefined) ? this.CurrentVideoIndex : idx; 
-		this.CurrentVideoIndex = (index > this.Videos.length || index < 0) ? 0 : index;
-	}
-	// Get the current video to be played
-	getCurrentVideo(){ return this.Videos[this.CurrentVideoIndex]; }
-
-	// Get the index of a video based on video ID
-	getVideoIndex(videoID)
-	{
-		let index = 0;
-		this.Videos.forEach( (video, idx) =>{
-			if(video.VideoID == videoID)
-			{
-				index = idx;
-			}
-		});
-		return index;
-	}
-
-	// Confirm if adventure is protected
-	isProtected(){ return this.Labels.includes(this.ProtectedLabelID); }
-
-	// Check if we're on the same vieo
-	onSameVideo(idx){ return ( (idx ?? -1) == this.CurrentVideoIndex); }
-
-	// Can play the current video in this adventure
-	canPlayVideo()
-	{
-		let canPlay = true;
-		if(this.isProtected())
-		{
-			canPlay = false;
-			let video = this.getCurrentVideo() ?? {};
-			let videoIDProtected = MyCookies.getCookie( (video?.VideoID ?? "") ) ?? "";
-			if(videoIDProtected != "") {
-				video.VideoIDProtected = videoIDProtected;
-				canPlay = true;
-			}
-		}
-		return canPlay;
-	}
-}
-
+// Class to store the adventure page controls
 class AdventurePage
 {
 	constructor(){
 		this.Adventure = undefined;
 		this.CurrentVideo = undefined;
+		this.CurrentViewState = "default";
+
+		// List of view states that the page is showing
+		this.ViewStates = ["default"]
+	}
+
+	// Set the current adventure
+	setAdventure(adventure) {
+		this.Adventure = adventure;
+	}
+
+	// Set the index of the content that is loaded
+	setContentIdx(contentID){
+		var idx = this.Adventure?.Content?.findIndex( x => x.ContentID == contentID );
+		this.Adventure.CurrentContentIdx = (idx >= 1) ? (idx--) : 0;
+	}
+
+	// Set the view states
+	setViewState(state){
+		var currentState = this.ViewStates[this.ViewStates.length-1];
+		if( currentState != state ) {
+			this.ViewStates.push(state);
+		}
+		console.log(this.ViewStates);
+	}
+
+	// Get the last view
+	getLastViewState(){
+		var currentState = this.ViewStates.pop();
+		console.log("Popped current state: " + currentState);
+		if(this.ViewStates.length == 0){
+			this.ViewStates.push("default"); // always make sure default is first in list
+		}
+		var lastState = this.ViewStates[this.ViewStates.length-1];
+		return lastState;
 	}
 
 	// Get number of adventures
@@ -88,11 +49,9 @@ class AdventurePage
 	// Get content by index
 	getContentByIndex(idx){
 		var content = undefined;
-		if(this.Adventure.Content.length > idx){
-			console.log("Great enough index");
+		if(idx < this.Adventure.Content.length){
+			console.log("Getting the next content: " + idx);
 			content = this.Adventure.Content[idx];
-			console.log(this.Adventure.Content);
-			console.log(content);
 		}
 		return content;
 	}
@@ -102,25 +61,24 @@ class AdventurePage
 		return this.Adventure.getContent(contentID);
 	}
 
-	// Set the current adventure
-	setAdventure(adventure) {
-		this.Adventure = adventure;
+	// Has a "next" content to view
+	hasNextContent(){
+		var length = this.Adventure?.Content?.length;
+		var idx = this.Adventure?.CurrentContentIdx ?? 0;
+		return (length > 1 && idx < length-1);
 	}
 
-	// Get a specific video
-	getVideo(videoID){
-		if(videoID == undefined){
-			return;
-		}
-		console.log(videoID);
-		var video = this.Adventure.getContent(videoID);
-		return video;
+	// Has a "prev" content to view
+	hasPrevContent(){
+		var length = this.Adventure?.Content?.length;
+		var idx = this.Adventure?.CurrentContentIdx ?? 0;
+		return (length > 1 && idx > 0);
 	}
 }
 
 
 // Class to store the presentation of an adventure
-class Adventure2
+class Adventure
 {
 	//Build new adventure display
 	constructor(cardDetails){
@@ -152,6 +110,14 @@ class Adventure2
 		if(contentID == undefined){ return; }
 		var content = this.Content.filter(x => (x.ContentID == contentID))?.[0];
 		return content;
+	}
+
+	// Get the next content based on index
+	getNextContent(){
+		if( (this.CurrentContentIdx+1) < this.Content.length){
+			return this.Content[this.CurrentContentIdx+1];
+		}
+		return undefined;
 	}
 
 	// Get the date in a month/year format

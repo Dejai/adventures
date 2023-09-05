@@ -1,0 +1,11 @@
+<div data-adventure-id="{{AdventureID}}" class="adventureBlock">
+    <img src="{{CoverThumbnail}}" alt="img" onclick="onNavigateToAdventure(event)" onload="onPictureLoaded(this)"/>
+    <h3 style="margin:0%;">
+        <a class="adventureBlockLink dtk-href-no-textdec" href="./adventure/?id={{AdventureID}}">
+            {{Name}}
+            &nbsp;
+            <i class="fa fa-external-link openLinkIcon" aria-hidden="true"></i>
+        </a>
+    </h3>
+    <p id="firstParagraph_{{AdventureID}}" style="margin:0%;">{{FirstParagraph}}</p>
+</div>
