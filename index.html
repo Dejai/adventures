@@ -11,41 +11,38 @@
 <body class="dtk-theme-blackbg">	
 	<div>
 		<div class="menuSection dtk-menu-sticky dtk-theme-blackbg" >
-			<div class="menuItems">
-				<div class="menuItem left">
-					<div class="subMenuItem left" style="display:inline-block;">
-						<h1 style="margin:0px;" class="pointer">
-							<span id="homeIcon2" style="font-size:smaller;"> Dejai's Adventures</span>
-						</h1>
-					</div>
-					<div class="subMenuItem right">
-						<div class="searchSection hidden2 showOnAdventuresLoaded">
-							<div id="searchBarSection" class="searchBarSection hidden2 showOnAdventuresLoaded">
-								<div id="searchBar" class="searchBar searchPlaceholder" data-adv-placeholder="Search adventures ..." contenteditable="true" onkeyup="onSearchAdventures()" onfocus="onSearchFocus()" onblur="onSearchBlur()">
-									Search adventures ...
-								</div>
-								<i id="searchClearIcon" class="fa fa-times-circle pointer hidden" aria-hidden="true" style="color:red;" onclick="onClearSearch()"></i>
-							</div>
-							<i id="randomAdventureIcon" class="fa fa-random pointer" onclick="onSelectRandomAdventure()" aria-hidden="true" title="Select a random adventure"></i> 
-							<span id="randomAdventureText">Random Adventure</span>
+			<div class="menuItem">
+				<h1 style="margin:0px;" class="pointer">
+					<span id="homeIcon2" style="font-size:smaller;"> Dejai's Adventures</span>
+				</h1>
+			</div>
+			<div class="menuItem">
+				<div class="searchSection hidden2 showOnAdventuresLoaded">
+					<div id="searchBarSection" class="searchBarSection hidden2 showOnAdventuresLoaded">
+						<div id="searchBar" class="searchBar searchPlaceholder" data-adv-placeholder="Search adventures ..." contenteditable="true" onkeyup="onSearchAdventures()" onfocus="onSearchFocus()" onblur="onSearchBlur()">
+							Search adventures ...
 						</div>
+						<i id="searchClearIcon" class="fa fa-times-circle pointer hidden" aria-hidden="true" style="color:red;" onclick="onClearSearch()"></i>
 					</div>
+					<i id="randomAdventureIcon" class="fa fa-random pointer" onclick="onSelectRandomAdventure()" aria-hidden="true" title="Select a random adventure"></i> 
+					<span id="randomAdventureText">Random Adventure</span>
 				</div>
-				<div class="menuItem right">
-					<p id="loginSection" style="color:orange;">		
-						<a class="authLink dtk-href-no-textdec" href="" style="margin:0px;color:inherit;font-size: smaller;"></a>
-					</p>
-				</div>
+			</div>
+				
+			<div class="menuLogin">
+				<a class="authLink dtk-href-no-textdec" href=""></a>
 			</div>
 			<br style="clear:both;"/>
 		</div>
 
+		<p class="hideOnFirstLoaded" style="text-align:center;">
+			<img id="loading_gif" src="https://dejai.github.io/scripts/assets/img/loading1.gif" style="width:10%;height:10%;">
+		</p>
+
 		<div id="adventuresPanel" style="width:95%; margin:auto; overflow-y:scroll;">
 		</div>
 		
-		<p class="hideOnLoaded" style="text-align:center;">
-			<img id="loading_gif" src="https://dejai.github.io/scripts/assets/img/loading1.gif" style="width:10%;height:10%;">
-		</p>
+		
 	</div>
 </body>
 <!-- Common Scripts -->

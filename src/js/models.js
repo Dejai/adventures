@@ -3,10 +3,11 @@ class AdventurePage
 {
 	constructor(){
 		this.Adventure = undefined;
-		this.CurrentVideo = undefined;
-		this.CurrentViewState = "default";
 
-		// List of view states that the page is showing
+		// Determine the content currently being displayed
+		this.CurrentContent = undefined;
+
+		// Manage the view of the page
 		this.ViewStates = ["default"]
 	}
 
@@ -15,10 +16,10 @@ class AdventurePage
 		this.Adventure = adventure;
 	}
 
-	// Set the index of the content that is loaded
-	setContentIdx(contentID){
-		var idx = this.Adventure?.Content?.findIndex( x => x.ContentID == contentID );
-		this.Adventure.CurrentContentIdx = (idx >= 1) ? (idx--) : 0;
+	// Set the current content
+	setCurrentContent(content){
+		if(content == undefined){ return; }
+		this.CurrentContent = content;
 	}
 
 	// Set the view states
@@ -30,14 +31,12 @@ class AdventurePage
 		console.log(this.ViewStates);
 	}
 
-	// Get the last view
+	// Go back to the last view state
 	getLastViewState(){
-		var currentState = this.ViewStates.pop();
-		console.log("Popped current state: " + currentState);
-		if(this.ViewStates.length == 0){
-			this.ViewStates.push("default"); // always make sure default is first in list
-		}
-		var lastState = this.ViewStates[this.ViewStates.length-1];
+		// Pop off the current state first
+		this.ViewStates.pop();
+		var lastState = this.ViewStates[this.ViewStates.length-1] ?? "default";
+		this.setViewState(lastState);
 		return lastState;
 	}
 
@@ -46,31 +45,29 @@ class AdventurePage
 		return this.Adventure.Content.length;
 	}
 
-	// Get content by index
 	getContentByIndex(idx){
-		var content = undefined;
-		if(idx < this.Adventure.Content.length){
-			console.log("Getting the next content: " + idx);
-			content = this.Adventure.Content[idx];
-		}
+		var content = this.Adventure.getContent("index", idx);
+		this.setCurrentContent(content);
 		return content;
 	}
 
 	// Get content by index
 	getContentByID(contentID){
-		return this.Adventure.getContent(contentID);
+		var content = this.Adventure.getContent("contentID", contentID);
+		this.setCurrentContent(content);
+		return content;
 	}
 
 	// Has a "next" content to view
 	hasNextContent(){
-		var length = this.Adventure?.Content?.length;
+		var length = this.getContentCount(); 
 		var idx = this.Adventure?.CurrentContentIdx ?? 0;
 		return (length > 1 && idx < length-1);
 	}
 
 	// Has a "prev" content to view
 	hasPrevContent(){
-		var length = this.Adventure?.Content?.length;
+		var length = this.getContentCount(); 
 		var idx = this.Adventure?.CurrentContentIdx ?? 0;
 		return (length > 1 && idx > 0);
 	}
@@ -85,7 +82,7 @@ class Adventure
 		this.AdventureID = cardDetails["id"] ?? "";
 		this.Name = cardDetails["name"] ?? "";
 		this.Description = cardDetails["desc"] ?? "";
-		// this.IsProtected = cardDetails["idLabels"]?.includes(SECURE_LABEL_ID) ?? "";
+
 		this.Date = new Date(cardDetails["start"]) ?? "";
 		this.Labels = cardDetails["idLabels"] ?? "";
 		this.MonthYear = this.getMonthYear();
@@ -106,10 +103,31 @@ class Adventure
 	}
 
 	// Get a video by video ID
-	getContent(contentID) {
-		if(contentID == undefined){ return; }
-		var content = this.Content.filter(x => (x.ContentID == contentID))?.[0];
+	getContent(filterType, filter){
+		var content = undefined;
+		if(filterType == undefined){
+			return content;
+		}
+		// Get content based on filter type
+		switch(filterType){
+			case "contentID":
+				content = this.Content.filter(x => (x.ContentID == filter))?.[0];
+				break;
+			case "index":
+				content = (this.Content.length > filter) ? this.Content[filter] : undefined; 
+				break;
+			default:
+				MyLogger.LogInfo("Can't get content by type: " + filterType);
+		}
+		this.setCurrentContentIndex(content);
 		return content;
+	}
+
+	// Set the current content index (for next/prev actions)
+	setCurrentContentIndex(content){
+		if(content == undefined) { return; }
+		var idx = this.Content?.findIndex( x => x.ContentID == content.ContentID );
+		this.CurrentContentIdx = (idx >= 0) ? idx : 0;
 	}
 
 	// Get the next content based on index

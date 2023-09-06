@@ -5,78 +5,71 @@
 	<base href="../" target="_blank">
 	<title>Dejai's Adventures</title>
 	<link rel="stylesheet" type="text/css" href="src/css/main.css">
-	<link rel="stylesheet" type="text/css" href="adventure/src/adventure.css">
+	<link rel="stylesheet" type="text/css" href="src/css/adventure.css">
 	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dtk-styles.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body class="theme_black_bg">
 
 	<div class="menuSection dtk-menu-sticky dtk-theme-blackbg">
-		<div class="menuItems">
-			<div class="menuItem left">
-				<div class="subMenuItem left" style="display:inline-block;">
-					<h1 style="margin:0px;" class="pointer">
-						<span class="fa fa-chevron-circle-left pointer" style="font-size:smaller;" onclick="onReturnHome()"></span>
-						<span id="homeIcon2" style="font-size:smaller;" onclick="onReturnHome()"> Dejai's Adventures:</span>
-					</h1>
-				</div>
-				<div class="subMenuItem right">
-					<h3 id="adventureTitle2">
-						<span id="adventureTitle"></span>
-						<span id="moreDetailsIcon" class="hidden" style="padding-left:2%">
-							<i class="showDescriptionIcon fa fa-info-circle" aria-hidden="true" onclick="onShowDescription()"></i>						
-						</span>
-					</h3> 
-				</div>
-			</div>
-			<div class="menuItem right">
-				<p id="loginSection" style="color:orange;">		
-					<a class="authLink dtk-href-no-textdec" href="" style="margin:0px;color:inherit;font-size: smaller;"></a>
-				</p>
-			</div>
+		<div class="menuItem">
+			<h1 style="margin:0px;" class="pointer">
+				<span class="fa fa-chevron-circle-left pointer" style="font-size:smaller;" onclick="onReturnHome()"></span>
+				<span id="homeIcon2" style="font-size:smaller;" onclick="onReturnHome()">Dejai's Adventures:</span>
+			</h1>
 		</div>
-		<hr style="clear:both;"/>
+		<div class="menuItem">
+			<h3 id="adventureTitle2">
+				<span id="adventureTitle"></span>
+				<span id="moreDetailsIcon" class="hidden">
+					<i class="showDescriptionIcon fa fa-info-circle" aria-hidden="true" onclick="onShowDescription()"></i>						
+				</span>
+			</h3> 
+		</div>
+		<div class="menuLogin">
+			<a class="authLink dtk-href-no-textdec" href=""></a>
+		</div>
+		<hr class="menuSeparator" style="clear:both;"/>
 	</div>
 
 	<!-- The back button when looking at content or description -->
 	<div class="hidden showOnContentView showOnDescriptionView hideOnListView" >
-		<span id="backToList" onclick="onBackToList()" style="color:#1F51FF;">
-			<i class="fa fa-long-arrow-left" aria-hidden="true" ></i>&nbsp;Back
+		<span onclick="onBack()" style="color:#1F51FF; position:absolute;">
+			<i class="backIcon fa-solid fa-share"></i>&nbsp;Back
 		</span>
+		<span id="contentTitle" class="hidden centered showOnContentView hideOnDescriptionView"></span>
 	</div>
-	<br style="clear:both;"/>
+	<span style="clear:both;"></span>
 
 	<!-- The description of this adventure -->
-	<div class="hidden showOnDescriptionView hideOnListView hideOnContentView">
-		<h2 style="margin-top:0%;">Details</h2>
+	<div id="descriptionSection" class="hidden centered showOnDescriptionView hideOnListView hideOnContentView">
+		<h3 style="margin-top:0%;">About this Adventure</h3>
 		<p id="adventureDescription"></p>
 	</div>
 
-	<!-- <span id="backToContentList" onclick="onBackToContentList()" class="psuedoHyperlink hidden showOnContentLoaded">Back to content list</span> -->
-
-	<!-- Main Video Sections -->
+	<!-- Messages related to the adventure/content -->
 	<div id="messageSection" class="centered">
-		<img id="loadingGif" class="hidden hideOnListView hideOnContentView hideOnDescriptionView" style="width:100px;height:100px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+		<img id="loadingGif" class="hidden hideOnListView hideOnContentView hideOnDescriptionView" style="width:10%;height:10%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
 		<h3 id="errorMessage" class="hidden showOnErrorMessage"></h3>
 		<button class="loginButton hidden showOnLoginRequired">Login</button>
 	</div>
 
-	<div id="listOfContent" class="centered hidden showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView">
-	</div>
+	<!-- The list of Content -->
+	<div id="listOfContent" class="centered hidden showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView"></div>
 
 	<!-- The video frame of this adventure -->
-	<div id="videoFrameSection" style="clear:both;" class="hidden showOnContentView hideOnDescriptionView hideOnListView">
-		<div id="videoFramePanel" style="position: relative; padding-top: 30.25%;">
-		</div>
+	<div id="contentViewSection" class="hidden showOnContentView hideOnDescriptionView hideOnListView">
+		<div id="videoFramePanel"></div>
 	</div>
 
-	<div class="hidden showOnContentView hideOnDescriptionView hideOnListView" style="color:#1F51FF;">
+	<div class="hidden showOnContentView hideOnDescriptionView hideOnListView" style="color:#1F51FF; margin-top:10%; ">
 		<span id="prevButton" style="float:left;" onclick="onPrev()">
-			<i class="fa fa-long-arrow-left" aria-hidden="true" ></i>&nbsp;Prev
+			<i class="fa-solid fa-arrow-left-long"></i>&nbsp;Prev
 		</span>
 		<span id="nextButton" class="hidden" style="float:right;" onclick="onNext()">
-			Next&nbsp;<i class="fa fa-long-arrow-right" aria-hidden="true" ></i>
+			Next&nbsp;<i class="fa-solid fa-arrow-right-long"></i>
 		</span>
 	</div>
 

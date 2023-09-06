@@ -33,6 +33,7 @@ const MyStream = new StreamManager();
 	async function onGetAdventure(adventureID)
 	{
 		MyDom.showContent("#loadingGif");
+
 		try {
 			MyTrello.GetCard(adventureID, async (resp) => {				
 				
@@ -40,7 +41,7 @@ const MyStream = new StreamManager();
 				
 				// Set the name & description
 				MyDom.setContent("#adventureTitle", {"innerHTML":adventure.Name});
-				MyDom.setContent("#adventureDescription", {"innerHTML":adventure.Description});
+				MyDom.setContent("#adventureDescription", {"innerHTML":adventure.MoreDetails});
 				MyDom.showContent("#moreDetailsIcon");
 
 				// Get the adventure Videos for this adventure
@@ -88,7 +89,8 @@ const MyStream = new StreamManager();
 	// Link from content list to content view
 	function onOpenContent(event){
 		var target = event.target;
-		var contentID = target.getAttribute("data-content-id");
+		var parent = target.closest(".contentPreviewBlock");
+		var contentID = parent?.getAttribute("data-content-id");
 
 		// First check if the content is already loaded (if so, just show the content screen)
 		var existingContent = document.querySelector(`iframe[data-content-id='${contentID}']`);
@@ -105,7 +107,9 @@ const MyStream = new StreamManager();
 	function onLoadContent(contentID)
 	{
 		var content = MyAdventurePage.getContentByID(contentID);
-		MyAdventurePage.setContentIdx(contentID);
+
+		// Set content title
+		MyDom.setContent("#contentTitle", {"innerHTML": content?.Name });
 		
 		if(content instanceof StreamVideo){
 			MyTemplates.getTemplate("src/templates/adventure/videoIFrame.html", content, (template)=>{
@@ -159,8 +163,12 @@ const MyStream = new StreamManager();
 	}
 
 	// Navigate back to the list
-	function onBackToList(){
-		setContentView("list");
+	function onBack(){
+		var lastViewState = MyAdventurePage.getLastViewState();
+		if(lastViewState == "content"){
+			MyStream.onPlayVideo();
+		}
+		setContentView(lastViewState);
 	}
 
 	// Get and set content based on index plus/minus
@@ -197,23 +205,6 @@ const MyStream = new StreamManager();
 
 ////////////////////////
 
-/***************** ACTIONS / EVENTS ********************** */
-
-	// Select the next video
-	function onNextVideo()
-	{
-		// Don't do anything if we are at the end of the list of videos
-		if(MyAdventure.CurrentVideoIndex >= MyAdventure.Videos.length)
-			return
-	}
-
-	// Select the previous video
-	function onPrevVideo()
-	{
-		// Don't do anything if we are at start
-		if(MyAdventure.CurrentVideoIndex == 0)
-			return 
-	}
 
 /*********************** Stream API Helper *****************************/
 

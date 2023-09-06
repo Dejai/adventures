@@ -5,6 +5,21 @@
 #videoTitle { clear:both; padding:1%; display:inline; margin:0px; }
 .videoAuthor { font-size:50%; font-style:italic; }
 .showDescriptionIcon { color: limegreen; vertical-align: middle; }
+#moreDetailsIcon { padding-left:0.5% }
+#contentTitle { display:inline-block; width: 100%; }
+
+/**** CONTENT PREVIEW: The blocks to represent */
+.contentPreviewBlock { position:relative; width:90%; height:170px; margin:auto; margin-bottom:5%; text-align:center; }
+.contentPreviewBlock img { width: 100%; height:100%; }
+.contentPreviewBlock .playButtonSection { position:absolute; width:100%; height:100%; text-align:center; }
+.contentPreviewBlock .playButtonIcon { font-size:170%; display: flex; width:100%; height:100%; align-items: center; justify-content: center; }
+
+.backIcon { transform: rotateY(180deg); }
+
+/**** CONTENT VIEW: Viewing the individual content  */
+#contentViewSection { clear: both; position: relative; height: 100%; height: 350px; }
+#contentViewSection .backIconSection { position:absolute; z-index:100; top:0; }
+
 
 /**** VIDEO NAV: Navigating between videos **********/
 #videoNavigationSection { width: 90%; margin:auto; }

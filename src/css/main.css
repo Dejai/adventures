@@ -5,7 +5,6 @@ body.theme_black_bg { background-color:black; color:white; }
 #homeIcon { text-align: left; font-size: 20px; cursor: pointer; float:none; display:block; padding-top: 1%; padding-left: 1%; }
 #homeIcon::after { content:" home"; }
 
-
 .nav-pills{
 	width: 450px;
   }
@@ -22,21 +21,29 @@ body.theme_black_bg { background-color:black; color:white; }
 	border-radius: 30px;
 	height: 100px;
   }
-
 .psuedoHyperlink { cursor:pointer; text-decoration:none; color:blue; }
 
  /* Menu Sections */
  .menuSection { margin-bottom:2%; padding-bottom:2%; }
+ .menuSeparator { clear:both; }
+
+
+ .menuItem { float:left; width:90%; text-align:left; }
+ .menuLogin { position: fixed; top:2%; right:2%; width:100%; z-index:1000; text-align:right; }
+ .menuLogin .authLink { color:orange !important; font-size: smaller; }
+
+
  .menuItems { text-align:center; clear:both; }
- .menuItem.left { float:left; width:80%;text-align:left; }
+ .menuItem.left { float:left; width:89%; text-align:left; }
+ .menuItem.right { float:right; width:10%; text-align:left; text-align:left; }
  .menuItem .subMenuItem { display: block; }
  .menuItem .subMenuItem.left { width: 100%; }
  .menuItem .subMenuItem.right { width: 100%; }
- .menuItem.right { float:right; width:15%; text-align:left; text-align:right; }
 
 /****** HOME PAGE: The Title section ********/
-#adventureTitle { padding-left:7%; margin-top:1% }
-.adventureSubtitle { font-size: 24px; }
+/* #adventureTitle { padding-left:7%; margin-top:1% } */
+#adventureTitle { word-break: break-word; }
+
 .titleSection { margin-top:1%; text-align:center; }
 .titleSection h1.title { float:left; }
 
@@ -57,7 +64,7 @@ body.theme_black_bg { background-color:black; color:white; }
 #searchBar { font-size: 12px; }
 
 /****** HOME PAGE: The Adventure BlocksList ********/
-.adventureBlock { height:300px; margin-bottom:3%; opacity:0%; transition: opacity 2s ease; }
+.adventureBlock { height:250px; margin-bottom:5%; opacity:0%; transition: opacity 2s ease; padding-bottom:2%; }
 .adventureBlock.visible { opacity: 100%; }
 .adventureBlock img { width:100%; height:80%; }
 .adventureBlockLink { color: #1F51FF !important; }

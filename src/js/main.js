@@ -21,24 +21,6 @@ const MyTrello = new TrelloWrapper("videos");
 
 /******** GETTING STARTED: Loading the Adventures & Labels; Check if logged in user***************************/
 
-	// On picture loaded
-	function onPictureLoaded(img){
-		var parent = img.closest(".adventureBlock");
-		setTimeout( () => { 
-			parent.classList.add("visible");
-		}, 500);
-	}
-
-	// onNavigateToAdventure
-	function onNavigateToAdventure(event){
-		var target = event.target;
-		var parent = target.closest(".adventureBlock");
-		var adventureID = parent.getAttribute("data-adventure-id");
-		if(adventureID != undefined){
-			MyUrls.navigateTo(`/adventure/?id=${adventureID}`);
-		}
-	}
-
 	// Load the set of adventures on the home page
 	async function onLoadAdventures(){
 
@@ -46,11 +28,14 @@ const MyTrello = new TrelloWrapper("videos");
 			MyTrello.GetCardsByListName("Adventures", async (response)=> {
 
 				var displayElements = response.map(x => new Adventure(x));
-				console.log(displayElements);
+
+				if(displayElements.length == 0){
+					throw new Error("Nothing returned");
+				}
+
 				displayElements.sort( (a,b) => {
 					return (b.Date - a.Date);
 				});
-				console.log(displayElements);
 
 				// Load the videos
 				for(var idx = 0; idx < displayElements.length; idx++)
@@ -63,7 +48,7 @@ const MyTrello = new TrelloWrapper("videos");
 						adventure.CoverThumbnail = firstVideo.Thumbnail;
 					}
 					// Add adventure as we go
-					MyTemplates.getTemplate("src/templates/adventureBlock.html", adventure, (template) => {
+					MyTemplates.getTemplate("src/templates/main/adventureBlock.html", adventure, (template) => {
 						MyDom.setContent("#adventuresPanel", {"innerHTML":template}, true);
 					});
 				}
@@ -76,6 +61,7 @@ const MyTrello = new TrelloWrapper("videos");
 			});
 		} catch (err) {
 			MyDom.setContent("#adventuresPanel", {"innerHTML":"<h3>Could not load adventures</h3>"} );
+			MyDom.hideContent(".hideOnLoaded");
 			MyLogger.LogError(err);
 		}
 	}
@@ -157,6 +143,25 @@ const MyTrello = new TrelloWrapper("videos");
 	{
 		event.preventDefault();
 		event.returnValue='';
+	}
+
+	// On picture loaded
+	function onPictureLoaded(img){
+		var parent = img.closest(".adventureBlock");
+		setTimeout( () => { 
+			parent.classList.add("visible");
+			MyDom.hideContent(".hideOnFirstLoaded");
+		}, 500);
+	}
+
+	// onNavigateToAdventure
+	function onNavigateToAdventure(event){
+		var target = event.target;
+		var parent = target.closest(".adventureBlock");
+		var adventureID = parent.getAttribute("data-adventure-id");
+		if(adventureID != undefined){
+			MyUrls.navigateTo(`/adventure/?id=${adventureID}`);
+		}
 	}
 
 	// Adds a listener for keystrokes (on keyup);
