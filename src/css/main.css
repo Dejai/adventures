@@ -29,7 +29,7 @@ body.theme_black_bg { background-color:black; color:white; }
 
 
  .menuItem { float:left; width:90%; text-align:left; }
- .menuLogin { position: fixed; top:2%; right:2%; width:100%; z-index:1000; text-align:right; }
+ .menuLogin { position: fixed; top:2%; right:2%; z-index:1000; text-align:right; }
  .menuLogin .authLink { color:orange !important; font-size: smaller; }
 
 
@@ -64,9 +64,10 @@ body.theme_black_bg { background-color:black; color:white; }
 #searchBar { font-size: 12px; }
 
 /****** HOME PAGE: The Adventure BlocksList ********/
-.adventureBlock { height:250px; margin-bottom:5%; opacity:0%; transition: opacity 2s ease; padding-bottom:2%; }
+.adventureBlock { margin-bottom:7%; opacity:0%; transition: opacity 2s ease; padding-bottom:2%; }
+.adventureBlockImageSection { height:170px; }
 .adventureBlock.visible { opacity: 100%; }
-.adventureBlock img { width:100%; height:80%; }
+.adventureBlock img { width:100%; height:100%; }
 .adventureBlockLink { color: #1F51FF !important; }
 .openLinkIcon { font-size:smaller !important; }
 .adventureDate { font-size:smaller !important; font-style:italic;}

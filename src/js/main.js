@@ -27,12 +27,20 @@ const MyTrello = new TrelloWrapper("videos");
 		try {
 			MyTrello.GetCardsByListName("Adventures", async (response)=> {
 
+				console.log(response);
+
 				var displayElements = response.map(x => new Adventure(x));
 
+				console.log(displayElements);
+
+				// If nothing, then show error message
 				if(displayElements.length == 0){
-					throw new Error("Nothing returned");
+					onCantLoadAdventures("No adventures returned!");
+					MyDom.hideContent(".hideOnFirstLoaded");
+					return;
 				}
 
+				// Sort the adventures
 				displayElements.sort( (a,b) => {
 					return (b.Date - a.Date);
 				});
@@ -60,10 +68,16 @@ const MyTrello = new TrelloWrapper("videos");
 				onSearchBlur();
 			});
 		} catch (err) {
-			MyDom.setContent("#adventuresPanel", {"innerHTML":"<h3>Could not load adventures</h3>"} );
-			MyDom.hideContent(".hideOnLoaded");
+			onCantLoadAdventures(err);
 			MyLogger.LogError(err);
+		} finally { 
 		}
+	}
+
+	// Unable to load adventures
+	function onCantLoadAdventures(details=""){
+		MyLogger.Notify("#adventuresPanel", `<h3><i class="fa-regular fa-face-frown"></i> Sorry, could not load adventures.</h3>`);
+		MyLogger.LogError(details);
 	}
 
 /********** SEARCH: Filtering & Searching for games **************/

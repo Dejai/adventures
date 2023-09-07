@@ -7,7 +7,6 @@
 	<link rel="stylesheet" type="text/css" href="src/css/main.css">
 	<link rel="stylesheet" type="text/css" href="src/css/adventure.css">
 	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dtk-styles.css">
-	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -24,7 +23,7 @@
 			<h3 id="adventureTitle2">
 				<span id="adventureTitle"></span>
 				<span id="moreDetailsIcon" class="hidden">
-					<i class="showDescriptionIcon fa fa-info-circle" aria-hidden="true" onclick="onShowDescription()"></i>						
+					<i class="showDescriptionIcon showOnContentView showOnListView hideOnDescriptionView fa fa-info-circle" aria-hidden="true" onclick="onShowDescription()"></i>						
 				</span>
 			</h3> 
 		</div>
@@ -35,11 +34,11 @@
 	</div>
 
 	<!-- The back button when looking at content or description -->
-	<div class="hidden showOnContentView showOnDescriptionView hideOnListView" >
-		<span onclick="onBack()" style="color:#1F51FF; position:absolute;">
+	<div id="subMenuSection" class="hidden showOnContentView showOnDescriptionView hideOnListView showOnError" >
+		<span id="backIconSection" onclick="onBack()" style="color:#1F51FF; position:absolute;">
 			<i class="backIcon fa-solid fa-share"></i>&nbsp;Back
 		</span>
-		<span id="contentTitle" class="hidden centered showOnContentView hideOnDescriptionView"></span>
+		<span id="contentTitle" class="hidden centered showOnContentView hideOnDescriptionView"></span> 
 	</div>
 	<span style="clear:both;"></span>
 
@@ -51,8 +50,9 @@
 
 	<!-- Messages related to the adventure/content -->
 	<div id="messageSection" class="centered">
-		<img id="loadingGif" class="hidden hideOnListView hideOnContentView hideOnDescriptionView" style="width:10%;height:10%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
-		<h3 id="errorMessage" class="hidden showOnErrorMessage"></h3>
+		<h3 id="pageMessages">
+			<img id="loadingGif" class="hidden hideOnListView hideOnContentView hideOnDescriptionView" style="width:10%;height:10%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+		</h3>
 		<button class="loginButton hidden showOnLoginRequired">Login</button>
 	</div>
 
@@ -63,12 +63,11 @@
 	<div id="contentViewSection" class="hidden showOnContentView hideOnDescriptionView hideOnListView">
 		<div id="videoFramePanel"></div>
 	</div>
-
-	<div class="hidden showOnContentView hideOnDescriptionView hideOnListView" style="color:#1F51FF; margin-top:10%; ">
-		<span id="prevButton" style="float:left;" onclick="onPrev()">
+	<div id="contentNavigationSection" class="hidden showOnContentView hideOnDescriptionView hideOnListView">
+		<span id="prevButton" class="navButton" style="float:left;" onclick="onPrev()">
 			<i class="fa-solid fa-arrow-left-long"></i>&nbsp;Prev
 		</span>
-		<span id="nextButton" class="hidden" style="float:right;" onclick="onNext()">
+		<span id="nextButton" class="navButton" style="float:right;" onclick="onNext()">
 			Next&nbsp;<i class="fa-solid fa-arrow-right-long"></i>
 		</span>
 	</div>

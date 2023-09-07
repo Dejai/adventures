@@ -9,6 +9,9 @@ class AdventurePage
 
 		// Manage the view of the page
 		this.ViewStates = ["default"]
+
+		// Keep track of scroll location
+		this.Scroll = { "X": 0, "Y": 0}
 	}
 
 	// Set the current adventure
@@ -70,6 +73,12 @@ class AdventurePage
 		var length = this.getContentCount(); 
 		var idx = this.Adventure?.CurrentContentIdx ?? 0;
 		return (length > 1 && idx > 0);
+	}
+
+	// Set the scroll values
+	setScroll(x, y) {
+		this.Scroll.X = x;
+		this.Scroll.Y = y;
 	}
 }
 
@@ -158,7 +167,8 @@ class StreamVideo
 	constructor(videoObj) {
 		this.AdventureID = videoObj?.adventureID ?? "";
 		this.ContentID = videoObj?.uid ?? "";
-		this.VideoID = videoObj?.uid ?? "";
+		this.Creator = videoObj?.creator ?? "";
+		// this.VideoID = videoObj?.uid ?? "";
 		this.Name = videoObj?.name ?? "";
 		this.Description = videoObj?.description ?? "";
 		this.Duration = videoObj?.duration ?? 0;
@@ -170,27 +180,26 @@ class StreamVideo
 	}
 }
 
-// Class to store the video details
-class Video 
-{
-	constructor(videoDetails)
-	{
-		let parts = videoDetails["name"].split(" ~ ");
-		let videoURL = new URL(parts[1]) ?? "";
-		let videoID = videoURL.pathname.substring(1).split("/")[0];
+// // Class to store the video details
+// class Video 
+// {
+// 	constructor(videoDetails)
+// 	{
+// 		let parts = videoDetails["name"].split(" ~ ");
+// 		let videoURL = new URL(parts[1]) ?? "";
+// 		let videoID = videoURL.pathname.substring(1).split("/")[0];
 
-		this.Name = parts[0] ?? "";
-		this.Link = parts[1] ?? "";
-		this.VideoID = videoID ?? "";
-		this.VideoIDProtected = undefined;
-		this.Description = parts[2] ?? "";
-		this.Author = parts[3] ?? "";
-	}
+// 		this.Name = parts[0] ?? "";
+// 		this.Link = parts[1] ?? "";
+// 		this.VideoID = videoID ?? "";
+// 		this.VideoIDProtected = undefined;
+// 		this.Description = parts[2] ?? "";
+// 		this.Author = parts[3] ?? "";
+// 	}
 
-	// Get Video ID
-	getVideoID(){ return (this.VideoIDProtected ?? this.VideoID)}
+// 	// Get Video ID
+// 	getVideoID(){ return (this.VideoIDProtected ?? this.VideoID)}
 
-	// Set protected ID
-	setProtectedID(id){ this.VideoIDProtected = id; }
-}
-
+// 	// Set protected ID
+// 	setProtectedID(id){ this.VideoIDProtected = id; }
+// }
