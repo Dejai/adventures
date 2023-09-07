@@ -147,8 +147,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		MyStream.onVideoEnded( ()=> {
 			if(MyAdventurePage.hasNextContent()){
 				onNext();
-			} else {
-				onBack();
 			}
 		});
 	}
