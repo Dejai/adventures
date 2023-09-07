@@ -5,12 +5,12 @@ var SECURE_LABEL_ID = "6220aa911cbc61053bd65b54"
 var ListOfAdventures = [];
 
 const MyTrello = new TrelloWrapper("videos");
+const MyHomePage = new AdventureHomePage();
 
 /*********************** GETTING STARTED *****************************/
 
 	// Once doc is ready
 	MyDom.ready( async() => {
-
 		// Get login details
 		await MyAuth.onGetLoginDetails();
 		
@@ -27,11 +27,7 @@ const MyTrello = new TrelloWrapper("videos");
 		try {
 			MyTrello.GetCardsByListName("Adventures", async (response)=> {
 
-				console.log(response);
-
 				var displayElements = response.map(x => new Adventure(x));
-
-				console.log(displayElements);
 
 				// If nothing, then show error message
 				if(displayElements.length == 0){
@@ -44,6 +40,9 @@ const MyTrello = new TrelloWrapper("videos");
 				displayElements.sort( (a,b) => {
 					return (b.Date - a.Date);
 				});
+
+				// Add the adventures to home page instance
+				MyHomePage.addAdventures(displayElements);
 
 				// Load the videos
 				for(var idx = 0; idx < displayElements.length; idx++)
@@ -63,9 +62,6 @@ const MyTrello = new TrelloWrapper("videos");
 				// Once loaded, show things that should be visible now
 				MyDom.showContent(".showOnAdventuresLoaded");
 				MyDom.hideContent(".hideOnLoaded");
-
-				// Blur the search (to set the default text);
-				onSearchBlur();
 			});
 		} catch (err) {
 			onCantLoadAdventures(err);
@@ -82,72 +78,27 @@ const MyTrello = new TrelloWrapper("videos");
 
 /********** SEARCH: Filtering & Searching for games **************/
 
-    // Get the search related values
-    function onGetSearchValues()
-    {
-        let placeholder = document.getElementById("searchBar")?.getAttribute("data-adv-placeholder");
-        let filterValue = MyDom.getContent("#searchBar")?.innerText ?? "";
-        filterValue = (filterValue == "" || filterValue == placeholder) ? " " : filterValue;
-        return { "Filter": filterValue, "Placeholder": placeholder }
-    }
-
-	    // Filter the list of games
+	// Filter the list of games
     function onSearchAdventures()
     {
-        let search = onGetSearchValues();
-
 		// Show option to clear search;
-		if(search.Filter != " "){ MyDom.showContent("#searchClearIcon"); }
-
-        document.querySelectorAll(".adventure_block")?.forEach( (item)=>{
-            
-			let innerText = item.innerText.toUpperCase().replace("\n", " ");
-            let searchText = search.Filter.toUpperCase().trim();
-
-            if(!innerText.includes(searchText))
-            {
-                item.classList.add("hidden");
-            }
-            else
-            {
-                item.classList.remove("hidden");
-            }
-        }); 
-
-    }
-
-    // Focusing into the search bar
-    function onSearchFocus()
-    {
-        let search = onGetSearchValues();
-		
-        if(search.Filter == " ")
-        {
-            MyDom.setContent("#searchBar", {"innerText":""});
-        }
-        MyDom.addClass("#searchBar", "searchText");
-        MyDom.removeClass("#searchBar", "searchPlaceholder");
-    }
-
-    // Blurring from the search bar
-    function onSearchBlur()
-    {
-        let search = onGetSearchValues();
-        if(search.Filter == " ")
-        {
-            MyDom.addClass("#searchBar", "searchPlaceholder");
-            MyDom.removeClass("#searchBar", "searchText");
-            MyDom.setContent("#searchBar", {"innerText":search.Placeholder});
-			MyDom.hideContent("#searchClearIcon");
-        }        
+		var searchFilter = MyDom.getContent("#searchBarInput")?.value ?? "";
+		if(searchFilter != ""){ MyDom.showContent("#searchClearIcon"); }
+		var contentIds = MyHomePage.searchContent(searchFilter);
+		// Loop through content and show those that match
+		document.querySelectorAll(".adventureBlock")?.forEach( (block) => {
+			var contentId = block.getAttribute("data-adventure-id");
+			var _content = !(contentIds.includes(contentId)) ? block.classList.add("hidden") : block.classList.remove("hidden");
+		});
     }
 
 	// Clear the search
 	function onClearSearch()
 	{
-        MyDom.setContent("#searchBar" ,{"innerText":""});
+        MyDom.setContent("#searchBarInput" ,{"value":""});
 		onSearchAdventures();
-		onSearchBlur();
+		MyDom.hideContent("#searchClearIcon");
+		document.querySelector("#searchBarInput")?.blur();
 	}
 
 /********************* LISTENERS *************************************/

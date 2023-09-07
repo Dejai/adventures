@@ -56,6 +56,9 @@ body.theme_black_bg { background-color:black; color:white; }
 
 #searchBarSection { text-align:left; border-radius:77px; border:1px solid gray; background-color:white; padding:1%; width:50%; }
 .searchBarSection { display:inline-block; }
+#searchBarInput { border: none; }
+#searchBarInput:focus{ outline: none; }
+
 .searchBar { text-align:left; width:85%; display:inline-block; }
 #searchClearIcon { float:right; color: red !important; }
 .searchBar:focus { border: none; outline: none; }

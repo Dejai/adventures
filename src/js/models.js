@@ -1,3 +1,30 @@
+// Class to store the adventures home page
+class AdventureHomePage
+{
+	constructor () {
+		this.AdventureCount = 0;
+
+		this.Adventures = [];
+	}
+
+	// Add adventure
+	addAdventures(adventures){
+		adventures?.forEach( (adv) => {
+			if(adv instanceof Adventure){
+				this.Adventures.push(adv);
+			}
+		});
+	}
+
+	// Search content based on name & description
+	searchContent(filter) {
+		var filterUpper = filter.toUpperCase();
+		var matchingContentIds = this.Adventures.filter(x => x.Name.toUpperCase().includes(filterUpper) || x.Description.toUpperCase().includes(filterUpper) ).map(y => y.AdventureID);
+		return matchingContentIds;
+	}
+
+}
+
 // Class to store the adventure page controls
 class AdventurePage
 {
@@ -179,27 +206,3 @@ class StreamVideo
 		this.Thumbnail = videoObj?.thumbnail ?? "";
 	}
 }
-
-// // Class to store the video details
-// class Video 
-// {
-// 	constructor(videoDetails)
-// 	{
-// 		let parts = videoDetails["name"].split(" ~ ");
-// 		let videoURL = new URL(parts[1]) ?? "";
-// 		let videoID = videoURL.pathname.substring(1).split("/")[0];
-
-// 		this.Name = parts[0] ?? "";
-// 		this.Link = parts[1] ?? "";
-// 		this.VideoID = videoID ?? "";
-// 		this.VideoIDProtected = undefined;
-// 		this.Description = parts[2] ?? "";
-// 		this.Author = parts[3] ?? "";
-// 	}
-
-// 	// Get Video ID
-// 	getVideoID(){ return (this.VideoIDProtected ?? this.VideoID)}
-
-// 	// Set protected ID
-// 	setProtectedID(id){ this.VideoIDProtected = id; }
-// }

@@ -156,9 +156,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	// Set the current view of things
 	function setContentView(state="default")
 	{
-
-		
-
 		// Defaults to list view of content
 		switch(state)
 		{
@@ -168,11 +165,14 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// Show the content
 				MyDom.showContent(".showOnContentView");
 				MyDom.hideContent(".hideOnContentView");
+				// Show/hide the back button
+				var _back = MyAdventurePage.getContentCount() == 1 ? MyDom.hideContent("#backIconSection") : MyDom.showContent("#backIconSection");
+				var _noNext = MyAdventurePage.getContentCount() == 1 ? MyDom.addClass("#nextButton", "hidden") : MyDom.removeClass("#nextButton", "hidden");
+				var _noPrev = MyAdventurePage.getContentCount() == 1 ? MyDom.addClass("#prevButton", "hidden") : MyDom.removeClass("#prevButton", "hidden");
 				//Showing/hiding the next/prev buttons
 				var _next = MyAdventurePage.hasNextContent() ? MyDom.addClass("#nextButton", "clickable") : MyDom.removeClass("#nextButton", "clickable");
 				var _prev = MyAdventurePage.hasPrevContent() ? MyDom.addClass("#prevButton", "clickable") : MyDom.removeClass("#prevButton", "clickable");
-				// Show/hide the back button
-				var _back = MyAdventurePage.getContentCount() == 1 ? MyDom.hideContent("#backIconSection") : MyDom.showContent("#backIconSection");
+				
 				break;
 			case "description":
 				MyDom.showContent(".showOnDescriptionView");
