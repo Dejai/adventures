@@ -1,56 +1,74 @@
-#videoFrameProtectedSection { font-size:larger; }
 
-/**** TITLES / DESCRIPTIONS: Section related to the title & description for a video **********/
-#adventureDescription { clear:both; }
-#videoTitle { clear:both; padding:1%; display:inline; margin:0px; }
-.videoAuthor { font-size:50%; font-style:italic; }
-.showDescriptionIcon { color: limegreen; vertical-align: middle; }
+/*** Menu Section */
 #moreDetailsIcon { padding-left:0.5% }
-#contentTitle { display:inline-block; width: 100%; }
-#subMenuSection { position:relative; z-index:99 }
-.contentCreatorSection { font-size:smaller; display:inline-block; margin-top:2%; }
+.showDescriptionIcon { color: limegreen; vertical-align: middle; }
+#returnHomeSection { position: fixed; top:2%; left:2%; z-index:1000; text-align:left; }
 
-/**** CONTENT PREVIEW: The blocks to represent */
-.contentPreviewBlock { position:relative; width:90%; height:170px; margin:auto; margin-bottom:5%; text-align:center; }
+/*** SubMenu Section */
+#backIconSection { position:absolute; z-index:99; top:0; color:#1F51FF !important; }
+#backIcon { transform: rotateY(180deg); }
+#subMenuSection { position:relative; z-index:99; width:80%; margin:auto; }
+#contentTitle { display:inline-block; width: 100%; }
+.contentCreatorSection { font-size:smaller; display:inline-block; font-style: italic; }
+
+/*** Description */
+#descriptionSection { clear:both; }
+#adventureDescription { clear:both; }
+
+/*** Content List */
+#contentListSection { display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:10px; align-items:center; align-content:center;  }
+.contentPreviewBlock { height:200px; max-width:90%; cursor:pointer; position:relative; overflow:hidden; display:relative; text-align:center; transition: width 3s ease, height 3s ease; }
+.contentPreviewBlock:hover { transform: scale(1.02);}
 .contentPreviewBlock img { width: 100%; height:100%; }
 .contentPreviewBlock .playButtonSection { position:absolute; width:100%; height:100%; text-align:center; }
-.contentPreviewBlock .playButtonIcon { font-size:170%; display: flex; width:100%; height:100%; align-items: center; justify-content: center; color:#FAF9F6;  }
+.contentPreviewBlock .playButtonIcon { font-size:280%; display: flex; width:100%; height:100%; align-items: center; justify-content: center; color:#f8f8ff;  }
 
-/**** CONTENT VIEW: Viewing the individual content  */
-.backIcon { transform: rotateY(180deg); }
-.navButton { color:gray; }
-.navButton.clickable { color:#1F51FF !important; }
-
-#contentViewSection { clear: both; position: relative; height: 350px; }
-#contentViewSection .backIconSection { position:absolute; z-index:99; top:0; }
-
-#contentViewSection { z-index: 95; }
-.contentNav { position: absolute; padding-top:25%; font-size:45px; cursor:pointer; opacity:0%; transition: opacity 1.5s ease; }
+/*** Content View */
+#contentViewSection { clear: both; position: relative; height: 350px; z-index: 95; }
+.contentNav { position: absolute; padding-top:20%; font-size:45px; cursor:pointer; opacity:0%; transition: opacity 1.5s ease; }
 .conventNav:hover { background-color:lightgray; }
 .contentNav.left { left:1px; }
 .contentNav.right { right:1px; }
-
 .contentNav.visible { z-index:95; color:#FAF9F6 }
 .contentNav.visible.clickable { opacity:0.9; }
 .contentNav.visible.disabled { opacity:0.2; }
-
 #videoFramePanel { height:250px; position:relative; }
-#videoFrame {  border: none; position: absolute; top: 2; left: 0; height: 100%; width: 100%;}
+#videoFramePanel:hover { cursor:pointer; }
+#videoFrame {  border: none; position: absolute; top:0; left: 0; height: 100%; width: 100%;}
 
-/**** VIDEO NAV: Navigating between videos **********/
-#videoNavigationSection { width: 90%; margin:auto; }
-.navButton { font-size:18px; }
+/*** MEDIA SECTIONS ***/
+@media only screen and (max-width: 400px){
+	#videoFramePanel { height: 200px; }
+	#subMenuSection { width:90%; }
+	.contentNav { padding-top:15%; }
+}
 
-/**** VIDEO PICKER: Selecting a video to watch ******/
-#videoPickerSection { width: 90%; margin: auto; padding-top:2%; }
-.videoPickerBlock { padding:1%; width:70%; margin:auto; border:1px solid gray; border-radius:77px; margin-bottom:2%;  }
-.videoPickerBlock .title { margin-top:0px; color:aqua; font-size:18px; }
-.videoPickerBlock.selected { background-color:limegreen; color:black !important; }
-.videoPickerBlock.selected .title { color:black !important; }
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+	#subMenuSection { width:70%; }
+	#contentViewSection { height:450px; width:40%; margin:auto; }
+	.contentNav { padding-top:20%; }
+}
 
-@media only screen and (min-device-width:1200px)
-{
-    #videoTitle{ display:inline-block }
-	#videoPickerSection { width: 35%; }
-	#videoNavigationSection { width: 35%; margin:auto; }
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+	#subMenuSection { width:60%; }
+	.contentNav { padding-top:30%; }
+}
+
+/* Large devices (laptops/desktops ) */
+@media only screen and (min-width: 900px) {
+	#subMenuSection { width:50%; }
+	.contentNav { z-index: 95; }
+	.contentNav.clickable:hover { opacity:0.9; }
+	.contentNav.disabled:hover { opacity:0.2; }
+	#subMenuSection { font-size:20px; }
+	#videoFrame { top: 5%; }
+}
+
+/* Larger Devices */
+@media only screen and (min-device-width:1200px) {
+	#videoFramePanel { height: 400px; }
+	.contentNav { padding-top:20%; }
+	#videoFramePanel { width:95%; margin:auto; }
 }

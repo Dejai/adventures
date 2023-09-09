@@ -13,39 +13,27 @@
 <body class="theme_black_bg">
 
 	<div class="menuSection dtk-menu-sticky dtk-theme-blackbg">
-		<div class="menuItem">
-			<h1 style="margin:0px;" class="pointer">
-				<span class="fa fa-chevron-circle-left pointer" style="font-size:smaller;" onclick="onReturnHome()"></span>
-				<span id="homeIcon2" style="font-size:smaller;" onclick="onReturnHome()">Dejai's Adventures:</span>
-			</h1>
-		</div>
-		<div class="menuItem">
-			<h3>
-				<span id="adventureTitle"></span>
-				<span id="moreDetailsIcon" class="hidden">
-					<i class="showDescriptionIcon showOnContentView showOnListView hideOnDescriptionView fa fa-info-circle" aria-hidden="true" onclick="onShowDescription()"></i>						
-				</span>
-			</h3> 
+		<div id="menuItems">
+			<div id="returnHomeSection">
+				<span class="fa fa-chevron-circle-left pointer iconSize" onclick="onReturnHome()"></span>
+			</div>
+			<div class="menuItem centered">
+				<h1 style="margin:0px;" class="pointer">
+					<span id="homeIcon2" style="font-size:smaller;"> Dejai's Adventures</span>
+				</h1>
+				<h3>
+					<span id="adventureTitle"></span>
+					<span id="moreDetailsIcon" class="hidden">
+						<i class="iconSizeSmaller pointer showDescriptionIcon showOnContentView showOnListView hideOnDescriptionView fa fa-info-circle" aria-hidden="true" onclick="onShowDescription()"></i>						
+					</span>
+				</h3> 
+			</div>
 		</div>
 		<div class="menuLogin">
-			<a class="authLink dtk-href-no-textdec" href=""></a>
+			<a class="authLink dtk-href-no-textdec" href="">
+			</a>
 		</div>
 		<hr class="menuSeparator" style="clear:both;"/>
-	</div>
-
-	<!-- The back button when looking at content or description -->
-	<div id="subMenuSection" class="hidden showOnContentView showOnDescriptionView hideOnListView showOnError" >
-		<span id="backIconSection" onclick="onBack()" style="color:#1F51FF; position:absolute;">
-			<i class="backIcon fa-solid fa-share"></i>&nbsp;Back
-		</span>
-		<span id="contentTitle" class="hidden centered showOnContentView hideOnDescriptionView"></span> 
-	</div>
-	<span style="clear:both;"></span>
-
-	<!-- The description of this adventure -->
-	<div id="descriptionSection" class="hidden centered showOnDescriptionView hideOnListView hideOnContentView">
-		<h3 style="margin-top:0%;">About this Adventure</h3>
-		<p id="adventureDescription"></p>
 	</div>
 
 	<!-- Messages related to the adventure/content -->
@@ -56,8 +44,23 @@
 		<button class="loginButton hidden showOnLoginRequired">Login</button>
 	</div>
 
+	<!-- The back button when looking at content or description -->
+	<div id="subMenuSection" class="hidden showOnContentView showOnDescriptionView hideOnListView showOnError" >
+		<span id="backIconSection" onclick="onBack()">
+			<i id="backIcon" class="pointer fa-solid fa-share"></i>&nbsp;Back
+		</span>
+		<span id="contentTitle" class="hidden centered showOnContentView hideOnDescriptionView"></span> 
+	</div>
+
+	<!-- The description of this adventure -->
+	<div id="descriptionSection" class="hidden centered showOnDescriptionView hideOnListView hideOnContentView">
+		<h3 style="margin-top:0%;">About this Adventure</h3>
+		<p id="adventureDescription"></p>
+	</div>
+
 	<!-- The Content List Section -->
-	<div id="contentListSection" class="centered hidden showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView"></div>
+	<div id="contentListSection" class="centered hidden showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView">
+	</div>
 
 	<!-- The Content View section -->
 	<div id="contentViewSection" class="hidden showOnContentView hideOnDescriptionView hideOnListView">
@@ -74,10 +77,10 @@
 <!-- Stream Embed API -->
 <script src="https://embed.videodelivery.net/embed/sdk.latest.js"></script>
 <!-- Common Scripts -->
-<script src="https://dejai.github.io/scripts/js/v2/my.js?v=7"></script>
-<script src="https://dejai.github.io/scripts/js/v2/trellowrapper.js?v=15"></script>
-<script src="https://dejai.github.io/scripts/js/v2/cloudflarewrapper.js?v=15"></script>
+<script src="https://dejai.github.io/scripts/js/v2/my.js?v=2"></script>
+<script src="https://dejai.github.io/scripts/js/v2/trellowrapper.js?v=2"></script>
+<script src="https://dejai.github.io/scripts/js/v2/cloudflarewrapper.js?v=2"></script>
 <!-- My Adventure code -->
-<script type="text/javascript" src="src/js/models.js"></script>
-<script type="text/javascript" src="src/js/adventure.js"></script>
+<script type="text/javascript" src="src/js/models.js?v=2"></script>
+<script type="text/javascript" src="src/js/adventure.js?v=4"></script>
 </html>

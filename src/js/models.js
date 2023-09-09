@@ -1,3 +1,13 @@
+// A shared config for login details
+const MyLoginDetails = {
+	"Login":{
+		"Content": `<i class="fa-solid fa-circle-user login iconSize"></i>`
+	},
+	"Logout":{
+		"Content": `<i class="fa-solid fa-circle-user logout iconSize"></i>`
+	}
+}
+
 // Class to store the adventures home page
 class AdventureHomePage
 {
@@ -203,6 +213,7 @@ class StreamVideo
 		this.Ready = videoObj?.readyToStream ?? false;
 		this.Signed = videoObj?.requireSignedURLs ?? false;
 		this.URL = videoObj?.videoUrl ?? "";
+		this.IFrameUrl = videoObj?.iFrameUrl ?? "";
 		this.Thumbnail = videoObj?.thumbnail ?? "";
 	}
 }

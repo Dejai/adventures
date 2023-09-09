@@ -11,7 +11,9 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 /*********************** GETTING STARTED *****************************/
 	// Once doc is ready
 	MyDom.ready( async () => {
-		await MyAuth.onGetLoginDetails();
+		
+		await MyAuth.onGetLoginDetails(MyLoginDetails);
+
 		// Get params from URL;
 		let adventureID = MyUrls.getSearchParam("id") ?? "";
 		if(adventureID != undefined){
@@ -38,6 +40,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 				if(adventure.AdventureID == ""){
 					MyLogger.Notify(notifyElement, `<h3>${frownyFace} Could not load content</h3>`);
+					resolve(false);
 					return;
 				}
 				
@@ -119,9 +122,11 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			contentTitle += `<br/><span class="contentCreatorSection">by: ${content.Creator}</span>`;
 		}
 		MyDom.setContent("#contentTitle", {"innerHTML": contentTitle });
-
 		
-		if(content instanceof StreamVideo){
+		if(content instanceof StreamVideo) {
+
+			console.log(content);
+
 			MyTemplates.getTemplate("src/templates/adventure/videoIFrame.html", content, (template)=>{
 				MyDom.setContent("#videoFramePanel", {"innerHTML":template});
 				// Always make sure stream element is configured
@@ -139,7 +144,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		MyStream.setStreamElement("#videoFrame");
 
 		// What to do if video errors
-		MyStream.onVideoEvent("error", ()=> {
+		MyStream.onVideoEvent("error", (ev)=> {
+			console.error(ev);
 			MyLogger.Notify(notifyElement, `<h3 style="color:red;">${frownyFace} ERROR: Could not load the video.</h3>`);
 			MyDom.showContent(".showOnError");
 		});

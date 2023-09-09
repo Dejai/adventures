@@ -9,44 +9,36 @@
 </head>
 <body class="dtk-theme-blackbg">	
 	<div>
-		<div class="menuSection dtk-menu-sticky dtk-theme-blackbg" >
-			<div class="menuItem">
-				<h1 style="margin:0px;" class="pointer">
-					<span id="homeIcon2" style="font-size:smaller;"> Dejai's Adventures</span>
-				</h1>
-			</div>
-			<div class="menuItem">
-				<div class="searchSection hidden2 showOnAdventuresLoaded">
-					<div id="searchBarSection" class="searchBarSection hidden2 showOnAdventuresLoaded">
-						<input id="searchBarInput" type="text" placeholder="Search adventures ... " onkeyup="onSearchAdventures()">
-						<i id="searchClearIcon" class="fa fa-times-circle pointer hidden" aria-hidden="true" style="color:red;" onclick="onClearSearch()"></i>
+		<div id="menuSection" class="menuSection dtk-menu-sticky dtk-theme-blackbg" >
+			<div id="menuItems">
+				<div class="menuItem centered">
+					<h1 style="margin:0px;" class="pointer">
+						<span id="homeIcon2" style="font-size:smaller;"> Dejai's Adventures</span>
+					</h1>
+					<div class="searchSection">
+						<div id="searchBarSection" class="searchBarSection">
+							<input id="searchBarInput" type="text" placeholder="Search adventures ... " onkeyup="onSearchAdventures()">
+							<i id="randomAdventureIcon" class="fa fa-random pointer hidden searchIcons showOnAdventuresLoaded" onclick="onSelectRandomAdventure()" aria-hidden="true" title="Select a random adventure"></i> 
+							<i id="searchClearIcon" class="fa fa-times-circle pointer hidden searchIcons" aria-hidden="true" style="color:red;" onclick="onClearSearch()"></i>
+						</div>
 					</div>
-					<i id="randomAdventureIcon" class="fa fa-random pointer" onclick="onSelectRandomAdventure()" aria-hidden="true" title="Select a random adventure"></i> 
-					<span id="randomAdventureText">Random Adventure</span>
 				</div>
 			</div>
-				
 			<div class="menuLogin">
-				<a class="authLink dtk-href-no-textdec" href=""></a>
+				<a class="authLink dtk-href-no-textdec" href="">
+				</a>
 			</div>
-			<br style="clear:both;"/>
+			<hr class="menuSeparator" style="clear:both;"/>
 		</div>
-
-		<p class="hideOnFirstLoaded" style="text-align:center;">
-			<img id="loading_gif" src="https://dejai.github.io/scripts/assets/img/loading1.gif" style="width:10%;height:10%;">
-		</p>
-
 		<div id="adventuresPanel" style="width:95%; margin:auto; overflow-y:scroll;">
 		</div>
-		
-		
 	</div>
 </body>
 <!-- Common Scripts -->
-<script src="https://dejai.github.io/scripts/js/v2/my.js?v=5"></script>
-<script src="https://dejai.github.io/scripts/js/v2/trellowrapper.js?v=15"></script>
-<script src="https://dejai.github.io/scripts/js/v2/cloudflarewrapper.js?v=15"></script>
-<!-- My Videos Code -->
-<script type="text/javascript" src="./src/js/models.js"></script>
-<script type="text/javascript" src="./src/js/main.js?v=4"></script>
+<script src="https://dejai.github.io/scripts/js/v2/my.js?v=2"></script>
+<script src="https://dejai.github.io/scripts/js/v2/trellowrapper.js?v=2"></script>
+<script src="https://dejai.github.io/scripts/js/v2/cloudflarewrapper.js?v=2"></script>
+<!-- Adventure SCripts -->
+<script type="text/javascript" src="./src/js/models.js?v=2"></script>
+<script type="text/javascript" src="./src/js/main.js?v=2"></script>
 </html>
