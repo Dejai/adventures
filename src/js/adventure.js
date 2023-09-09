@@ -3,6 +3,8 @@
 const MyTrello = new TrelloWrapper("adventures");
 const MyAdventurePage = new AdventurePage();
 const MyStream = new StreamManager();
+
+const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 const notifyElement = "#pageMessages";
 const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
@@ -62,7 +64,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 				// Load the video preview templates
 				await MyTemplates.getTemplate("src/templates/adventure/contentPreview.html", streamVideos, (template) => {
-					MyDom.setContent("#listOfContent", {"innerHTML": template});
+					MyDom.setContent("#contentListSection", {"innerHTML": template});
 				});
 
 				// If param ID is set or there is only, load that video immediately 
@@ -75,7 +77,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 				// Use the content ID to load the content
 				if(contentID != undefined) {
-					// MyDom.removeClass("#listOfContent", "showOnContentLoaded");
 					onLoadContent(contentID);
 				} else {
 					setContentView("default");
@@ -101,7 +102,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 		if(existingContent != undefined){
 			setContentView("content");
-			MyStream.onPlayVideo();
+			MyStream.playVideo();
 		} else if (contentID != undefined){
 			onLoadContent(contentID);
 		}
@@ -126,29 +127,60 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// Always make sure stream element is configured
 				onConfigureStream();
 				setContentView("content");
-				MyStream.onPlayVideo();
+				MyStream.playVideo();
 			});	
 		}
 		// Modify URL when loading content
 		onModifyUrl({"content": contentID});
 	}
 
-	// Congfigure the stream object
-	function onConfigureStream(){
-		MyStream.setStreamElement("#videoIFrame");
+	// Configure the stream object
+	function onConfigureStream() {
+		MyStream.setStreamElement("#videoFrame");
 
 		// What to do if video errors
-		MyStream.onVideoError( ()=> {
+		MyStream.onVideoEvent("error", ()=> {
 			MyLogger.Notify(notifyElement, `<h3 style="color:red;">${frownyFace} ERROR: Could not load the video.</h3>`);
 			MyDom.showContent(".showOnError");
 		});
 
 		// What to do if video ends
-		MyStream.onVideoEnded( ()=> {
+		MyStream.onVideoEvent("ended", ()=> {
 			if(MyAdventurePage.hasNextContent()){
 				onNext();
 			}
 		});
+
+		// What to do if video is playing
+		MyStream.onVideoEvent("playing", (event) => {
+			showNavButtons();
+		});
+
+		// What to do if video is playing
+		MyStream.onVideoEvent("pause", () => {
+			showNavButtons();
+		});
+
+		// Focus the window
+		window.focus()
+		window.addEventListener("blur", () => {
+			console.log("Blurring from window");
+			setTimeout(() => {
+				if (document.activeElement.tagName === "IFRAME") {
+					console.log("clicked");
+				}
+			});
+		});
+	}
+
+	// Temporarily show the nav
+	function showNavButtons(hideAfter=3000) {
+		MyDom.addClass(".contentNav", "visible");
+		setTimeout( ()=> {
+			MyDom.removeClass(".contentNav", "visible");
+			console.log("Focussing in window");
+			window.focus();
+		}, hideAfter);
 	}
 	
 /***** VIEWS: Managing the different views within the page *****************************/
@@ -170,21 +202,21 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				var _noNext = MyAdventurePage.getContentCount() == 1 ? MyDom.addClass("#nextButton", "hidden") : MyDom.removeClass("#nextButton", "hidden");
 				var _noPrev = MyAdventurePage.getContentCount() == 1 ? MyDom.addClass("#prevButton", "hidden") : MyDom.removeClass("#prevButton", "hidden");
 				//Showing/hiding the next/prev buttons
-				var _next = MyAdventurePage.hasNextContent() ? MyDom.addClass("#nextButton", "clickable") : MyDom.removeClass("#nextButton", "clickable");
-				var _prev = MyAdventurePage.hasPrevContent() ? MyDom.addClass("#prevButton", "clickable") : MyDom.removeClass("#prevButton", "clickable");
+				var _next = MyAdventurePage.hasNextContent() ? MyDom.replaceClass("#contentNavRight", "disabled", "clickable") : MyDom.replaceClass("#contentNavRight", "clickable", "disabled");
+				var _prev = MyAdventurePage.hasPrevContent() ? MyDom.replaceClass("#contentNavLeft", "disabled", "clickable") : MyDom.replaceClass("#contentNavLeft", "clickable", "disabled");
 				
 				break;
 			case "description":
 				MyDom.showContent(".showOnDescriptionView");
 				MyDom.hideContent(".hideOnDescriptionView");
-				MyStream.onPauseVideo();
+				MyStream.pauseVideo();
 				// We have to show back button for description page (even if just one video)
 				MyDom.showContent("#backIconSection");
 				break;
 			default:
 				MyDom.showContent(".showOnListView");
 				MyDom.hideContent(".hideOnListView");
-				MyStream.onPauseVideo();
+				MyStream.pauseVideo();
 				onModifyUrl({"content": ""});
 				window.scrollTo(MyAdventurePage.Scroll.X, MyAdventurePage.Scroll.Y);
 				MyAdventurePage.setScroll(0, 0);
@@ -200,14 +232,14 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	function onBack(){
 		var lastViewState = MyAdventurePage.getLastViewState();
 		if(lastViewState == "content"){
-			MyStream.onPlayVideo();
+			MyStream.playVideo();
 		}
 		setContentView(lastViewState);
 	}
 
 	// On navigate back to a content list
 	function onPrev(){
-		var prevClickable = document.querySelector("#prevButton")?.classList?.contains("clickable") ?? false;
+		var prevClickable = document.querySelector("#contentNavLeft")?.classList?.contains("clickable") ?? false;
 		if(prevClickable){
 			onChangeContent("prev");
 		}
@@ -215,7 +247,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 	// On going to the next video
 	function onNext(){
-		var nextClickable = document.querySelector("#nextButton")?.classList?.contains("clickable") ?? false;
+		var nextClickable = document.querySelector("#contentNavRight")?.classList?.contains("clickable") ?? false;
 		if(nextClickable){
 			onChangeContent("next");
 		}

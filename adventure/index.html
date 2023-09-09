@@ -20,7 +20,7 @@
 			</h1>
 		</div>
 		<div class="menuItem">
-			<h3 id="adventureTitle2">
+			<h3>
 				<span id="adventureTitle"></span>
 				<span id="moreDetailsIcon" class="hidden">
 					<i class="showDescriptionIcon showOnContentView showOnListView hideOnDescriptionView fa fa-info-circle" aria-hidden="true" onclick="onShowDescription()"></i>						
@@ -56,23 +56,19 @@
 		<button class="loginButton hidden showOnLoginRequired">Login</button>
 	</div>
 
-	<!-- The list of Content -->
-	<div id="listOfContent" class="centered hidden showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView"></div>
+	<!-- The Content List Section -->
+	<div id="contentListSection" class="centered hidden showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView"></div>
 
-	<!-- The video frame of this adventure -->
+	<!-- The Content View section -->
 	<div id="contentViewSection" class="hidden showOnContentView hideOnDescriptionView hideOnListView">
+		<div id="contentNavLeft" class="contentNav left" >
+			<i class="fa-solid fa-chevron-left" onclick="onPrev()"></i>
+		</div>
+		<div id="contentNavRight" class="contentNav right" >
+			<i class="fa-solid fa-chevron-right" onclick="onNext()"></i>
+		</div>
 		<div id="videoFramePanel"></div>
 	</div>
-	<div id="contentNavigationSection" class="hidden showOnContentView hideOnDescriptionView hideOnListView">
-		<span id="prevButton" class="navButton" style="float:left;" onclick="onPrev()">
-			<i class="fa-solid fa-arrow-left-long"></i>&nbsp;Prev
-		</span>
-		<span id="nextButton" class="navButton" style="float:right;" onclick="onNext()">
-			Next&nbsp;<i class="fa-solid fa-arrow-right-long"></i>
-		</span>
-	</div>
-
-	
 
 </body>
 <!-- Stream Embed API -->
