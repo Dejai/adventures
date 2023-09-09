@@ -34,7 +34,7 @@
 .contentNav.visible.disabled { opacity:0.2; }
 #videoFramePanel { height:250px; position:relative; }
 #videoFramePanel:hover { cursor:pointer; }
-#videoFrame {  border: none; position: absolute; top:0; left: 0; height: 100%; width: 100%;}
+#videoFrame {  border: none; position: absolute; top:2%; left: 0; height: 100%; width: 100%;}
 
 /*** MEDIA SECTIONS ***/
 @media only screen and (max-width: 400px){

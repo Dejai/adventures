@@ -22,8 +22,8 @@ body.theme_black_bg { background-color:black; color:white; }
 .menuSeparator { clear:both; }
 
 /*** Adventures List */
-#adventuresPanel { display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:10px; align-items:center; align-content:center;  }
-.adventureBlock { height:200px; max-width:90%; cursor:pointer; overflow:hidden; display:relative; }
+#adventuresPanel { display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:15px; align-items:center; align-content:center;  }
+.adventureBlock { height:200px; max-width:90%; cursor:pointer; overflow:hidden; display:relative; margin-bottom:5%; }
 .adventureBlock .loadingGif { display:block; margin:auto; text-align:center; width:10%;height:10%; }
 .adventureBlock .showOnImageLoad { opacity: 0%; transition: opacity 2s ease; }
 .adventureBlock.visible .showOnImageLoad { opacity: 100%; }
@@ -46,6 +46,7 @@ body.theme_black_bg { background-color:black; color:white; }
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
 	#searchBarSection { padding:0.5%; }
+	.adventureBlock { margin-bottom: initial; }
 }
 
 /* Large devices (laptops/desktops ) */
