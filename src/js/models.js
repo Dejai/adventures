@@ -12,8 +12,6 @@ const MyLoginDetails = {
 class AdventureHomePage
 {
 	constructor () {
-		this.AdventureCount = 0;
-
 		this.Adventures = [];
 	}
 

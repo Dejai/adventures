@@ -47,7 +47,7 @@ const MyHomePage = new AdventureHomePage();
 				var adventureID = adventure?.AdventureID ?? "No Adventure ID";
 				var adventureVideos = await CloudflareWrapper.GetVideos(adventureID);
 				var numberOfVideos = adventureVideos.length;
-				if(numberOfVideos > 0){
+				if(numberOfVideos > 0) {
 					var randIndex = (numberOfVideos > 1) ? Math.floor(Math.random()*adventureVideos.length) : 0;
 					adventure.CoverContent = new StreamVideo(adventureVideos[randIndex]);
 				}
