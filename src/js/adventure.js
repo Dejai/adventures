@@ -171,17 +171,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		MyStream.onVideoEvent("pause", () => {
 			showNavButtons();
 		});
-
-		// Focus the window
-		window.focus()
-		window.addEventListener("blur", () => {
-			console.log("Blurring from window");
-			setTimeout(() => {
-				if (document.activeElement.tagName === "IFRAME") {
-					console.log("clicked");
-				}
-			});
-		});
 	}
 
 	// Temporarily show the nav
