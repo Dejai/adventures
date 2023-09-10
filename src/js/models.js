@@ -205,15 +205,13 @@ class StreamVideo
 		this.AdventureID = videoObj?.adventureID ?? "";
 		this.ContentID = videoObj?.uid ?? "";
 		this.Creator = videoObj?.creator ?? "";
-		// this.VideoID = videoObj?.uid ?? "";
 		this.Name = videoObj?.name ?? "";
 		this.Description = videoObj?.description ?? "";
 		this.Duration = videoObj?.duration ?? 0;
 		this.Order = videoObj?.order ?? 0;
+		this.Date = videoObj?.date ?? "";
 		this.Ready = videoObj?.readyToStream ?? false;
 		this.Signed = videoObj?.requireSignedURLs ?? false;
-		this.URL = videoObj?.videoUrl ?? "";
-		this.IFrameUrl = videoObj?.iFrameUrl ?? "";
-		this.Thumbnail = videoObj?.thumbnail ?? "";
+		this.Urls = videoObj?.urls ?? {}
 	}
 }

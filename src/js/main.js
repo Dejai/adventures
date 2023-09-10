@@ -46,9 +46,11 @@ const MyHomePage = new AdventureHomePage();
 				var adventure = displayElements[idx];
 				var adventureID = adventure?.AdventureID ?? "No Adventure ID";
 				var adventureVideos = await CloudflareWrapper.GetVideos(adventureID);
-				if(adventureVideos.length > 0){
-					var firstVideo = new StreamVideo(adventureVideos[0]);
-					adventure.CoverThumbnail = firstVideo.Thumbnail;
+				var numberOfVideos = adventureVideos.length;
+				if(numberOfVideos > 0){
+					var randIndex = (numberOfVideos > 1) ? Math.floor(Math.random()*adventureVideos.length) : 0;
+					var randVideo = new StreamVideo(adventureVideos[randIndex]);
+					adventure.CoverThumbnail = randVideo?.Urls.thumbnail;
 				}
 				// Add adventure as we go
 				MyTemplates.getTemplate("src/templates/main/adventureBlock.html", adventure, (template) => {
