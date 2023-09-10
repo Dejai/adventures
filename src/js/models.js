@@ -134,7 +134,7 @@ class Adventure
 		this.MonthYear = this.getMonthYear();
 
 		// The content of this adventure
-		this.CoverThumbnail = "";
+		this.CoverContent = {};
 		this.Content = [];
 		this.CurrentContentIdx = 0;
 

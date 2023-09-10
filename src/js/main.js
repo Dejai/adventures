@@ -49,8 +49,7 @@ const MyHomePage = new AdventureHomePage();
 				var numberOfVideos = adventureVideos.length;
 				if(numberOfVideos > 0){
 					var randIndex = (numberOfVideos > 1) ? Math.floor(Math.random()*adventureVideos.length) : 0;
-					var randVideo = new StreamVideo(adventureVideos[randIndex]);
-					adventure.CoverThumbnail = randVideo?.Urls.thumbnail;
+					adventure.CoverContent = new StreamVideo(adventureVideos[randIndex]);
 				}
 				// Add adventure as we go
 				MyTemplates.getTemplate("src/templates/main/adventureBlock.html", adventure, (template) => {
