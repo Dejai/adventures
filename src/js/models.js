@@ -208,8 +208,7 @@ class StreamVideo
 		this.Name = videoObj?.name ?? "";
 		this.Description = videoObj?.description ?? "";
 		this.Duration = videoObj?.duration ?? 0;
-		// this.Order = videoObj?.order ?? 0;
-		this.Date = videoObj?.date ?? "";
+		this.Date = new Date(videoObj?.date);
 		this.Ready = videoObj?.readyToStream ?? false;
 		this.Signed = videoObj?.requireSignedURLs ?? false;
 		this.Urls = videoObj?.urls ?? {}
