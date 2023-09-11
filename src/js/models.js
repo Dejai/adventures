@@ -141,9 +141,11 @@ class Adventure
 		this.MoreDetails = this.Description.replaceAll("\n", "<br/>");
 	}
 
-	// Add content for this adventure
-	addContent(content){
-		this.Content.push(content);
+	// Add content to this adventure
+	addContent(contentList){
+		contentList.forEach( (c) =>{
+			this.Content.push(c);
+		});
 	}
 
 	// Get a video by video ID
@@ -206,7 +208,7 @@ class StreamVideo
 		this.Name = videoObj?.name ?? "";
 		this.Description = videoObj?.description ?? "";
 		this.Duration = videoObj?.duration ?? 0;
-		this.Order = videoObj?.order ?? 0;
+		// this.Order = videoObj?.order ?? 0;
 		this.Date = videoObj?.date ?? "";
 		this.Ready = videoObj?.readyToStream ?? false;
 		this.Signed = videoObj?.requireSignedURLs ?? false;

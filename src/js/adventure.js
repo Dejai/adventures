@@ -52,9 +52,12 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// Get the adventure Videos for this adventure
 				var adventureVideos = await CloudflareWrapper.GetVideos(adventure.AdventureID);
 				var streamVideos = adventureVideos.map(x => new StreamVideo(x));
-				streamVideos.forEach( (vid)=> {
-					adventure.addContent(vid);
+				// Sort the stream videos by date (oldest first);
+				streamVideos.sort( (a,b) => {
+					return (a.Date - b.Date);
 				});
+				// Add the videos to the adventure instance
+				adventure.addContent(streamVideos);
 
 				// Set the current adventure
 				MyAdventurePage.setAdventure(adventure);
