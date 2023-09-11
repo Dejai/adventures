@@ -181,8 +181,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		MyDom.addClass(".contentNav", "visible");
 		setTimeout( ()=> {
 			MyDom.removeClass(".contentNav", "visible");
-			console.log("Focussing in window");
-			window.focus();
 		}, hideAfter);
 	}
 	
@@ -266,7 +264,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	{
 		var currIdx = MyAdventurePage.Adventure?.CurrentContentIdx;
 		var nextIdx = (direction == "prev") ? currIdx-1 : currIdx+1;
-
 		var content = MyAdventurePage.getContentByIndex(nextIdx);
 		if(content != undefined){ 
 			onLoadContent(content?.ContentID);

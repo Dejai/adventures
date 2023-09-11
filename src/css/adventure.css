@@ -25,14 +25,14 @@
 
 /*** Content View */
 #contentViewSection { clear: both; position: relative; height: 350px; z-index: 95; }
-.contentNav { position: absolute; padding-top:20%; font-size:45px; cursor:pointer; opacity:0%; transition: opacity 1.5s ease; }
+.contentNav { position: absolute; padding-top:40%; font-size:45px; cursor:pointer; opacity:0%; transition: opacity 1.5s ease; }
 .conventNav:hover { background-color:lightgray; }
 .contentNav.left { left:1px; }
 .contentNav.right { right:1px; }
 .contentNav.visible { z-index:95; color:#FAF9F6 }
 .contentNav.visible.clickable { opacity:0.9; }
 .contentNav.visible.disabled { opacity:0.2; }
-#videoFramePanel { height:250px; position:relative; }
+#videoFramePanel { height:350px; position:relative; }
 #videoFramePanel:hover { cursor:pointer; }
 #videoFrame {  border: none; position: absolute; top:2%; left: 0; height: 100%; width: 100%;}
 
