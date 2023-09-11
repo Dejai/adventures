@@ -17,11 +17,16 @@
 
 /*** Content List */
 #contentListSection { display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:10px; align-items:center; align-content:center;  }
-.contentPreviewBlock { height:200px; max-width:90%; cursor:pointer; position:relative; overflow:hidden; display:relative; text-align:center; transition: width 3s ease, height 3s ease; }
-.contentPreviewBlock:hover { transform: scale(1.02);}
+.contentPreviewBlock { height:200px; max-width:90%; cursor:pointer; position:relative; overflow:hidden; display:relative; border-radius:20px; text-align:center; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
 .contentPreviewBlock img { width: 100%; height:100%; }
 .contentPreviewBlock .playButtonSection { position:absolute; width:100%; height:100%; text-align:center; }
-.contentPreviewBlock .playButtonIcon { font-size:280%; display: flex; width:100%; height:100%; align-items: center; justify-content: center; color:#f8f8ff;  }
+.contentPreviewBlock .playButtonIcon { font-size:280%; display: flex; width:100%; height:100%; align-items: center; justify-content: center; color:#f8f8ff; transition: transform 0.5s ease; }
+.contentPreviewBlock .previewNameSection { position:absolute; width:100%; bottom:2%; text-align:center; }
+.contentPreviewBlock .previewName { display:inline-block; background-color:gray; opacity:0.7; padding:1% 5%; border-radius:20px; transition:opacity 0.5s ease, color 0.5s ease; }
+.contentPreviewBlock:hover { transform: scale(1.02);}
+/* .contentPreviewBlock:hover .previewName { background-color:#303030	; color:white; opacity:100%;} */
+.contentPreviewBlock:hover .previewName { background-color:#f8f8ff	; color:#303030; opacity:100%;}
+.contentPreviewBlock:hover .playButtonIcon { transform: scale(1.2); }
 
 /*** Content View */
 #contentViewSection { clear: both; position: relative; height: 450px; z-index: 95; }

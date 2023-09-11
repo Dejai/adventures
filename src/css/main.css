@@ -23,12 +23,14 @@ body.theme_black_bg { background-color:black; color:white; }
 
 /*** Adventures List */
 #adventuresPanel { display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:10px; align-items:center; align-content:center;  }
-.adventureBlock { height:220px; max-width:90%; cursor:pointer; overflow:hidden; display:relative; }
-.adventureBlock .loadingGif { display:block; margin:auto; text-align:center; width:10%;height:10%; }
+.adventureBlock { height:200px; max-width:90%; cursor:pointer; overflow:hidden; position:relative; border-radius: 25px; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
+.adventureBlock .nameSection { text-align:center; margin:0%; position: absolute; width: 100%;  z-index: 50; background-color: #f8f8ff;  padding: 1%; bottom: 0; }
+.adventureBlock:hover { transform: scale(1.02);}
+.adventureBlock .loadingGif { display:block; margin:auto; text-align:center; width:20%;height:20%; }
 .adventureBlock .showOnImageLoad { opacity: 0%; transition: opacity 2s ease; }
 .adventureBlock.visible .showOnImageLoad { opacity: 100%; }
 .adventureBlock.visible .loadingGif { display:none; }
-.adventureBlockImageSection { height:170px; }
+.adventureBlockImageSection { height:100%; }
 .adventureBlock img { width:100%; height:100%; }
 .adventureBlockLink { color: #1F51FF !important; font-size: 16px !important }
 .openLinkIcon { font-size:smaller !important; }
