@@ -1,0 +1,13 @@
+<div data-adventure-id="{{AdventureID}}" class="adventureBlock">
+	<img class="loadingGif" src="https://dejai.github.io/scripts/assets/img/loading1.gif" >
+    <div class="adventureBlockImageSection showOnImageLoad">
+        <img src="{{CoverContent.Urls.thumbnail}}" alt="img" onclick="onNavigateToAdventure(event)" onload="onPictureLoaded(this)"/>
+    </div>
+    <h3 class="nameSection showOnImageLoad">
+        <a class="adventureBlockLink dtk-href-no-textdec" href="./adventure/?id={{AdventureID}}">
+            {{Name}}
+            &nbsp;
+            <i class="fa fa-external-link openLinkIcon" aria-hidden="true"></i>
+        </a>
+    </h3>
+</div>
