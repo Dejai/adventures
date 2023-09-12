@@ -17,7 +17,7 @@
 
 /*** Content List */
 #contentListSection { display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:10px; align-items:center; align-content:center;  }
-.contentPreviewBlock { height:200px; max-width:90%; cursor:pointer; position:relative; overflow:hidden; display:relative; border-radius:20px; text-align:center; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
+.contentPreviewBlock { height:200px; min-width:80%; max-width:90%; cursor:pointer; position:relative; overflow:hidden; display:relative; border-radius:20px; text-align:center; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
 .contentPreviewBlock img { width: 100%; height:100%; }
 .contentPreviewBlock .playButtonSection { position:absolute; width:100%; height:100%; text-align:center; }
 .contentPreviewBlock .playButtonIcon { font-size:280%; display: flex; width:100%; height:100%; align-items: center; justify-content: center; color:#f8f8ff; transition: transform 0.5s ease; }
@@ -62,6 +62,7 @@
 }
 
 @media only screen and (min-width: 700px) {
+	.contentPreviewBlock { min-width:10%; }
 	#subMenuSection { width:70%; }
 	#contentViewSection { width:70% }
 }
