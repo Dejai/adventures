@@ -69,9 +69,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				}
 
 				// Load the video preview templates
-				await MyTemplates.getTemplate("src/templates/adventure/contentPreview.html", streamVideos, (template) => {
-					MyDom.setContent("#contentListSection", {"innerHTML": template});
-				});
+				var contentPreviewTemplate = await MyTemplates.getTemplateAsync("src/templates/adventure/contentPreview.html", streamVideos);
+				MyDom.setContent("#contentListSection", {"innerHTML": contentPreviewTemplate});
 
 				// If param ID is set or there is only, load that video immediately 
 				var contentID = MyUrls.getSearchParam("content");
@@ -115,7 +114,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	}
 
 	// Load content
-	function onLoadContent(contentID)
+	async function onLoadContent(contentID)
 	{
 		var content = MyAdventurePage.getContentByID(contentID);
 
@@ -132,16 +131,12 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		MyDom.setContent("#contentTitle", {"innerHTML": contentTitle });
 		
 		if(content instanceof StreamVideo) {
-
-			console.log(content);
-
-			MyTemplates.getTemplate("src/templates/adventure/videoIFrame.html", content, (template)=>{
-				MyDom.setContent("#videoFramePanel", {"innerHTML":template});
-				// Always make sure stream element is configured
-				onConfigureStream();
-				setContentView("content");
-				MyStream.playVideo();
-			});	
+			var videoIFrameTemplate = await MyTemplates.getTemplateAsync("src/templates/adventure/videoIFrame.html", content); 
+			MyDom.setContent("#videoFramePanel", {"innerHTML":videoIFrameTemplate});
+			// Always make sure stream element is configured
+			onConfigureStream();
+			setContentView("content");
+			MyStream.playVideo();
 		}
 		// Modify URL when loading content
 		onModifyUrl({"content": contentID});
