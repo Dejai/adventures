@@ -52,13 +52,13 @@ const MyHomePage = new AdventureHomePage();
 					adventure.CoverContent = new StreamVideo(adventureVideos[randIndex]);
 				}
 				// Add adventure as we go
-				MyTemplates.getTemplate("src/templates/main/adventureBlock.html", adventure, (template) => {
-					MyDom.setContent("#adventuresPanel", {"innerHTML":template}, true);
-				});
+				var adventureBlockTemplate = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", adventure);
+				MyDom.setContent("#adventuresPanel", {"innerHTML":adventureBlockTemplate}, true);
 			}
 			// Once loaded, show things that should be visible now
 			MyDom.showContent(".showOnAdventuresLoaded");
 			MyDom.hideContent(".hideOnLoaded");
+
 		}, (err) => {
 			onCantLoadAdventures("Something went wrong!");
 			MyLogger.LogError(err);
