@@ -11,8 +11,10 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 /*********************** GETTING STARTED *****************************/
 	// Once doc is ready
 	MyDom.ready( async () => {
-		
-		await MyAuth.onGetLoginDetails(MyLoginDetails);
+
+		var userDetails = await MyAuth.onGetLoginDetails();
+		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
+		MyDom.setContent(".userName", {"innerText": userDetails.userName});
 
 		// Get params from URL;
 		let adventureID = MyUrls.getSearchParam("id") ?? "";
@@ -40,7 +42,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 				if(adventure.AdventureID == ""){
 					MyLogger.Notify(notifyElement, `<h3>${frownyFace} Could not load content</h3>`);
-					resolve(false);
 					return;
 				}
 				

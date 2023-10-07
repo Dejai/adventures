@@ -1,0 +1,24 @@
+<div class="eventForm centered" data-form-id="{{CardID}}">
+    <div>
+        <h2>{{Name}}</h2>
+        <p class="eventDescription">{{Description}}</p>
+        <div class="eventDetailsTable">
+            <h3>Details</h3>
+            <table style="width:100%">
+                <colgroup>
+                    <col style="width:49%;"/>
+                    <col style="width:49%;"/>
+                </colgroup>
+                <tbody>
+                    {{Checklists.Details.ItemsHtml}}
+                </tbody>
+            </table>
+        </div>
+        <div class="detailsTable">
+            <h3>Your Response</h3>
+            <div class="centered responseButtonGroup">
+                {{Checklists.ResponseOptions.ItemsHtml}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -24,21 +24,28 @@
 					</div>
 				</div>
 			</div>
-			<div class="menuLogin">
-				<a class="authLink dtk-href-no-textdec" href="">
-				</a>
+			<div id="userIconSection" class="pointer">
+				<span class="userName desktop" onclick="toggleSideNav()"></span>
+				<i class="fa-solid fa-circle-user login iconSize" style="cursor:pointer;" onclick="toggleSideNav()"></i>
 			</div>
 			<hr class="menuSeparator" style="clear:both;"/>
 		</div>
-		<div id="adventuresPanel" style="width:95%; margin:auto; overflow-y:scroll;">
+		<div class="sideNav right">
+			<i class="fa-solid fa-xmark closeIcon" onclick="toggleSideNav()"></i>
+			<span class="userName mobile navRow"></span>
+			<a class="authLink navRow navItem dtk-href-no-textdec" href="auth/?action=0" target="_top"></a>
+		</div>
+		<div id="adventuresPanel" class="toggleOnSideNavMobile" style="width:95%; margin:auto; overflow-y:scroll;">
+			<img id="loadingGif" class="hidden" style="width:5%;height:5%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="Loading ...">
 		</div>
 	</div>
 </body>
 <!-- Common Scripts -->
 <script src="https://dejai.github.io/scripts/js/v2/my.js?v=2"></script>
-<script src="https://dejai.github.io/scripts/js/v2/trellowrapper.js?v=2"></script>
+<script src="https://dejai.github.io/scripts/js/v3/trellowrapper.js?v=2"></script>
 <script src="https://dejai.github.io/scripts/js/v2/cloudflarewrapper.js?v=2"></script>
 <!-- Adventure SCripts -->
 <script type="text/javascript" src="./src/js/models.js?v=2"></script>
+<script type="text/javascript" src="src/js/menu.js?v=54"></script>
 <script type="text/javascript" src="./src/js/main.js?v=2"></script>
 </html>
