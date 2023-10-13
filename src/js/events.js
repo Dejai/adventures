@@ -132,7 +132,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			var cardID = form.getAttribute("data-form-id");
 			var buttons = Array.from(form.querySelectorAll(".responseButton")) ?? [];
 			var commentBox = form.querySelector(".commentBox");
-			
+
 			// Comments on card
 			var cardComments  = MyEventPage.TrelloCards.filter(x => x.CardID == cardID)?.[0]?.Comments;
 			var userComment = cardComments?.filter(comment => comment.Text.startsWith(userName))?.[0] ?? undefined;
@@ -186,7 +186,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 					await MyTrello.DeleteCardComment(cardID, prevID);
 				}
 
-				var buttonText = form.querySelector(".responseButton.selected")?.innerText ?? "";
+				var buttonText = form.querySelector(".responseButton.selected")?.innerText;
 				var commentText = form.querySelector(".commentBox")?.value;
 				var response = buttonText ?? commentText ?? "";
 				if(cardID != undefined && response != "")
