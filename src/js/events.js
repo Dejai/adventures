@@ -29,7 +29,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			MyDom.hideContent(".hideOnLoaded");
 
 			// Show the forms using fade CSS
-			MyDom.setClass(".dtk-fade", "dtk-fade-in");
+			MyDom.addClass(".dtk-fade", "dtk-fade-in");
 
 		} else {
 			onGetEventList();
@@ -64,6 +64,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 					MyDom.setContent("#eventName", {"innerHTML":eventName});
 					var overviewHtml = await MyTemplates.getTemplateAsync("src/templates/events/overview.html", card);
 					MyDom.setContent("#eventOverviewSection", {"innerHTML": overviewHtml});
+					MyDom.showContent("#eventOverviewSection");
 					numSections += 1;
 				}
 				// Else, if form card

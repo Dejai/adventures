@@ -9,7 +9,7 @@
 /* Event Details */
 #eventOverviewSection { width:90%; margin:auto; border-bottom:solid gray; border-width:thick; }
 .eventForm { margin-top:5%; margin-bottom:15%; }
-.eventDescription { width:80%; margin:auto;}
+.eventDescription { width:80%; margin:auto; font-size:110%; }
 .eventDetailsTable { width:100%; margin:auto; margin-top:5%; margin-bottom:5%; }
 .eventForm .formDescription { width:80%; margin:auto; }
 .eventForm .detailsTable { width:50%; margin:auto; margin-top:2%; }
