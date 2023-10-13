@@ -130,7 +130,9 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		for(var form of formSections)
 		{
 			var cardID = form.getAttribute("data-form-id");
-			var buttons = Array.from(form.querySelectorAll(".responseButton"));
+			var buttons = Array.from(form.querySelectorAll(".responseButton")) ?? [];
+			var commentBox = form.querySelector(".commentBox");
+			
 			// Comments on card
 			var cardComments  = MyEventPage.TrelloCards.filter(x => x.CardID == cardID)?.[0]?.Comments;
 			var userComment = cardComments?.filter(comment => comment.Text.startsWith(userName))?.[0] ?? undefined;
@@ -143,6 +145,12 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 					form.setAttribute("data-prev-response", userComment.CommentID);
 					prevs += 1;
 					matchingButton.click();
+				}
+
+				// Comment box
+				if(commentBox != undefined){
+					commentBox.value = justComment;
+					commentBox.innerText = justComment;
 				}
 			}
 		}
@@ -188,11 +196,11 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 					await MyTrello.CreateCardComment(cardID, comment);
 				}
 			}
-			var submittedHtml = await MyTemplates.getTemplateAsync("src/templates/events/submitted.html", events);
+			var submittedHtml = await MyTemplates.getTemplateAsync("src/templates/events/submitted.html", {});
 			MyDom.setContent("#eventContentSection", {"innerHTML": submittedHtml });
 		} catch(err){
 			MyLogger.LogError(err);
-			var errorHtml = await MyTemplates.getTemplateAsync("src/templates/events/error.html", events);
+			var errorHtml = await MyTemplates.getTemplateAsync("src/templates/events/error.html", {});
 			MyDom.setContent("#eventContentSection", {"innerHTML": errorHtml });
 		} finally {
 			MyDom.hideContent(".hideOnSubmitted");
