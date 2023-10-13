@@ -126,6 +126,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		// Get form sections
 		var formSections = document.querySelectorAll(".eventForm");
 		var userName = MyDom.getContent(".userName")?.innerText ?? "";
+		var prevs = 0;
 		for(var form of formSections)
 		{
 			var cardID = form.getAttribute("data-form-id");
@@ -139,11 +140,15 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// Matching button
 				var matchingButton = buttons.filter(x => x.innerText == justComment)?.[0] ?? undefined;
 				if(matchingButton != undefined){
-					form.setAttribute("data-prev-response", userComment.CommentID)
+					form.setAttribute("data-prev-response", userComment.CommentID);
+					prevs += 1;
 					matchingButton.click();
 				}
 			}
-			
+		}
+		// If there is at least one previous answer, then update the submit button
+		if(prevs > 0){
+			MyDom.setContent("#formsSubmitButton", {"innerText": "UPDATE"});
 		}
 	}
 
