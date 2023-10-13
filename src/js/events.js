@@ -162,24 +162,40 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 	// Submit response
 	async function onSubmitResponses(){
-		var forms = Array.from(document.querySelectorAll(".eventForm"));
-		var userName = MyDom.getContent(".userName")?.innerText;
-		for(var form of forms)
-		{
-			var cardID = form.getAttribute("data-form-id");
-			var prevID = form.getAttribute("data-prev-response") ?? "";
-			if(prevID != ""){
-				await MyTrello.DeleteCardComment(cardID, prevID);
-			}
 
-			var buttonText = form.querySelector(".responseButton.selected")?.innerText ?? "";
-			var commentText = form.querySelector(".commentBox")?.value;
-			var response = buttonText ?? commentText ?? "";
-			if(cardID != undefined && response != "")
+		try{
+			var forms = Array.from(document.querySelectorAll(".eventForm"));
+			var userName = MyDom.getContent(".userName")?.innerText;
+
+			MyDom.hideContent(".hideOnSubmitting");
+			MyDom.showContent(".showOnSubmitting");
+
+			for(var form of forms)
 			{
-				comment = `${userName} ~ ${response}`;
-				MyLogger.LogInfo("Creating comment: " + comment);
-				await MyTrello.CreateCardComment(cardID, comment);
+				var cardID = form.getAttribute("data-form-id");
+				var prevID = form.getAttribute("data-prev-response") ?? "";
+				if(prevID != ""){
+					await MyTrello.DeleteCardComment(cardID, prevID);
+				}
+
+				var buttonText = form.querySelector(".responseButton.selected")?.innerText ?? "";
+				var commentText = form.querySelector(".commentBox")?.value;
+				var response = buttonText ?? commentText ?? "";
+				if(cardID != undefined && response != "")
+				{
+					comment = `${userName} ~ ${response}`;
+					MyLogger.LogInfo("Creating comment: " + comment);
+					await MyTrello.CreateCardComment(cardID, comment);
+				}
 			}
+			var submittedHtml = await MyTemplates.getTemplateAsync("src/templates/events/submitted.html", events);
+			MyDom.setContent("#eventContentSection", {"innerHTML": submittedHtml });
+		} catch(err){
+			MyLogger.LogError(err);
+			var errorHtml = await MyTemplates.getTemplateAsync("src/templates/events/error.html", events);
+			MyDom.setContent("#eventContentSection", {"innerHTML": errorHtml });
+		} finally {
+			MyDom.hideContent(".hideOnSubmitted");
+			MyDom.showContent(".showOnSubmitted");
 		}
 	}
