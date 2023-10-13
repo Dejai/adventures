@@ -149,6 +149,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 				// Comment box
 				if(commentBox != undefined){
+					form.setAttribute("data-prev-response", userComment.CommentID);
 					commentBox.value = justComment;
 					commentBox.innerText = justComment;
 				}
