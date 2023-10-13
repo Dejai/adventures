@@ -171,7 +171,10 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			if(prevID != ""){
 				await MyTrello.DeleteCardComment(cardID, prevID);
 			}
-			var response = form.querySelector(".responseButton.selected")?.innerText ?? "";
+
+			var buttonText = form.querySelector(".responseButton.selected")?.innerText ?? "";
+			var commentText = form.querySelector(".commentBox")?.value;
+			var response = buttonText ?? commentText ?? "";
 			if(cardID != undefined && response != "")
 			{
 				comment = `${userName} ~ ${response}`;
