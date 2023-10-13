@@ -7,10 +7,10 @@
 
 
 /* Event Details */
-#eventOverviewSection { width:90%; margin:auto; border-bottom:solid gray; border-width:thick; }
+#eventOverviewSection { width:90%; margin:auto; border-bottom:solid gray; border-width:thick; font-size:110%; }
 .eventForm { margin-top:5%; margin-bottom:5%; }
-.eventDescription { width:80%; margin:auto; font-size:110%; }
-.eventDetailsTable { width:100%; margin:auto; margin-top:5%; margin-bottom:5%; }
+.eventDescription { width:80%; margin:auto;  }
+.eventDetailsTable { width:100%; margin:auto; margin-top:5%; }
 .eventForm .formDescription { width:80%; margin:auto; }
 .eventForm .detailsTable { width:50%; margin:auto; margin-top:2%; }
 .eventForm .infoCell { padding:0.5%;  }
@@ -39,6 +39,6 @@
 @media only screen and (min-width: 768px) {
 	.eventDescription { width:35%; }
 	#eventOverviewSection { width:50%; padding: 2% 3%; }
-	.eventDetailsTable { width:80%; }
+	.eventDetailsTable { width:80%; margin-top:2%; }
 
 }
