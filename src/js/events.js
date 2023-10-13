@@ -18,8 +18,19 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		// Get params from URL;
 		let eventID = MyUrls.getSearchParam("id");
 		if(eventID != undefined){
+
+			// Get all the event details
 			await onGetEventDetails(eventID);
+
+			// Mark any previous responses
 			onSetPreviousResponse();
+
+			// Hide anything that indicates it is loaded
+			MyDom.hideContent(".hideOnLoaded");
+
+			// Show the forms using fade CSS
+			MyDom.setClass(".dtk-fade", "dtk-fade-in");
+
 		} else {
 			onGetEventList();
 		}

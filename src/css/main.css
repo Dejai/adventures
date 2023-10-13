@@ -6,6 +6,10 @@ body.theme_black_bg { background-color:black; color:white; }
 .iconSize { font-size: 25px; }
 .iconSizeSmaller { font-size: 14px; }
 
+.dtk-fade { opacity:0; }
+.dtk-fade-in { opacity:100; transition: opacity ease-in 0.5s; }
+.dtk-fade-out { opacity:0 !important; transition: opacity ease-out 0.2s; }
+
 /* Menu */
 /* .menuSection { } */
 #userIconSection { position: fixed; top:2%; right:2%; z-index:100; }
