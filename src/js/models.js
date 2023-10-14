@@ -1,13 +1,3 @@
-// A shared config for login details
-const MyLoginDetails = {
-	"Login":{
-		"Content": `<i class="fa-solid fa-circle-user login iconSize"></i>`
-	},
-	"Logout":{
-		"Content": `<i class="fa-solid fa-circle-user logout iconSize"></i>`
-	}
-}
-
 // Class to store the adventures home page
 class AdventureHomePage
 {
@@ -66,7 +56,6 @@ class AdventurePage
 		if( currentState != state ) {
 			this.ViewStates.push(state);
 		}
-		console.log(this.ViewStates);
 	}
 
 	// Go back to the last view state
@@ -117,6 +106,20 @@ class AdventurePage
 	}
 }
 
+// Class to manage the event page
+class EventPage
+{
+	constructor(){
+		this.TrelloCards = [];
+	}
+
+	// Add a set of cards
+	addCards(cards){
+		for(var c of cards){
+			this.TrelloCards.push(c);
+		}
+	}
+}
 
 // Class to store the presentation of an adventure
 class Adventure
@@ -212,5 +215,113 @@ class StreamVideo
 		this.Ready = videoObj?.readyToStream ?? false;
 		this.Signed = videoObj?.requireSignedURLs ?? false;
 		this.Urls = videoObj?.urls ?? {}
+	}
+}
+
+// Class for Trello Cards
+class TrelloCard
+{
+	constructor(trelloCard, trelloLabels=[])
+	{
+		// Check if display name search param exists
+		this.ShowLegalName = (MyUrls.getSearchParam("fn") ?? "" == "1");
+
+		// Basics
+		this.CardID = trelloCard?.id ?? "";
+		this.Name = this.formatContent(trelloCard?.name ?? "");
+		this.Description = this.formatContent(trelloCard?.desc ?? "");
+		
+		this.ChecklistIDs = trelloCard?.idChecklists ?? [];
+		this.Checklists = {};
+
+		this.CardLabels = trelloCard?.idLabels ?? [];
+		this.DateLastUpdated = new Date(trelloCard?.dateLastActivity);
+
+		this.TrelloLabels = {};
+		trelloLabels?.forEach( (label) => {
+			this.TrelloLabels[label.name] = label.id;
+		});
+
+		// The comments on this card
+		this.Comments = [];
+	}
+
+	// Set key values on this card
+	setName(newName){ this.Name = (newName != undefined) ? newName : this.Name; }
+	setDescription(newDesc){ this.Description = (newDesc != undefined) ? newDesc : this.Description; }
+
+	// Format name/content
+	formatContent(content){
+		var formatted = content
+							.replaceAll("\n", "<br/>")
+							.replaceAll("Dejai", (this.ShowLegalName) ? "Derrick" : "Dejai")
+		return formatted;
+	}
+
+	// Check if this card has a label (by name)
+	hasLabel(name){
+		return this.CardLabels.includes( (this.TrelloLabels[name] ?? "") ); 
+	}
+
+	//  Return if this game is published
+	isFormCard(){
+		var formID = this.TrelloLabels["Form"] ?? undefined;
+		return this.CardLabels.includes(formID);
+	}
+}
+
+// Keeping track of a checklist on a Trello Card
+class TrelloChecklist
+{
+	constructor(checklistDetails)
+	{
+		this.ChecklistID = checklistDetails?.id ?? "";
+		this.Name = checklistDetails?.name ?? "";
+		this.Key = this.Name.replaceAll(" ", "");
+		this.Items = checklistDetails?.checkItems?.sort((a, b) => a.pos - b.pos)?.map(x => { return {"id": x.id, "name": x.name } }) ?? [];
+		this.ItemsHtml = this.getHtml();
+	}
+
+	getHtml(){
+		var openTag = "";
+		var closeTag = "";
+		var content = "";
+		// Get content based on type of checklist
+		switch(this.Key){
+			case "Details":
+				this.Items.forEach((item) => {
+					let splits = item.name.split("=")?.map(x => x.trim());
+					let label = splits[0] ?? "";
+					let desc = splits[1] ?? "";
+					content += `<tr>
+									<td class="infoCell leftCell">${label}:</td>
+									<td class="infoCell rightCell">${desc}</td>
+								</tr>`;
+				});
+				break;
+			case "ResponseOptions":
+				this.Items.forEach((item) => {
+					let splits = item.name.split("=")?.map(x => x.trim());
+					let label = splits[0] ?? "";
+					let desc = splits[1] ?? "";
+					content += `<button class="responseButton response${label}" id="${item.id}" data-response-group="${this.ChecklistID}" onclick="onSelectResponseOption(this)">
+									${label}, ${desc}
+								</button><br/>`;
+				});
+				break;
+			default:
+				MyLogger.LogError("Can't generate HTML");
+				break;
+		}
+		return `${openTag}${content}${closeTag}`;
+	}
+}
+
+// Track a Trello Comment
+class TrelloComment
+{
+	constructor(commentJson){
+		this.CommentID = commentJson?.id ?? "";
+		this.Text = commentJson?.data?.text ?? "";
 	}
 }

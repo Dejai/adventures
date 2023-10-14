@@ -1,0 +1,22 @@
+<div class="eventForm centered dtk-fade" data-form-id="{{CardID}}">
+    <div>
+        <h1>{{Name}}</h1>
+        <p class="eventDescription">{{Description}}</p>
+        <div class="eventDetailsTable">
+            <table style="width:100%">
+                <colgroup>
+                    <col style="width:49%;"/>
+                    <col style="width:49%;"/>
+                </colgroup>
+                <tbody>
+                    {{Checklists.Details.ItemsHtml}}
+                </tbody>
+            </table>
+        </div>
+        <div class="eventDetailsTable">
+            <div class="centered responseButtonGroup">
+                {{Checklists.ResponseOptions.ItemsHtml}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,14 +3,40 @@
 body.theme_black_bg { background-color:black; color:white; }
 .pageMessage { font-size: 16px; }
 
-.iconSize { font-size: 18px; }
+.iconSize { font-size: 25px; }
 .iconSizeSmaller { font-size: 14px; }
 
+.dtk-fade { opacity:0; }
+.dtk-fade-in { opacity:100; transition: opacity ease-in 0.5s; }
+.dtk-fade-out { opacity:0 !important; transition: opacity ease-out 0.2s; }
+
+/* Menu */
+/* .menuSection { } */
+#userIconSection { position: fixed; top:2%; right:2%; z-index:100; }
+.userName.desktop { display:none; }
+.userName.mobile { display:inline-block; }
+
+/* Side navigation */
+.sideNav { position:absolute; height:100%; background-color: black; color:white; width:0px; overflow-x:hidden; z-index:101;   }
+.sideNav.open {width: 100%; transition: ease 0.5s; }
+.sideNav.left { left:0; }
+.sideNav.right { right:0; }
+.sideNav .closeIcon { color: lightgray; display:inline-block; width:100%; text-align:center; margin-bottom:3%; font-size:25px; cursor:pointer; }
+
+.sideNav .navRow { display:inline-block; padding:1%; text-align:center; opacity:0; font-size:0px; width:100%; margin-bottom:2%; }
+.sideNav .navItem { border-top:2px solid white; border-bottom:2px solid white; background-color:white;  }
+.sideNav.open .navRow { opacity: 100; font-size:initial; transition: ease 0.9s; }
+
+
 /* Menu/Search Sections */
-.menuLogin { position: fixed; top:2%; right:2%; z-index:1000; text-align:right; }
+.menuLoginSection #menuLoginDetails { padding-right:2%;  }
+.menuLogin:hover { cursor:pointer; }
 .menuLogin .authLink { cursor:pointer; font-size: 16px; }
 .menuLogin .authLink .login { color:orange !important; }
 .menuLogin .authLink .logout { color:white !important; }
+#menuDropdown { display:none;}
+#menuLoginSection.open { background-color: black; display:block !important;}
+#menuLoginSection.open #menuDropdown { display:block !important;}
 
 .searchIcons { float:right; margin-left:2%; vertical-align: middle;}
 #randomAdventureIcon { color:orange; }
@@ -53,9 +79,14 @@ body.theme_black_bg { background-color:black; color:white; }
 
 /* Large devices (laptops/desktops ) */
 @media only screen and (min-width: 900px) {
+	.userName.desktop { display:inline; }
+	.userName.mobile { display:none; }
+	.sideNav.open {width: 170px; }
+
+
 	#searchBarSection { width:40%; }
 	.menuLogin .authLink { font-size: 24px; }
-	.iconSize { font-size: 22px; }
+	.iconSize { font-size: 30px; }
 	.iconSizeSmaller { font-size: 16px; }
 }
 

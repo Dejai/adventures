@@ -1,0 +1,46 @@
+
+/*** Menu Section */
+#moreDetailsIcon { padding-left:0.5% }
+.showDescriptionIcon { color: limegreen; vertical-align: middle; }
+#returnHomeSection { position: fixed; top:2%; left:2%; z-index:1000; text-align:left; }
+
+
+
+/* Event Details */
+#eventOverviewSection { width:90%; margin:auto; border-bottom:solid gray; border-width:thick; font-size:110%; }
+.eventForm { margin-top:5%; margin-bottom:5%; }
+.eventDescription { width:80%; margin:auto;  }
+.eventDetailsTable { width:100%; margin:auto; margin-top:5%; }
+.eventForm .formDescription { width:80%; margin:auto; }
+.eventForm .detailsTable { width:50%; margin:auto; margin-top:2%; }
+.eventForm .infoCell { padding:0.5%;  }
+.eventForm .leftCell { text-align:right; font-weight:bold;  }
+.eventForm .rightCell { text-align:left; font-style: italic; }
+.eventForm .responseOptions { width:70%; margin:auto; }
+.eventForm .responseOptions { width:70%; margin:auto; }
+.eventForm label:hover { cursor:pointer; } 
+
+#formsSubmitButton { font-size: 22px;border-radius: 30px; background-color: blue; padding: 2%; border: none; color: white; font-weight: bolder; cursor: pointer; }
+
+/* Response Buttons */
+.eventForm .responseButton { margin-bottom:2%; border:1px solid black; border-radius:20px; padding:1%; line-height: 25px; vertical-align: middle; background-color: lightgray; color:black; cursor:pointer; transition: transform 0.1s linear; }
+.eventForm .responseButton:hover { transform: scale(1.02); }
+.eventForm .responseButton.responseYes:hover { background-color:#009933; }
+.eventForm .responseButton.responseYes.selected { background-color:#009933; color:white; }
+.eventForm .responseButton.responseNo:hover { background-color:#CC0000; }
+.eventForm .responseButton.responseNo.selected { background-color:#CC0000; color:white; }
+.eventForm .responseButton.responseMaybe:hover { background-color:orange; }
+.eventForm .responseButton.responseMaybe.selected { background-color:orange; color:white; }
+
+
+/*** MEDIA SECTIONS ***/
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+	.eventDescription { width:35%; }
+	#eventOverviewSection { width:50%; padding: 2% 3%; }
+	.eventDetailsTable { width:80%; margin-top:2%; }
+	#formsSubmitButton { padding: 0.5%;  }
+
+
+}
