@@ -13,12 +13,12 @@
 			<div id="menuItems">
 				<div class="menuItem centered">
 					<h1 style="margin:0px;" class="pointer">
-						<span id="homeIcon2" style="font-size:smaller;"> Dejai's Adventures</span>
+						<span id="homeIcon2" style="font-size:smaller;">Dejai's Adventures</span>
 					</h1>
 					<div class="searchSection">
 						<div id="searchBarSection" class="searchBarSection">
 							<input id="searchBarInput" type="text" placeholder="Search adventures ... " onkeyup="onSearchAdventures()">
-							<i id="randomAdventureIcon" class="fa fa-random pointer hidden searchIcons showOnAdventuresLoaded" onclick="onSelectRandomAdventure()" aria-hidden="true" title="Select a random adventure"></i> 
+							<i id="randomAdventureIcon" class="fa fa-random pointer searchIcons" onclick="onSelectRandomAdventure()" aria-hidden="true" title="Select a random adventure"></i> 
 							<i id="searchClearIcon" class="fa fa-times-circle pointer hidden searchIcons" aria-hidden="true" style="color:red;" onclick="onClearSearch()"></i>
 						</div>
 					</div>
@@ -35,9 +35,9 @@
 			<span class="userName mobile navRow"></span>
 			<a class="authLink navRow navItem dtk-href-no-textdec" href="auth/?action=0" target="_top"></a>
 		</div>
-		<div id="adventuresPanel" class="toggleOnSideNavMobile" style="width:95%; margin:auto; overflow-y:scroll;">
-			<img id="loadingGif" class="hidden" style="width:5%;height:5%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="Loading ...">
-		</div>
+
+		<!-- List of adventures -->
+		<div id="adventuresPanel" class="toggleOnSideNavMobile" style="width:95%; margin:auto; overflow-y:scroll;"></div>
 	</div>
 </body>
 <!-- Common Scripts -->

@@ -4,7 +4,7 @@
 .showDescriptionIcon { color: limegreen; vertical-align: middle; }
 #returnHomeSection { position: fixed; top:2%; left:2%; z-index:1000; text-align:left; }
 
-
+.IsLoggedIn-true { display:none; }
 
 /* Event Details */
 #eventOverviewSection { width:90%; margin:auto; border-bottom:solid gray; border-width:thick; font-size:110%; }

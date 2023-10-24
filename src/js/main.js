@@ -7,6 +7,10 @@ const MyHomePage = new AdventureHomePage();
 
 	// Once doc is ready
 	MyDom.ready( async() => {
+
+		// Check for auto-redirect
+		await MyUrls.redirectFromCode();
+
 		// Set login details
 		var userDetails = await MyAuth.onGetLoginDetails();
 		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
@@ -42,6 +46,8 @@ const MyHomePage = new AdventureHomePage();
 			// Add the adventures to home page instance
 			MyHomePage.addAdventures(adventures);
 
+			// Loop through adventures & add to page
+			var append = false;
 			for(var adventure of adventures)
 			{
 				var adventureID = adventure?.AdventureID ?? "No Adventure ID";
@@ -53,17 +59,14 @@ const MyHomePage = new AdventureHomePage();
 				}
 				// Add adventure as we go
 				var adventureBlockTemplate = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", adventure);
-				MyDom.setContent("#adventuresPanel", {"innerHTML":adventureBlockTemplate}, true);
+				MyDom.setContent("#adventuresPanel", {"innerHTML":adventureBlockTemplate}, append);
+				append = true;
 			}
-			// Once loaded, show things that should be visible now
-			MyDom.showContent(".showOnAdventuresLoaded");
-			MyDom.hideContent(".hideOnLoaded");
+			
 		} catch (err){
 			onCantLoadAdventures("Something went wrong!");
 			MyLogger.LogError(err);
 		}
-
-
 	}
 
 	// Unable to load adventures
