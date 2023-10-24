@@ -16,7 +16,11 @@
 		<div id="menuItems">
 			<div class="menuItem centered">
 				<h1 style="margin:0px;" class="pointer">
-					<span id="homeIcon2" style="font-size:smaller;"> <span id="eventName">&nbsp;</span></span>
+					<span id="homeIcon2" style="font-size:smaller;">
+						<span id="eventName">
+							<img id="loadingGif" style="width:7%;height:7%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="Loading ...">
+						</span>
+					</span>
 				</h1>
 			</div>
 		</div>
@@ -32,11 +36,11 @@
 		<a class="authLink navRow navItem dtk-href-no-textdec" href="auth/?action=0" target="_top"></a>
 	</div>
 	<!-- A description of the event -->
-	<div id="eventOverviewSection" class="hidden centered">
+	<div id="eventOverviewSection" class="hidden showOnLoaded centered">
 	</div>
 
-	<div class="centered hideOnLoaded showOnSubmitting hideOnSubmitted">
-		<img id="loadingGif" style="width:5%;height:5%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="Loading ...">
+	<div class="centered hidden showOnLoading hideOnLoaded hideOnSubmitted" style="padding-top:3%;">
+		<img id="loadingGif" style="width:15%;height:15%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="Loading ...">
 	</div>
 
 	<!-- Form for the event -->

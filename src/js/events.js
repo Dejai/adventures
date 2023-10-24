@@ -12,8 +12,9 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	MyDom.ready( async () => {
 		
 		var userDetails = await MyAuth.onGetLoginDetails();
+		console.log(userDetails);
 		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
-		MyDom.setContent(".userName", {"innerText": userDetails.userName});
+		MyDom.setContent(".userName", {"innerText": userDetails.userName, "data-isLoggedIn": userDetails.isLoggedIn});
 
 		// Get params from URL;
 		let eventID = MyUrls.getSearchParam("id");
@@ -66,6 +67,9 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 					MyDom.setContent("#eventOverviewSection", {"innerHTML": overviewHtml});
 					MyDom.showContent("#eventOverviewSection");
 					numSections += 1;
+					
+					// Show the loading after the event overview
+					MyDom.showContent(".showOnLoading");
 				}
 				// Else, if form card
 				else if (card.hasLabel("Form"))
@@ -89,7 +93,10 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 			// If only overview was added, then count would only be 1; And if so, show no content
 			if(numSections <= 1){
-				var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/noContent.html", {});
+				var isLoggedIn = (document.querySelector("[data-isLoggedIn]")?.getAttribute("data-isLoggedIn") ?? "") == "true";
+				console.log(isLoggedIn);
+				var title = (!isLoggedIn) ? "Login Required" : `<i class="fa-regular fa-face-frown"></i> Can't Load the Content`;
+				var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/noContent.html", { "Title": title, "IsLoggedIn": isLoggedIn });
 				MyDom.setContent("#eventContentSection", {"innerHTML": evHtml});	
 			}
 
@@ -115,6 +122,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			var events = eventsJson?.map(x => new TrelloCard(x));
 			var eventsListHtml = await MyTemplates.getTemplateAsync("src/templates/events/eventList.html", events);
 			MyDom.setContent("#eventOverviewSection", {"innerHTML": eventsListHtml });
+			MyDom.hideContent(".hideOnLoaded");
+			MyDom.showContent(".showOnLoaded");
 		} catch (error){
 			MyLogger.LogError(error);
 		}
