@@ -143,6 +143,15 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		onModifyUrl({"content": contentID});
 	}
 
+
+	// Copy the content
+	function onCopyShortLink() {
+		 // Copy the text inside the text field
+		navigator.clipboard.writeText("Copied value");
+		// Alert the copied text
+		alert("Copied the text:");
+	  }
+
 	// Configure the stream object
 	function onConfigureStream() {
 		MyStream.setStreamElement("#videoFrame");
