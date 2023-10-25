@@ -70,6 +70,7 @@
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+	#contentTitle { width: 50%; }
 	#subMenuSection { width:60%; }
 	#descriptionSection { width: 50%; }
 	#contentViewSection { width:60% }
