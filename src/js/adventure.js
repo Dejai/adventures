@@ -143,7 +143,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		onModifyUrl({"content": contentID});
 
 		// Get the short link for this content
-		var shortLink = MyUrls.getCodeFromPath();
+		var shortLink = await MyUrls.getCodeFromPath();
 		MyDom.setContent(".shortLink", {"data-short-link": shortLink});
 	}
 
