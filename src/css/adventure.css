@@ -70,7 +70,7 @@
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-	#contentTitle { width: 50%; }
+	#contentTitle { width: 40%; }
 	#subMenuSection { width:60%; }
 	#descriptionSection { width: 50%; }
 	#contentViewSection { width:60% }
@@ -80,7 +80,7 @@
 
 /* Large devices (laptops/desktops ) */
 @media only screen and (min-width: 900px) {
-	#subMenuSection { width:50%; font-size:18px; }
+	#subMenuSection { width:40%; font-size:18px; }
 	#descriptionSection { width: 40%; }
 	#contentViewSection { width:50% }
 	.contentNav { z-index: 95; padding-top:35%; }

@@ -10,6 +10,8 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 .dtk-fade-in { opacity:100; transition: opacity ease-in 0.5s; }
 .dtk-fade-out { opacity:0 !important; transition: opacity ease-out 0.2s; }
 
+.shareLinkSection { position:absolute; width:30%; text-align:right; font-size:90%; padding-right:1%; }
+
 .loadingGif { width: 25%; height:25%; }
 
 /* Menu */
