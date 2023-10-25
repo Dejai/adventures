@@ -141,7 +141,30 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		}
 		// Modify URL when loading content
 		onModifyUrl({"content": contentID});
+
+		// Get the short link for this content
+		var shortLink = await MyUrls.getCodeFromPath();
+		MyDom.setContent(".shortLink", {"data-short-link": shortLink});
 	}
+
+
+	// Copy the content
+	function onCopyShortLink() {
+		var shortLinkVal = document.querySelector(".shortLink")?.getAttribute("data-short-link") ?? "n/a";
+
+		 // Copy the text inside the text field
+		navigator.clipboard.writeText(shortLinkVal);
+
+		// Alert the copied text
+		MyDom.showContent(".showOnLinkCopied");
+		MyDom.hideContent(".hideOnLinkCopied");
+
+		// Reset copy
+		setTimeout( ()=> {
+			MyDom.showContent(".hideOnLinkCopied");
+			MyDom.hideContent(".showOnLinkCopied");
+		}, 2000);
+	  }
 
 	// Configure the stream object
 	function onConfigureStream() {
@@ -201,7 +224,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				//Showing/hiding the next/prev buttons
 				var _next = MyAdventurePage.hasNextContent() ? MyDom.replaceClass("#contentNavRight", "disabled", "clickable") : MyDom.replaceClass("#contentNavRight", "clickable", "disabled");
 				var _prev = MyAdventurePage.hasPrevContent() ? MyDom.replaceClass("#contentNavLeft", "disabled", "clickable") : MyDom.replaceClass("#contentNavLeft", "clickable", "disabled");
-				
 				break;
 			case "description":
 				MyDom.showContent(".showOnDescriptionView");
@@ -226,7 +248,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 /***** NAVIGATION: Changing views within the page *****************************/
 
 	// Navigate back to the last view
-	function onBack(){
+	function onPreviousView(){
 		var lastViewState = MyAdventurePage.getLastViewState();
 		if(lastViewState == "content"){
 			MyStream.playVideo();

@@ -14,18 +14,16 @@
 
 	<div class="menuSection dtk-menu-sticky dtk-theme-blackbg">
 		<div id="menuItems">
-			<div id="returnHomeSection">
-				<span class="fa fa-chevron-circle-left pointer iconSize" onclick="onReturnHome()"></span>
+			<div id="returnIconSection">
+				<span><i class="fa-solid fa-house pointer iconSize hideOnContentView hideOnDescriptionView showOnListView" onclick="onReturnHome()"></i></span>
+				<span class="fa fa-chevron-circle-left pointer iconSize hidden showOnContentView showOnDescriptionView hideOnListView" onclick="onPreviousView()"></span>
 			</div>
 			<div class="menuItem centered">
 				<h1 style="margin:0px;" class="pointer">
 					<span id="homeIcon2" style="font-size:smaller;"> Dejai's Adventures</span>
 				</h1>
 				<h3>
-					<span id="adventureTitle"></span>
-					<span id="moreDetailsIcon" class="hidden">
-						<i class="iconSizeSmaller pointer showDescriptionIcon showOnContentView showOnListView hideOnDescriptionView fa fa-info-circle" aria-hidden="true" onclick="onShowDescription()"></i>						
-					</span>
+					<span id="adventureTitle" onclick="onShowDescription()"></span>
 				</h3> 
 			</div>
 		</div>
@@ -53,10 +51,13 @@
 
 	<!-- The back button when looking at content or description -->
 	<div id="subMenuSection" class="hidden showOnContentView showOnDescriptionView hideOnListView showOnError" >
-		<span id="backIconSection" class="pointer" onclick="onBack()">
-			<i id="backIcon" class="pointer fa-solid fa-share"></i>&nbsp;Back
+		<span id="contentTitle" class="hidden centered showOnContentView hideOnDescriptionView"></span>
+		<span style="position:absolute; width:30%; text-align:right; font-size:90%;" class="pointer">
+			<span class="shareLink hideOnLinkCopied">
+				<i data-short-link="" class="fa-regular fa-share-from-square shortLink" onclick="onCopyShortLink()"></i>&nbsp;<span onclick="onCopyShortLink()">share</span>
+			</span>
+			<span class="hidden showOnLinkCopied">Link copied</span>
 		</span>
-		<span id="contentTitle" class="hidden centered showOnContentView hideOnDescriptionView"></span> 
 	</div>
 
 	<!-- The description of this adventure -->
@@ -66,8 +67,7 @@
 	</div>
 
 	<!-- The Content List Section -->
-	<div id="contentListSection" class="centered hidden toggleOnSideNavMobile showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView">
-	</div>
+	<div id="contentListSection" class="centered hidden toggleOnSideNavMobile showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView"></div>
 
 	<!-- The Content View section -->
 	<div id="contentViewSection" class="hidden showOnContentView hideOnDescriptionView hideOnListView">
@@ -79,7 +79,6 @@
 		</div>
 		<div id="videoFramePanel"></div>
 	</div>
-
 </body>
 <!-- Stream Embed API -->
 <script src="https://embed.videodelivery.net/embed/sdk.latest.js"></script>

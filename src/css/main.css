@@ -3,7 +3,7 @@
 body.theme_black_bg { background-color:black; color:#f8f8ff; }
 .pageMessage { font-size: 16px; }
 
-.iconSize { font-size: 25px; }
+.iconSize { font-size: 20px; }
 .iconSizeSmaller { font-size: 14px; }
 
 .dtk-fade { opacity:0; }
@@ -90,7 +90,7 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 
 	#searchBarSection { width:40%; }
 	.menuLogin .authLink { font-size: 24px; }
-	.iconSize { font-size: 30px; }
+	.iconSize { font-size: 22px; }
 	.iconSizeSmaller { font-size: 16px; }
 }
 
