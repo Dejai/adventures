@@ -141,15 +141,29 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		}
 		// Modify URL when loading content
 		onModifyUrl({"content": contentID});
+
+		// Get the short link for this content
+		var shortLink = MyUrls.getCodeFromPath();
+		MyDom.setContent(".shortLink", {"data-short-link": shortLink});
 	}
 
 
 	// Copy the content
 	function onCopyShortLink() {
+		var shortLinkVal = document.querySelector(".shortLink")?.getAttribute("data-short-link") ?? "n/a";
+
 		 // Copy the text inside the text field
-		navigator.clipboard.writeText("Copied value");
+		navigator.clipboard.writeText(shortLinkVal);
+
 		// Alert the copied text
-		alert("Copied the text:");
+		MyDom.showContent(".showOnLinkCopied");
+		MyDom.hideContent(".hideOnLinkCopied");
+
+		// Reset copy
+		setTimeout( ()=> {
+			MyDom.showContent(".hideOnLinkCopied");
+			MyDom.hideContent(".showOnLinkCopied");
+		}, 2000);
 	  }
 
 	// Configure the stream object
