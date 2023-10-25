@@ -2,13 +2,14 @@
 /*** Menu Section */
 #moreDetailsIcon { padding-left:0.5% }
 .showDescriptionIcon { color: limegreen; vertical-align: middle; }
-#returnHomeSection { position: fixed; top:2%; left:2%; z-index:1000; text-align:left; }
+#returnIconSection { position: fixed; top:2%; left:2%; z-index:1000; text-align:left; }
 
 /*** SubMenu Section */
-#backIconSection { position:absolute; z-index:99; top:0; color:#1F51FF !important; }
-#backIcon { transform: rotateY(180deg); }
-#subMenuSection { position:relative; z-index:99; width:80%; margin:auto; }
-#contentTitle { display:inline-block; width: 100%; }
+.navIcon { z-index:99; color:#1F51FF !important; }
+#rotate180deg { transform: rotateY(180deg); }
+
+#subMenuSection { position:relative; z-index:99; width:80%; margin:auto; text-align:center; }
+#contentTitle { display:inline-block; width: 70%; }
 .contentCreatorSection { font-size:smaller; display:inline-block; font-style: italic; }
 
 /*** Description */
@@ -78,7 +79,7 @@
 
 /* Large devices (laptops/desktops ) */
 @media only screen and (min-width: 900px) {
-	#subMenuSection { width:50%; font-size:20px; }
+	#subMenuSection { width:50%; font-size:18px; }
 	#descriptionSection { width: 40%; }
 	#contentViewSection { width:50% }
 	.contentNav { z-index: 95; padding-top:35%; }

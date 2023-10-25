@@ -201,7 +201,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				//Showing/hiding the next/prev buttons
 				var _next = MyAdventurePage.hasNextContent() ? MyDom.replaceClass("#contentNavRight", "disabled", "clickable") : MyDom.replaceClass("#contentNavRight", "clickable", "disabled");
 				var _prev = MyAdventurePage.hasPrevContent() ? MyDom.replaceClass("#contentNavLeft", "disabled", "clickable") : MyDom.replaceClass("#contentNavLeft", "clickable", "disabled");
-				
 				break;
 			case "description":
 				MyDom.showContent(".showOnDescriptionView");
@@ -226,7 +225,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 /***** NAVIGATION: Changing views within the page *****************************/
 
 	// Navigate back to the last view
-	function onBack(){
+	function onPreviousView(){
 		var lastViewState = MyAdventurePage.getLastViewState();
 		if(lastViewState == "content"){
 			MyStream.playVideo();

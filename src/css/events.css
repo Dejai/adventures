@@ -2,7 +2,6 @@
 /*** Menu Section */
 #moreDetailsIcon { padding-left:0.5% }
 .showDescriptionIcon { color: limegreen; vertical-align: middle; }
-#returnHomeSection { position: fixed; top:2%; left:2%; z-index:1000; text-align:left; }
 
 .IsLoggedIn-true { display:none; }
 
