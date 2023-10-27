@@ -1,3 +1,83 @@
+// Class to store the presentation of an adventure
+class Adventure
+{
+	//Build new adventure display
+	constructor(cardDetails){
+		this.AdventureID = cardDetails["id"] ?? "";
+		this.Name = cardDetails["name"] ?? "";
+		this.Description = cardDetails["desc"] ?? "";
+
+		this.Date = new Date(cardDetails["start"]) ?? "";
+		this.Labels = cardDetails["idLabels"] ?? "";
+		this.MonthYear = this.getMonthYear();
+
+		// The content of this adventure
+		this.CoverContent = {};
+		this.Content = [];
+		this.CurrentContentIdx = 0;
+
+		// Special adjustment for details
+		this.FirstParagraph = this.Description.split("\n")[0];
+		this.MoreDetails = this.Description.replaceAll("\n", "<br/>");
+	}
+
+	// Add content to this adventure
+	addContent(contentList){
+		contentList.forEach( (c) =>{
+			this.Content.push(c);
+		});
+	}
+
+	// Get a video by video ID
+	getContent(filterType, filter){
+		var content = undefined;
+		if(filterType == undefined){
+			return content;
+		}
+		// Get content based on filter type
+		switch(filterType){
+			case "contentID":
+				content = this.Content.filter(x => (x.ContentID == filter))?.[0];
+				break;
+			case "index":
+				content = (this.Content.length > filter) ? this.Content[filter] : undefined; 
+				break;
+			default:
+				MyLogger.LogInfo("Can't get content by type: " + filterType);
+		}
+		this.setCurrentContentIndex(content);
+		return content;
+	}
+
+	// Set the current content index (for next/prev actions)
+	setCurrentContentIndex(content){
+		if(content == undefined) { return; }
+		var idx = this.Content?.findIndex( x => x.ContentID == content.ContentID );
+		this.CurrentContentIdx = (idx >= 0) ? idx : 0;
+	}
+
+	// Get the next content based on index
+	getNextContent(){
+		if( (this.CurrentContentIdx+1) < this.Content.length){
+			return this.Content[this.CurrentContentIdx+1];
+		}
+		return undefined;
+	}
+
+	// Get the date in a month/year format
+	getMonthYear()
+	{
+		let months = [	"January", "February", "March", "April", "May", "June", 
+						"July", "August", "September", "October", "November", "December"];
+
+		let month = months[this.Date.getMonth()];
+		let year = this.Date.getFullYear()
+		return `${month}, ${year}`;
+	}
+
+	hasLabel(labelID){ return this.Labels.includes(labelID); }
+}
+
 // Class to store the adventures home page
 class AdventureHomePage
 {
@@ -119,86 +199,6 @@ class EventPage
 			this.TrelloCards.push(c);
 		}
 	}
-}
-
-// Class to store the presentation of an adventure
-class Adventure
-{
-	//Build new adventure display
-	constructor(cardDetails){
-		this.AdventureID = cardDetails["id"] ?? "";
-		this.Name = cardDetails["name"] ?? "";
-		this.Description = cardDetails["desc"] ?? "";
-
-		this.Date = new Date(cardDetails["start"]) ?? "";
-		this.Labels = cardDetails["idLabels"] ?? "";
-		this.MonthYear = this.getMonthYear();
-
-		// The content of this adventure
-		this.CoverContent = {};
-		this.Content = [];
-		this.CurrentContentIdx = 0;
-
-		// Special adjustment for details
-		this.FirstParagraph = this.Description.split("\n")[0];
-		this.MoreDetails = this.Description.replaceAll("\n", "<br/>");
-	}
-
-	// Add content to this adventure
-	addContent(contentList){
-		contentList.forEach( (c) =>{
-			this.Content.push(c);
-		});
-	}
-
-	// Get a video by video ID
-	getContent(filterType, filter){
-		var content = undefined;
-		if(filterType == undefined){
-			return content;
-		}
-		// Get content based on filter type
-		switch(filterType){
-			case "contentID":
-				content = this.Content.filter(x => (x.ContentID == filter))?.[0];
-				break;
-			case "index":
-				content = (this.Content.length > filter) ? this.Content[filter] : undefined; 
-				break;
-			default:
-				MyLogger.LogInfo("Can't get content by type: " + filterType);
-		}
-		this.setCurrentContentIndex(content);
-		return content;
-	}
-
-	// Set the current content index (for next/prev actions)
-	setCurrentContentIndex(content){
-		if(content == undefined) { return; }
-		var idx = this.Content?.findIndex( x => x.ContentID == content.ContentID );
-		this.CurrentContentIdx = (idx >= 0) ? idx : 0;
-	}
-
-	// Get the next content based on index
-	getNextContent(){
-		if( (this.CurrentContentIdx+1) < this.Content.length){
-			return this.Content[this.CurrentContentIdx+1];
-		}
-		return undefined;
-	}
-
-	// Get the date in a month/year format
-	getMonthYear()
-	{
-		let months = [	"January", "February", "March", "April", "May", "June", 
-						"July", "August", "September", "October", "November", "December"];
-
-		let month = months[this.Date.getMonth()];
-		let year = this.Date.getFullYear()
-		return `${month}, ${year}`;
-	}
-
-	hasLabel(labelID){ return this.Labels.includes(labelID); }
 }
 
 // Class to store the video details

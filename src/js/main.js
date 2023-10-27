@@ -83,7 +83,9 @@ const MyHomePage = new AdventureHomePage();
     {
 		// Show option to clear search;
 		var searchFilter = MyDom.getContent("#searchBarInput")?.value ?? "";
-		if(searchFilter != ""){ MyDom.showContent("#searchClearIcon"); }
+		// Show clear button
+		var _clearButton = (searchFilter != "") ? MyDom.showContent("#searchClearIcon") : MyDom.hideContent("#searchClearIcon");
+		// Get content IDs for ones that match
 		var contentIds = MyHomePage.searchContent(searchFilter);
 		// Loop through content and show those that match
 		document.querySelectorAll(".adventureBlock")?.forEach( (block) => {

@@ -14,17 +14,23 @@
 
 	<div class="menuSection dtk-menu-sticky dtk-theme-blackbg">
 		<div id="menuItems">
-			<div id="returnIconSection">
+			<div id="returnIconSection" class="menuItem">
 				<span><i class="fa-solid fa-house pointer iconSize hideOnContentView hideOnDescriptionView showOnListView" onclick="onReturnHome()"></i></span>
 				<span class="fa fa-chevron-circle-left pointer iconSize hidden showOnContentView showOnDescriptionView hideOnListView" onclick="onPreviousView()"></span>
 			</div>
-			<div class="menuItem centered">
+			<div class="menuItem menuItemLeft">
 				<h2 style="margin:0px;" class="pointer">
-					<span id="homeIcon2" style="font-size:smaller;"> Dejai's Adventures</span>
+					<span id="homeIcon2" style="font-size:smaller;" onclick="MyUrls.navigateTo('/')"> Dejai's Adventures</span>
 				</h2>
+			</div>
+			<div class="menuItem menuItemMiddle centered">
 				<h2>
 					<span id="adventureTitle" onclick="onShowDescription()"></span>
 				</h2> 
+
+				<span class="searchIcon">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</span>
 			</div>
 		</div>
 		<div id="userIconSection" class="pointer">

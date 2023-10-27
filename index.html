@@ -7,38 +7,38 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body class="dtk-theme-blackbg">	
+<body class="dtk-theme-blackbg">
 	<div>
 		<div id="menuSection" class="menuSection dtk-menu-sticky dtk-theme-blackbg" >
 			<div id="menuItems">
-				<div class="menuItem centered">
-					<h1 style="margin:0px;" class="pointer">
+				<div class="menuItem menuItemLeft">
+					<h1 id="mainTitle" style="margin:0px;" class="pointer fadeOnSearch">
 						<span id="homeIcon2" style="font-size:smaller;">Dejai's Adventures</span>
 					</h1>
-					<div class="searchSection">
-						<div id="searchBarSection" class="searchBarSection">
-							<input id="searchBarInput" type="text" placeholder="Search adventures ... " onkeyup="onSearchAdventures()">
-							<i id="randomAdventureIcon" class="fa fa-random pointer searchIcons" onclick="onSelectRandomAdventure()" aria-hidden="true" title="Select a random adventure"></i> 
-							<i id="searchClearIcon" class="fa fa-times-circle pointer hidden searchIcons" aria-hidden="true" style="color:red;" onclick="onClearSearch()"></i>
-						</div>
-					</div>
 				</div>
-			</div>
-			<div id="userIconSection" class="pointer">
-				<span class="userName desktop" onclick="toggleSideNav()"></span>
-				<i class="fa-solid fa-circle-user login iconSize" style="cursor:pointer;" onclick="toggleSideNav()"></i>
+				<div class="menuItem menuItemRight">
+
+					<div id="searchBarSection" class="searchBarSection">
+						<input id="searchBarInput" type="text" placeholder="Search adventures ... " onkeyup="onSearchAdventures()">
+						<i id="searchToggleIcon" class="fa-solid fa-magnifying-glass pointer searchIcons" onclick="toggleSearchBar(this)"></i> 
+						<i id="searchClearIcon" class="fa-solid fa-xmark hidden searchIcons pointer" aria-hidden="true" onclick="onClearSearch()"></i>
+					</div>
+					<i id="hamburgerMenuIcon" class="fa-solid fa-bars pointer menuIcons" onclick="toggleSideNav()"></i>
+					<i id="closeMenuIcon" class="fa-solid fa-x hidden pointer menuIcons" onclick="toggleSideNav()"></i>
+				</div>
 			</div>
 			<hr class="menuSeparator" style="clear:both;"/>
 		</div>
+
 		<div class="sideNav right">
-			<i class="fa-solid fa-xmark closeIcon" onclick="toggleSideNav()"></i>
-			<span class="userName mobile navRow"></span>
+			<span class="userName navRow"></span>
 			<a class="authLink navRow navItem dtk-href-no-textdec" href="auth/?action=0" target="_top"></a>
 		</div>
 
 		<!-- List of adventures -->
-		<div id="adventuresPanel" class="toggleOnSideNavMobile" style="width:95%; margin:auto; overflow-y:scroll;"></div>
+		<div id="adventuresPanel" class="toggleOnSideNavMobile"></div>
 	</div>
+	<span id=""></span>
 </body>
 <!-- Common Scripts -->
 <script src="https://dejai.github.io/scripts/js/v2/my.js?v=2"></script>
