@@ -73,6 +73,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// If there is only one video, also set immediately;
 				if( (MyAdventurePage.getContentCount() == 1) ){
 					contentID = MyAdventurePage.getContentByIndex(0)?.ContentID ?? contentID;
+					// Hide the back button for cases of one content
 				}
 
 				// Use the content ID to load the content
@@ -209,10 +210,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// Show the content
 				MyDom.showContent(".showOnContentView");
 				MyDom.hideContent(".hideOnContentView");
-				// Show/hide the back button
-				var _back = MyAdventurePage.getContentCount() == 1 ? MyDom.hideContent("#backIconSection") : MyDom.showContent("#backIconSection");
-				var _noNext = MyAdventurePage.getContentCount() == 1 ? MyDom.addClass("#nextButton", "hidden") : MyDom.removeClass("#nextButton", "hidden");
-				var _noPrev = MyAdventurePage.getContentCount() == 1 ? MyDom.addClass("#prevButton", "hidden") : MyDom.removeClass("#prevButton", "hidden");
+				// Show/hide the prev button
+				var _back = MyAdventurePage.getContentCount() == 1 ? MyDom.hideContent(".hideIfOneContent") : MyDom.showContent(".hideIfOneContent");
 				//Showing/hiding the next/prev buttons
 				var _next = MyAdventurePage.hasNextContent() ? MyDom.replaceClass("#contentNavRight", "disabled", "clickable") : MyDom.replaceClass("#contentNavRight", "clickable", "disabled");
 				var _prev = MyAdventurePage.hasPrevContent() ? MyDom.replaceClass("#contentNavLeft", "disabled", "clickable") : MyDom.replaceClass("#contentNavLeft", "clickable", "disabled");

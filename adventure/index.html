@@ -35,14 +35,14 @@
 	<!-- Messages related to the adventure/content -->
 	<div id="messageSection" class="centered">
 		<h3 id="pageMessages">
-			<img id="loadingGif" class="hidden hideOnListView hideOnContentView hideOnDescriptionView" style="width:10%;height:10%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
+			<img id="loadingGif" class="hidden hideOnListView hideOnContentView hideOnDescriptionView" style="width:45px;height:45px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="...loading">
 		</h3>
 		<button class="loginButton hidden showOnLoginRequired">Login</button>
 	</div>
 
 	<!-- The back button when looking at content or description -->
 	<div id="subMenuSection" class="hidden showOnContentView showOnDescriptionView hideOnListView showOnError" >
-		<span class="subMenuItem subMenuItemLeft fa fa-chevron-circle-left pointer iconSize hidden showOnContentView showOnDescriptionView hideOnListView" onclick="onPreviousView()"></span>
+		<span class="subMenuItem subMenuItemLeft fa fa-chevron-circle-left pointer iconSize hidden showOnContentView showOnDescriptionView hideOnListView hideIfOneContent" onclick="onPreviousView()"></span>
 		<span id="contentTitle" class="subMenuItem subMenuItemMiddle hidden centered showOnContentView hideOnDescriptionView"></span>
 		<span class="shareLinkSection pointer subMenuItem subMenuItemRight">
 			<span class="shareLink hideOnLinkCopied">
