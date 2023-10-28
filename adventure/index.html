@@ -14,31 +14,22 @@
 
 	<div class="menuSection dtk-menu-sticky dtk-theme-blackbg">
 		<div id="menuItems">
-			<div id="returnIconSection">
-				<span><i class="fa-solid fa-house pointer iconSize hideOnContentView hideOnDescriptionView showOnListView" onclick="onReturnHome()"></i></span>
-				<span class="fa fa-chevron-circle-left pointer iconSize hidden showOnContentView showOnDescriptionView hideOnListView" onclick="onPreviousView()"></span>
+			<div class="menuItem menuItemLeft">
+				<h2 id="adventureTitle" class="mainHeading"></h2>
 			</div>
-			<div class="menuItem centered">
-				<h1 style="margin:0px;" class="pointer">
-					<span id="homeIcon2" style="font-size:smaller;"> Dejai's Adventures</span>
-				</h1>
-				<h3>
-					<span id="adventureTitle" onclick="onShowDescription()"></span>
-				</h3> 
+			<div class="menuItem menuItemRight">
+				<i id="hamburgerMenuIcon" class="fa-solid fa-bars pointer menuIcons" onclick="toggleSideNav()"></i>
+				<i id="closeMenuIcon" class="fa-solid fa-x hidden pointer menuIcons" onclick="toggleSideNav()"></i>
 			</div>
-		</div>
-		<div id="userIconSection" class="pointer">
-			<span class="userName desktop" onclick="toggleSideNav()"></span>
-			<i class="fa-solid fa-circle-user login iconSize" style="cursor:pointer;" onclick="toggleSideNav()"></i>
 		</div>
 		<hr class="menuSeparator" style="clear:both;"/>
 	</div>
 
 	<!-- The side nav section -->
 	<div class="sideNav right">
-		<i class="fa-solid fa-xmark closeIcon" onclick="toggleSideNav()"></i>
-		<span class="userName mobile navRow"></span>
+		<span class="userName navRow"></span>
 		<a class="authLink navRow navItem dtk-href-no-textdec" href="auth/?action=0" target="_top"></a>
+		<span class="navRow navItem" onclick="onShowDescription()" style="color:black;">DETAILS</span>
 	</div>
 
 	<!-- Messages related to the adventure/content -->
@@ -51,8 +42,9 @@
 
 	<!-- The back button when looking at content or description -->
 	<div id="subMenuSection" class="hidden showOnContentView showOnDescriptionView hideOnListView showOnError" >
-		<span id="contentTitle" class="hidden centered showOnContentView hideOnDescriptionView"></span>
-		<span style="position:absolute; width:30%; text-align:right; font-size:90%;" class="pointer">
+		<span class="subMenuItem subMenuItemLeft fa fa-chevron-circle-left pointer iconSize hidden showOnContentView showOnDescriptionView hideOnListView" onclick="onPreviousView()"></span>
+		<span id="contentTitle" class="subMenuItem subMenuItemMiddle hidden centered showOnContentView hideOnDescriptionView"></span>
+		<span class="shareLinkSection pointer subMenuItem subMenuItemRight">
 			<span class="shareLink hideOnLinkCopied">
 				<i data-short-link="" class="fa-regular fa-share-from-square shortLink" onclick="onCopyShortLink()"></i>&nbsp;<span onclick="onCopyShortLink()">share</span>
 			</span>

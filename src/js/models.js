@@ -1,126 +1,3 @@
-// Class to store the adventures home page
-class AdventureHomePage
-{
-	constructor () {
-		this.Adventures = [];
-	}
-
-	// Add adventure
-	addAdventures(adventures){
-		adventures?.forEach( (adv) => {
-			if(adv instanceof Adventure){
-				this.Adventures.push(adv);
-			}
-		});
-	}
-
-	// Search content based on name & description
-	searchContent(filter) {
-		var filterUpper = filter.toUpperCase();
-		var matchingContentIds = this.Adventures.filter(x => x.Name.toUpperCase().includes(filterUpper) || x.Description.toUpperCase().includes(filterUpper) ).map(y => y.AdventureID);
-		return matchingContentIds;
-	}
-
-}
-
-// Class to store the adventure page controls
-class AdventurePage
-{
-	constructor(){
-		this.Adventure = undefined;
-
-		// Determine the content currently being displayed
-		this.CurrentContent = undefined;
-
-		// Manage the view of the page
-		this.ViewStates = ["default"]
-
-		// Keep track of scroll location
-		this.Scroll = { "X": 0, "Y": 0}
-	}
-
-	// Set the current adventure
-	setAdventure(adventure) {
-		this.Adventure = adventure;
-	}
-
-	// Set the current content
-	setCurrentContent(content){
-		if(content == undefined){ return; }
-		this.CurrentContent = content;
-	}
-
-	// Set the view states
-	setViewState(state){
-		var currentState = this.ViewStates[this.ViewStates.length-1];
-		if( currentState != state ) {
-			this.ViewStates.push(state);
-		}
-	}
-
-	// Go back to the last view state
-	getLastViewState(){
-		// Pop off the current state first
-		this.ViewStates.pop();
-		var lastState = this.ViewStates[this.ViewStates.length-1] ?? "default";
-		this.setViewState(lastState);
-		return lastState;
-	}
-
-	// Get number of adventures
-	getContentCount(){
-		return this.Adventure.Content.length;
-	}
-
-	getContentByIndex(idx){
-		var content = this.Adventure.getContent("index", idx);
-		this.setCurrentContent(content);
-		return content;
-	}
-
-	// Get content by index
-	getContentByID(contentID){
-		var content = this.Adventure.getContent("contentID", contentID);
-		this.setCurrentContent(content);
-		return content;
-	}
-
-	// Has a "next" content to view
-	hasNextContent(){
-		var length = this.getContentCount(); 
-		var idx = this.Adventure?.CurrentContentIdx ?? 0;
-		return (length > 1 && idx < length-1);
-	}
-
-	// Has a "prev" content to view
-	hasPrevContent(){
-		var length = this.getContentCount(); 
-		var idx = this.Adventure?.CurrentContentIdx ?? 0;
-		return (length > 1 && idx > 0);
-	}
-
-	// Set the scroll values
-	setScroll(x, y) {
-		this.Scroll.X = x;
-		this.Scroll.Y = y;
-	}
-}
-
-// Class to manage the event page
-class EventPage
-{
-	constructor(){
-		this.TrelloCards = [];
-	}
-
-	// Add a set of cards
-	addCards(cards){
-		for(var c of cards){
-			this.TrelloCards.push(c);
-		}
-	}
-}
-
 // Class to store the presentation of an adventure
 class Adventure
 {
@@ -199,6 +76,133 @@ class Adventure
 	}
 
 	hasLabel(labelID){ return this.Labels.includes(labelID); }
+}
+
+// Class to store the adventures home page
+class AdventureHomePage
+{
+	constructor () {
+		this.Adventures = [];
+	}
+
+	// Add adventure
+	addAdventures(adventures){
+		adventures?.forEach( (adv) => {
+			if(adv instanceof Adventure){
+				this.Adventures.push(adv);
+			}
+		});
+	}
+
+	// Search content based on name & description
+	searchContent(filter) {
+		var filterUpper = filter.toUpperCase();
+		var matchingContentIds = this.Adventures.filter(x => x.Name.toUpperCase().includes(filterUpper) || x.Description.toUpperCase().includes(filterUpper) ).map(y => y.AdventureID);
+		return matchingContentIds;
+	}
+
+}
+
+// Class to store the adventure page controls
+class AdventurePage
+{
+	constructor(){
+		this.Adventure = undefined;
+
+		// Determine the content currently being displayed
+		this.CurrentContent = undefined;
+
+		// Manage the view of the page
+		this.ViewStates = ["default"]
+
+		// Keep track of scroll location
+		this.Scroll = { "X": 0, "Y": 0}
+	}
+
+	// Set the current adventure
+	setAdventure(adventure) {
+		this.Adventure = adventure;
+	}
+
+	// Set the current content
+	setCurrentContent(content){
+		if(content == undefined){ return; }
+		this.CurrentContent = content;
+	}
+
+	// Set the view states
+	setViewState(state){
+		var currentState = this.ViewStates[this.ViewStates.length-1];
+		if( currentState != state ) {
+			this.ViewStates.push(state);
+		}
+	}
+
+	// Go back to the last view state
+	getLastViewState(){
+		// Pop off the current state first
+		this.ViewStates.pop();
+		var lastState = this.ViewStates[this.ViewStates.length-1] ?? "default";
+		if(lastState == "default" && this.Adventure.Content.length == 1) {
+			return "home";
+		} else {
+			this.setViewState(lastState);
+			return lastState;
+		}
+	}
+
+	// Get number of adventures
+	getContentCount(){
+		return this.Adventure.Content.length;
+	}
+
+	getContentByIndex(idx){
+		var content = this.Adventure.getContent("index", idx);
+		this.setCurrentContent(content);
+		return content;
+	}
+
+	// Get content by index
+	getContentByID(contentID){
+		var content = this.Adventure.getContent("contentID", contentID);
+		this.setCurrentContent(content);
+		return content;
+	}
+
+	// Has a "next" content to view
+	hasNextContent(){
+		var length = this.getContentCount(); 
+		var idx = this.Adventure?.CurrentContentIdx ?? 0;
+		return (length > 1 && idx < length-1);
+	}
+
+	// Has a "prev" content to view
+	hasPrevContent(){
+		var length = this.getContentCount(); 
+		var idx = this.Adventure?.CurrentContentIdx ?? 0;
+		return (length > 1 && idx > 0);
+	}
+
+	// Set the scroll values
+	setScroll(x, y) {
+		this.Scroll.X = x;
+		this.Scroll.Y = y;
+	}
+}
+
+// Class to manage the event page
+class EventPage
+{
+	constructor(){
+		this.TrelloCards = [];
+	}
+
+	// Add a set of cards
+	addCards(cards){
+		for(var c of cards){
+			this.TrelloCards.push(c);
+		}
+	}
 }
 
 // Class to store the video details

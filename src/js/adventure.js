@@ -23,11 +23,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		}
 	});
 
-	// Returning to home page
-	function onReturnHome()	{
-		MyUrls.navigateTo("/");
-	}
-
 /********* SETUP: Create the key things used throughout the file *************************************/
 
 	// Get this adventure card & its list of videos
@@ -87,13 +82,11 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				} else {
 					setContentView("default");
 				}
-				
 			});
 		} catch (error){
 			MyLogger.LogError(error);
 		}
 	}
-
 
 /********* CONTENT: Open/Load content *************************************/
 
@@ -250,10 +243,17 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	// Navigate back to the last view
 	function onPreviousView(){
 		var lastViewState = MyAdventurePage.getLastViewState();
-		if(lastViewState == "content"){
-			MyStream.playVideo();
+		console.log(lastViewState);
+		// If only one content, then just go back to all adventures
+		if(lastViewState == "home"){
+			MyUrls.navigateTo("/");
+		} else { 
+			// If going back to content
+			if(lastViewState == "content"){
+				MyStream.playVideo();
+			}
+			setContentView(lastViewState);
 		}
-		setContentView(lastViewState);
 	}
 
 	// On navigate back to a content list
@@ -275,6 +275,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	// Show the description
 	function onShowDescription(){
 		setContentView("description");
+		toggleSideNav();
 	}
 
 	// Get and set content based on index plus/minus
