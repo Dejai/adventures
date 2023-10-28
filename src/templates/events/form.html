@@ -1,22 +1,35 @@
-<div class="eventForm centered dtk-fade" data-form-id="{{CardID}}">
-    <div>
-        <h1>{{Name}}</h1>
-        <p class="eventDescription">{{Description}}</p>
-        <div class="eventDetailsTable">
-            <table style="width:100%">
-                <colgroup>
-                    <col style="width:49%;"/>
-                    <col style="width:49%;"/>
-                </colgroup>
-                <tbody>
-                    {{Checklists.Details.ItemsHtml}}
-                </tbody>
-            </table>
-        </div>
-        <div class="eventDetailsTable">
-            <div class="centered responseButtonGroup">
-                {{Checklists.ResponseOptions.ItemsHtml}}
-            </div>
+<div class="eventForm centered eventFormFade" data-form-id="{{CardID}}">
+        
+    <h1>{{Name}}</h1>
+    <p class="formDescription">{{Description}}</p>
+
+    <div class="eventDetailsTable ShowChecklists-{{ShowChecklists}}">
+        <table style="width:100%">
+            <colgroup>
+                <col style="width:49%;"/>
+                <col style="width:49%;"/>
+            </colgroup>
+            <tbody>
+                {{Checklists.Details.ItemsHtml}}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="eventDetailsTable ShowChecklists-{{ShowChecklists}}">
+        <div class="centered responseButtonGroup">
+            {{Checklists.ResponseOptions.ItemsHtml}}
         </div>
     </div>
+
+    <div class="eventDetailsTable formCommentBox ShowComments-{{ShowComments}}">
+        <textarea class="commentBox" name="comments" rows="5" placeholder="Enter any comments or questions here ..."></textarea>
+    </div>
+
+    <div class="formButtons">
+        <button class="eventFormButton left" onclick="onNavigateForms(this, 'prev')">BACK</button>
+        <button class="eventFormButton submit" onclick="onSubmitResponses()">SUBMIT</button>
+        <button class="eventFormButton right" onclick="onNavigateForms(this, 'next')">NEXT</button>
+    </div>
 </div>
+
+

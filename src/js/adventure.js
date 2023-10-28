@@ -43,7 +43,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// Set the name & description
 				MyDom.setContent("#adventureTitle", {"innerHTML":adventure.Name});
 				MyDom.setContent("#adventureDescription", {"innerHTML":adventure.MoreDetails});
-				MyDom.showContent("#moreDetailsIcon");
 
 				// Get the adventure Videos for this adventure
 				var adventureVideos = await CloudflareWrapper.GetVideos(adventure.AdventureID);

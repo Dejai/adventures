@@ -248,6 +248,11 @@ class TrelloCard
 
 		// The comments on this card
 		this.Comments = [];
+
+		// Showing sections
+		this.ShowComments = this.hasLabel("Comments");
+		this.ShowChecklists = false;
+		
 	}
 
 	// Set key values on this card
@@ -277,8 +282,7 @@ class TrelloCard
 // Keeping track of a checklist on a Trello Card
 class TrelloChecklist
 {
-	constructor(checklistDetails)
-	{
+	constructor(checklistDetails) {
 		this.ChecklistID = checklistDetails?.id ?? "";
 		this.Name = checklistDetails?.name ?? "";
 		this.Key = this.Name.replaceAll(" ", "");

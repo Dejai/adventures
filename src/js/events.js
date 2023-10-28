@@ -12,7 +12,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	MyDom.ready( async () => {
 		
 		var userDetails = await MyAuth.onGetLoginDetails();
-		console.log(userDetails);
 		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
 		MyDom.setContent(".userName", {"innerText": userDetails.userName, "data-isLoggedIn": userDetails.isLoggedIn});
 
@@ -26,11 +25,14 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			// Mark any previous responses
 			onSetPreviousResponse();
 
-			// Hide anything that indicates it is loaded
-			MyDom.hideContent(".hideOnLoaded");
+			// Show the first form
+			var firstForm = document.querySelector(".eventFormFade");
+			if(firstForm != undefined){
+				firstForm.classList.add("active");
+			}
 
-			// Show the forms using fade CSS
-			MyDom.addClass(".dtk-fade", "dtk-fade-in");
+			// Hide the spinning loader
+			MyDom.hideContent(".hideOnFormLoad");
 
 		} else {
 			onGetEventList();
@@ -67,28 +69,27 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 					MyDom.setContent("#eventOverviewSection", {"innerHTML": overviewHtml});
 					MyDom.showContent("#eventOverviewSection");
 					numSections += 1;
-					
-					// Show the loading after the event overview
-					MyDom.showContent(".showOnLoading");
 				}
 				// Else, if form card
 				else if (card.hasLabel("Form"))
 				{
 					// Get checklists for this card
 					for(var checkListID of card.ChecklistIDs){
-						var checklistJson = await MyTrello.GetChecklist(checkListID) //?.map(x => new TrelloChecklist(x));
+						var checklistJson = await MyTrello.GetChecklist(checkListID);
 						var checklist = new TrelloChecklist(checklistJson);
 						card.Checklists[checklist.Key] = checklist;
+						card.ShowChecklists = Object.keys(card.Checklists).length > 0;
 					}
 					var cardHtml = await MyTemplates.getTemplateAsync("src/templates/events/form.html", card);
 					MyDom.setContent("#eventContentSection", {"innerHTML": cardHtml}, true);
 					numSections += 1;
-					hasForm = true;
-				} else if (card.hasLabel("Comments")) {
-					var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/comments.html", { "CardID": card.CardID} );
-					MyDom.setContent("#eventContentSection", {"innerHTML": evHtml}, true);
-					numSections += 1;
-				}
+					// hasForm = true;
+				} 
+				// else if (card.hasLabel("Comments")) {
+				// 	var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/comments.html", { "CardID": card.CardID} );
+				// 	MyDom.setContent("#eventContentSection", {"innerHTML": evHtml}, true);
+				// 	numSections += 1;
+				// }
 			}
 
 			// If only overview was added, then count would only be 1; And if so, show no content
@@ -101,10 +102,10 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			}
 
 			// Only show submit if has form & more than just details
-			if(numSections > 1 && hasForm){
-				var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/formSubmit.html", {});
-				MyDom.setContent("#eventContentSection", {"innerHTML": evHtml}, true);
-			}
+			// if(numSections > 1 && hasForm){
+			// 	var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/formSubmit.html", {});
+			// 	MyDom.setContent("#eventContentSection", {"innerHTML": evHtml}, true);
+			// }
 		} catch (error){
 			MyLogger.LogError(error);
 		}
@@ -176,6 +177,19 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		// Clear selected from all buttons
 		MyDom.removeClass(`[data-response-group="${groupID}"]`, "selected");
 		button.classList.add("selected");
+	}
+
+	// Navigate to previous or next form
+	function onNavigateForms (button, direction="next"){
+		var form = button.closest(".eventForm");
+		var sibling = (direction == "prev") ? form.previousElementSibling : form.nextElementSibling;
+		console.log(form);
+		console.log(sibling);
+		
+		if(sibling != undefined && sibling.classList.contains("eventForm")){
+			form.classList.remove("active");
+			sibling.classList.add("active");
+		}
 	}
 
 	// Submit response

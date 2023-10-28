@@ -14,33 +14,29 @@
 
 	<div class="menuSection dtk-menu-sticky dtk-theme-blackbg">
 		<div id="menuItems">
-			<div class="menuItem centered">
-				<h1 style="margin:0px;" class="pointer">
-					<span id="homeIcon2" style="font-size:smaller;">
-						<span id="eventName">
-							<img id="loadingGif" style="width:7%;height:7%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="Loading ...">
-						</span>
-					</span>
-				</h1>
+			<div class="menuItem menuItemLeft">
+				<h2 id="eventName" class="mainHeading"></h2>
 			</div>
-		</div>
-		<div id="userIconSection" class="pointer">
-			<span class="userName desktop" onclick="toggleSideNav()"></span>
-			<i class="fa-solid fa-circle-user login iconSize" style="cursor:pointer;" onclick="toggleSideNav()"></i>
+			<div class="menuItem menuItemRight">
+				<i id="hamburgerMenuIcon" class="fa-solid fa-bars pointer menuIcons" onclick="toggleSideNav()"></i>
+				<i id="closeMenuIcon" class="fa-solid fa-xmark hidden pointer menuIcons" onclick="toggleSideNav()"></i>
+			</div>
 		</div>
 		<hr class="menuSeparator" style="clear:both;"/>
 	</div>
+
+	<!-- Navigation right -->
 	<div class="sideNav right">
-		<i class="fa-solid fa-xmark closeIcon" onclick="toggleSideNav()"></i>
 		<span class="userName mobile navRow"></span>
 		<a class="authLink navRow navItem dtk-href-no-textdec" href="auth/?action=0" target="_top"></a>
 	</div>
+
 	<!-- A description of the event -->
-	<div id="eventOverviewSection" class="hidden showOnLoaded centered">
+	<div id="eventOverviewSection" class="showOnLoaded centered hideOnSubmitted">
 	</div>
 
-	<div class="centered hidden showOnLoading hideOnLoaded hideOnSubmitted" style="padding-top:3%;">
-		<img id="loadingGif" style="width:15%;height:15%;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="Loading ...">
+	<div class="hideOnFormLoad centered showOnSubmitting hideOnSubmitted">
+		<img id="loadingGif" style="width:35px;height:35px;" src="https://dejai.github.io/scripts/assets/img/loading1.gif" alt="Loading ...">
 	</div>
 
 	<!-- Form for the event -->
