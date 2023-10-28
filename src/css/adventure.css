@@ -2,19 +2,28 @@
 /*** Menu Section */
 #moreDetailsIcon { padding-left:0.5% }
 .showDescriptionIcon { color: limegreen; vertical-align: middle; }
-#returnIconSection { position: fixed; top:2%; left:2%; z-index:1000; text-align:left; }
+#returnIconSection { position: fixed; top:2%; left:2%; text-align:left; }
 
 /*** SubMenu Section */
-.navIcon { z-index:99; color:#1F51FF !important; }
+/* .navIcon { z-index:99; color:#1F51FF !important; } */
 #rotate180deg { transform: rotateY(180deg); }
 
-#subMenuSection { position:relative; z-index:99; width:80%; margin:auto; text-align:center; }
-#contentTitle { display:inline-block; width: 70%; }
+/* Adventure */
+#returnHomeHeading { display:none; }
+#adventureTitleHeading { width:80%; }
+
+#subMenuSection { position:relative; height:40px; z-index:99; width:80%; margin:auto; text-align:center; }
+.subMenuItem { position:absolute; }
+.subMenuItemLeft { left:0; width:40%; text-align:left; }
+.subMenuItemMiddle { left:0; width:100%; z-index:-2; }
+.subMenuItemRight { right:0; width:40%; text-align:right; }
+
+#contentTitle { display:inline-block; width: 100%; }
 .contentCreatorSection { font-size:smaller; display:inline-block; font-style: italic; }
 
 /*** Description */
 #descriptionSection { clear:both; width:90%; margin:auto; }
-#adventureDescription { clear:both; text-align:left; width:100%; padding-top:2%; }
+#adventureDescription { clear:both; text-align:left; width:90%; padding-top:2%; }
 
 /*** Content List */
 #contentListSection { display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:10px; align-items:center; align-content:center;  }
@@ -70,7 +79,8 @@
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-	#contentTitle { width: 40%; }
+	#returnHomeHeading { display:inline; text-align:left; }
+	#adventureDescription { width:60%; margin:auto; font-size:20px; }
 	#subMenuSection { width:60%; }
 	#descriptionSection { width: 50%; }
 	#contentViewSection { width:60% }
@@ -80,7 +90,7 @@
 
 /* Large devices (laptops/desktops ) */
 @media only screen and (min-width: 900px) {
-	#subMenuSection { width:40%; font-size:18px; }
+	#subMenuSection { width:35%; font-size:18px; }
 	#descriptionSection { width: 40%; }
 	#contentViewSection { width:50% }
 	.contentNav { z-index: 95; padding-top:35%; }

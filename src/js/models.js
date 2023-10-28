@@ -143,8 +143,12 @@ class AdventurePage
 		// Pop off the current state first
 		this.ViewStates.pop();
 		var lastState = this.ViewStates[this.ViewStates.length-1] ?? "default";
-		this.setViewState(lastState);
-		return lastState;
+		if(lastState == "default" && this.Adventure.Content.length == 1) {
+			return "home";
+		} else {
+			this.setViewState(lastState);
+			return lastState;
+		}
 	}
 
 	// Get number of adventures

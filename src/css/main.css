@@ -13,6 +13,9 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 .dtk-fade-in { opacity:100 !important; transition: opacity ease-in 0.5s; }
 .dtk-fade-out { opacity:0 !important; transition: opacity ease-out 0.2s; }
 
+/* Heading */
+.mainHeading { margin:0px; margin-top:0.3%; width:80%; text-align:left; }
+
 /* Menu */
 #userIconSection { position: fixed; top:2%; right:2%; z-index:100; }
 .userName.desktop { display:none; }
@@ -23,9 +26,8 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 .menuItemLeft { left:0; text-align: left; }
 .menuItemRight { right:0; text-align:right; }
 
-.menuIcons { font-size:22px; margin-left:0.5%; position:relative; top: 25%; transition: ease 0.5s; }
+.menuIcons { font-size:22px; margin-left:0.5%; position:relative; top: 20%; transition: ease 0.5s; }
 #hamburgerMenuIcon.navOpen { opacity: 0; }
-/* #hamburgerMenuIcon { font-size:22px; margin-left:0.5%; position:relative; top:25%; transition: ease 0.5s; } */
 #closeMenuIcon { color:red !important; }
 
 /* Side navigation */
@@ -35,7 +37,7 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 .sideNav.right { right:0; }
 .sideNav .closeIcon { color: lightgray; display:inline-block; width:100%; text-align:center; margin-bottom:3%; font-size:25px; cursor:pointer; }
 .sideNav .navRow { display:inline-block; padding:1%; text-align:center; opacity:0; font-size:0px; width:100%; margin-bottom:2%; }
-.sideNav .navItem { border-top:2px solid #f8f8ff; border-bottom:2px solid #f8f8ff; background-color:#f8f8ff;  }
+.sideNav .navItem { border-top:2px solid #f8f8ff; border-bottom:2px solid #f8f8ff; background-color:#f8f8ff; margin-top:5%; cursor:pointer;  }
 .sideNav.open .navRow { opacity: 100; font-size:initial; transition: ease 0.9s; }
 
 /* Menu/Search Sections */
@@ -52,7 +54,7 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 /* .searchBarContainer { display:inline-block; opacity:0; overflow-x:hidden; } */
 /* .searchBarContainer.open { width: 70%; opacity:100; transition: opacity ease 1.5s; } */
 
-#searchBarSection { display:inline-block; position:relative; top:15%; text-align:left; border-radius:20px; border:none; padding:2%;  }
+#searchBarSection { display:inline-block; position:relative; top:10%; text-align:left; border-radius:20px; border:none; padding:2%;  }
 #searchBarSection #searchBarInput { border:none; opacity: 0; background-color:transparent; width:60%; outline: none; outline-offset: 0;  }
 #searchBarSection #searchBarInput:focus{ outline: none; outline-offset: 0;}
 #searchBarSection.active { width:60%;  background-color:#f8f8ff; transition: ease 0.5s; }
@@ -91,12 +93,16 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+	#searchBarSection { top:5%; }
+	.menuIcons { top: 15%; }
+	.mainHeading { text-align: center; width:100%; }
+
 	#adventuresPanel.navOpen { display:flex !important; }
 	#mainTitle.fadeOnSearch { opacity:100 !important; }
 	#searchBarSection { padding:0.5%; }
 	#searchBarSection.active { width:20%; }
-	#hamburgerMenuIcon { margin-left:0.5%; margin-right:2%; }
-	#closeMenuIcon { margin-left:0.5%; margin-right:2%; }
+	#hamburgerMenuIcon { margin-left:0.1%; margin-right:2%; }
+	#closeMenuIcon { margin-left:0.1%; margin-right:2%; }
 
 	#mainTitle { text-align:center; }
 	.adventureBlock{ min-width:10%;}
