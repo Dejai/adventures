@@ -4,7 +4,6 @@ const MyTrello = new TrelloWrapper("events");
 const MyEventPage = new EventPage();
 
 const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
-const notifyElement = "#pageMessages";
 const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 /*********************** GETTING STARTED *****************************/
@@ -12,8 +11,9 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	MyDom.ready( async () => {
 		
 		var userDetails = await MyAuth.onGetLoginDetails();
+		console.log(userDetails);
 		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
-		MyDom.setContent(".userName", {"innerText": userDetails.userName, "data-isLoggedIn": userDetails.isLoggedIn});
+		MyDom.setContent(".userName", {"innerText": userDetails.userName, "data-user-key": userDetails.userKey} );
 
 		// Get params from URL;
 		let eventID = MyUrls.getSearchParam("id");
@@ -63,7 +63,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// If overview, show overview
 				if(card.hasLabel("Overview"))
 				{
-					var eventName = card.Name.split(" - ")?.[1] ?? "";
+					var eventName = card.Name; //.split(" - ")?.[1] ?? "";
 					MyDom.setContent("#eventName", {"innerHTML":eventName});
 					var overviewHtml = await MyTemplates.getTemplateAsync("src/templates/events/overview.html", card);
 					MyDom.setContent("#eventOverviewSection", {"innerHTML": overviewHtml});
@@ -83,29 +83,16 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 					var cardHtml = await MyTemplates.getTemplateAsync("src/templates/events/form.html", card);
 					MyDom.setContent("#eventContentSection", {"innerHTML": cardHtml}, true);
 					numSections += 1;
-					// hasForm = true;
-				} 
-				// else if (card.hasLabel("Comments")) {
-				// 	var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/comments.html", { "CardID": card.CardID} );
-				// 	MyDom.setContent("#eventContentSection", {"innerHTML": evHtml}, true);
-				// 	numSections += 1;
-				// }
+				}
 			}
 
 			// If only overview was added, then count would only be 1; And if so, show no content
 			if(numSections <= 1){
-				var isLoggedIn = (document.querySelector("[data-isLoggedIn]")?.getAttribute("data-isLoggedIn") ?? "") == "true";
-				console.log(isLoggedIn);
+				var isLoggedIn = (document.querySelector(".userName")?.getAttribute("data-user-key") ?? "") != "";
 				var title = (!isLoggedIn) ? "Login Required" : `<i class="fa-regular fa-face-frown"></i> Can't Load the Content`;
 				var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/noContent.html", { "Title": title, "IsLoggedIn": isLoggedIn });
 				MyDom.setContent("#eventContentSection", {"innerHTML": evHtml});	
 			}
-
-			// Only show submit if has form & more than just details
-			// if(numSections > 1 && hasForm){
-			// 	var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/formSubmit.html", {});
-			// 	MyDom.setContent("#eventContentSection", {"innerHTML": evHtml}, true);
-			// }
 		} catch (error){
 			MyLogger.LogError(error);
 		}
@@ -135,7 +122,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 		// Get form sections
 		var formSections = document.querySelectorAll(".eventForm");
-		var userName = MyDom.getContent(".userName")?.innerText ?? "";
+		var userKey = document.querySelector(".userName")?.getAttribute("data-user-key");
 		var prevs = 0;
 		for(var form of formSections)
 		{
@@ -145,7 +132,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 			// Comments on card
 			var cardComments  = MyEventPage.TrelloCards.filter(x => x.CardID == cardID)?.[0]?.Comments;
-			var userComment = cardComments?.filter(comment => comment.Text.startsWith(userName))?.[0] ?? undefined;
+			var userComment = cardComments?.filter(comment => comment.Text.startsWith(userKey))?.[0] ?? undefined;
 			if(userComment != undefined)
 			{
 				var justComment = userComment.Text.split(" ~ ").map(x => x.trim())?.[1] ?? "";
@@ -183,9 +170,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	function onNavigateForms (button, direction="next"){
 		var form = button.closest(".eventForm");
 		var sibling = (direction == "prev") ? form.previousElementSibling : form.nextElementSibling;
-		console.log(form);
-		console.log(sibling);
-		
 		if(sibling != undefined && sibling.classList.contains("eventForm")){
 			form.classList.remove("active");
 			sibling.classList.add("active");
@@ -196,12 +180,11 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	async function onSubmitResponses(){
 
 		try{
-			var forms = Array.from(document.querySelectorAll(".eventForm"));
-			var userName = MyDom.getContent(".userName")?.innerText;
-
 			MyDom.hideContent(".hideOnSubmitting");
 			MyDom.showContent(".showOnSubmitting");
 
+			var forms = Array.from(document.querySelectorAll(".eventForm"));
+			var userKey = document.querySelector(".userName")?.getAttribute("data-user-key");
 			for(var form of forms)
 			{
 				var cardID = form.getAttribute("data-form-id");
@@ -215,7 +198,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				var response = buttonText ?? commentText ?? "";
 				if(cardID != undefined && response != "")
 				{
-					comment = `${userName} ~ ${response}`;
+					comment = `${userKey} ~ ${response}`;
 					MyLogger.LogInfo("Creating comment: " + comment);
 					await MyTrello.CreateCardComment(cardID, comment);
 				}

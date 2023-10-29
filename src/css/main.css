@@ -1,9 +1,20 @@
+@font-face {
+	font-family: Koulen;
+	src: url("https://dejai.github.io/scripts/fonts/koulen/Koulen-Regular.ttf");
+}
+@font-face {
+	font-family: Inter-Regular;
+	src: url("https://dejai.github.io/scripts/fonts/inter/static/Inter-Regular.ttf");
+}
+
 /********* Headers/Titles/Icons ***********************/
 /* General */
 body.theme_black_bg { background-color:black; color:#f8f8ff; }
 .pageMessage { font-size: 16px; }
 .iconSize { font-size: 20px; }
 .iconSizeSmaller { font-size: 14px; }
+.loginAction { color: blue; }
+.loginAction:visited { color: blue; }
 
 .shareLinkSection { position:absolute; width:30%; text-align:right; font-size:90%; padding-right:1%; }
 .loadingGif { width: 25%; height:25%; }
@@ -14,7 +25,7 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 .dtk-fade-out { opacity:0 !important; transition: opacity ease-out 0.2s; }
 
 /* Heading */
-.mainHeading { margin:0px; margin-top:0.3%; width:80%; text-align:left; }
+.mainHeading { margin:0px; margin-top:2%; width:80%; text-align:left; }
 
 /* Menu */
 #userIconSection { position: fixed; top:2%; right:2%; z-index:100; }
@@ -95,7 +106,7 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 @media only screen and (min-width: 768px) {
 	#searchBarSection { top:5%; }
 	.menuIcons { top: 15%; }
-	.mainHeading { text-align: center; width:100%; }
+	.mainHeading { margin-top:0.3%; text-align: center; width:100%; }
 
 	#adventuresPanel.navOpen { display:flex !important; }
 	#mainTitle.fadeOnSearch { opacity:100 !important; }
@@ -126,3 +137,5 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 @media only screen and (min-device-width:1200px) {
 	/* #searchBarSection { width:20%; } */
 }
+
+

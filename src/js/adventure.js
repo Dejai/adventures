@@ -5,7 +5,6 @@ const MyAdventurePage = new AdventurePage();
 const MyStream = new StreamManager();
 
 const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
-const notifyElement = "#pageMessages";
 const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 /*********************** GETTING STARTED *****************************/
@@ -14,7 +13,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 		var userDetails = await MyAuth.onGetLoginDetails();
 		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
-		MyDom.setContent(".userName", {"innerText": userDetails.userName});
+		MyDom.setContent(".userName", {"innerText": userDetails.userName, "data-user-key": userDetails.userKey} );
 
 		// Get params from URL;
 		let adventureID = MyUrls.getSearchParam("id") ?? "";
@@ -36,7 +35,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				var adventure = new Adventure(resp);
 
 				if(adventure.AdventureID == ""){
-					MyLogger.Notify(notifyElement, `<h3>${frownyFace} Could not load content</h3>`);
+					onCantLoadContent();
 					return;
 				}
 				
@@ -59,7 +58,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 				// If no content, show error message & stop processing
 				if(MyAdventurePage.getContentCount() == 0){
-					MyLogger.Notify(notifyElement, `<h3>${frownyFace} <span style="color:red;">Could not load the content.</span> </h3>`);
+					onCantLoadContent(`<h3>${frownyFace} <span style="color:red;">No content found to load.</span> </h3>`);
 					return;
 				}
 
@@ -73,7 +72,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// If there is only one video, also set immediately;
 				if( (MyAdventurePage.getContentCount() == 1) ){
 					contentID = MyAdventurePage.getContentByIndex(0)?.ContentID ?? contentID;
-					// Hide the back button for cases of one content
 				}
 
 				// Use the content ID to load the content
@@ -89,6 +87,16 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	}
 
 /********* CONTENT: Open/Load content *************************************/
+
+	// Adventure notify message
+	function onCantLoadContent(message="")
+	{
+		var isLoggedIn = (document.querySelector(".userName")?.getAttribute("data-user-key") ?? "") != "";
+		var loginRequired = `<h3><i class="fa-solid fa-circle-user"></i> <a class="loginAction" href="auth/?action=1" target="_top">Login</a> required to view this content.</h3>`;
+		var couldNotLoadContent = `<h3>${frownyFace} Could not load content</h3>`;
+		var message = (message != "") ? message :  (!isLoggedIn) ? loginRequired : couldNotLoadContent;
+		MyLogger.Notify("#messageSection", message);
+	}
 
 	// Link from content list to content view
 	function onOpenContent(event){
@@ -128,8 +136,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			var videoIFrameTemplate = await MyTemplates.getTemplateAsync("src/templates/adventure/videoIFrame.html", content); 
 			MyDom.setContent("#videoFramePanel", {"innerHTML":videoIFrameTemplate});
 			// Always make sure stream element is configured
-			onConfigureStream();
 			setContentView("content");
+			onConfigureStream();
 			MyStream.playVideo();
 		}
 		// Modify URL when loading content
@@ -138,6 +146,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		// Get the short link for this content
 		var shortLink = await MyUrls.getCodeFromPath();
 		MyDom.setContent(".shortLink", {"data-short-link": shortLink});
+		MyDom.showContent(".shareLinkSection");
 	}
 
 
@@ -166,15 +175,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		// What to do if video errors
 		MyStream.onVideoEvent("error", (ev)=> {
 			console.error(ev);
-			MyLogger.Notify(notifyElement, `<h3 style="color:red;">${frownyFace} ERROR: Could not load the video.</h3>`);
+			onCantLoadContent(`<h3 style="color:red;">${frownyFace} ERROR: Could not load the video.</h3>`);
 			MyDom.showContent(".showOnError");
-		});
-
-		// What to do if video ends
-		MyStream.onVideoEvent("ended", ()=> {
-			if(MyAdventurePage.hasNextContent()){
-				onNext();
-			}
 		});
 
 		// What to do if video is playing
@@ -294,13 +296,4 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		var newSearch = MyUrls.getModifiedSearchString(keyValuePairs);
 		let newPath = location.pathname + newSearch;
 		MyUrls.addWindowHistory({"path":newPath}, true); // use replace to avoid confusion with back button
-	}
-
-
-/***** HELPERS: Supplemental functions *****************************/
-
-	// Unable to load adventures
-	function onCantLoadAdventures(details=""){
-		MyLogger.Notify("#pageMessages", `<h3><i class="fa-regular fa-face-frown"></i> Sorry, could not load content.</h3>`);
-		MyLogger.LogError(details);
 	}
