@@ -14,7 +14,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 		var userDetails = await MyAuth.onGetLoginDetails();
 		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
-		MyDom.setContent(".userName", {"innerText": userDetails.userName});
+		MyDom.setContent(".userName", {"innerText": userDetails.userName, "data-user-key": userDetails.userKey} );
 
 		// Get params from URL;
 		let adventureID = MyUrls.getSearchParam("id") ?? "";
@@ -138,6 +138,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		// Get the short link for this content
 		var shortLink = await MyUrls.getCodeFromPath();
 		MyDom.setContent(".shortLink", {"data-short-link": shortLink});
+		MyDom.showContent(".shareLinkSection");
 	}
 
 

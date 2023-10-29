@@ -1,20 +1,18 @@
 
 /* The main sections */
-#eventName { font-family: Palatino, Helvetica, sans-serif; }
-#eventOverviewSection { width:99%; margin:auto; font-size:110%;  font-family: Palatino, Helvetica, sans-serif;}
-#eventContentSection { width:95%; margin:auto; position:relative; font-family: Palatino, Helvetica, sans-serif; }
+#eventName { margin-top:2%; font-family: Inter-Regular, Palatino, Helvetica, sans-serif; }
+#eventOverviewSection { width:99%; margin:auto; font-size:110%;  font-family: Inter-Regular, Palatino, Helvetica, sans-serif;}
+#eventContentSection { width:95%; margin:auto; position:relative; font-family: Inter-Regular, Palatino, Helvetica, sans-serif; }
 
 /* The event forms */
-.eventForm { margin-top:2%; margin-bottom:5%; border-top:solid gray; border-width:thick; width:100%; margin:auto; position:absolute; }
+.eventForm { margin-top:2%; margin-bottom:5%; border-top:solid #D4D1CD; border-width:thick; width:100%; margin:auto; position:absolute; }
 .eventFormFade { opacity: 0; transition: opacity ease 0.2s; }
 .eventFormFade.active { opacity: 100 !important; z-index:100;  }
-.eventDetailsTable { width:100%; margin:auto; margin-top:5%; }
-
-/* Hiding parts in the form */
-.ShowChecklists-false { display:none; }
-.ShowComments-false { display:none; }
 
 /* The parts in a form */
+.eventForm .eventDetailsTable { width:100%; margin:auto; margin-top:5%; }
+.eventForm .formTitle { font-family: Koulen, Palatino, Helvetica, sans-serif; margin:0%; margin-top:1%;}
+.eventForm .formDescription { margin:0%; }
 .eventForm .detailsTable { width:50%; margin:auto; margin-top:2%; }
 .eventForm .infoCell { padding:0.5%;  }
 .eventForm .leftCell { text-align:right; font-weight:bold;  }
@@ -22,17 +20,17 @@
 .eventForm .responseOptions { width:70%; margin:auto; }
 .eventForm .responseOptions { width:70%; margin:auto; }
 .eventForm label:hover { cursor:pointer; } 
-.eventForm .commentBox { width: 80%; }
+.eventForm .commentBox { width: 80%; background-color: #D4D1CD; color:#0f0f0f }
+/* Hiding parts in the form */
+.ShowChecklists-false { display:none; }
+.ShowComments-false { display:none; }
 
 /* Response Buttons */
-.eventForm .responseButton { margin-bottom:2%; border:1px solid black; border-radius:20px; padding:1%; line-height: 25px; vertical-align: middle; background-color: lightgray; color:black; cursor:pointer; transition: transform 0.1s linear; }
-.eventForm .responseButton:hover { transform: scale(1.02); }
-.eventForm .responseButton.responseYes:hover { background-color:#009933; }
+/* .eventForm .responseButton { margin-bottom:2%; border:1px solid black; border-radius:20px; padding:1%; line-height: 25px; vertical-align: middle; background-color: lightgray; color:black; cursor:pointer; transition: transform 0.1s linear; } */
+.eventForm .responseButton { margin-bottom:2%; border:1px solid black; border-radius:20px; padding:1%; line-height: 25px; vertical-align: middle; background-color: #D4D1CD; color:#0f0f0f; cursor:pointer; transition: transform 0.1s linear; }
 .eventForm .responseButton.responseYes.selected { background-color:#009933; color:white; }
-.eventForm .responseButton.responseNo:hover { background-color:#CC0000; }
 .eventForm .responseButton.responseNo.selected { background-color:#CC0000; color:white; }
-.eventForm .responseButton.responseMaybe:hover { background-color:orange; }
-.eventForm .responseButton.responseMaybe.selected { background-color:orange; color:white; }
+.eventForm .responseButton.responseMaybe.selected { background-color:orange; color:black; }
 
 /* Submit buttons */
 .eventForm .formButtons { margin-top:5%; }
@@ -50,4 +48,8 @@
 	#eventOverviewSection { width:50%; padding: 0.5% 3%; }
 	#eventContentSection { width:30%; }
 	.eventDetailsTable { width:80%; margin-top:2%; }
+	.eventForm .responseButton:hover { transform: scale(1.02); }
+	.eventForm .responseButton.responseYes:hover { background-color:#009933; }
+	.eventForm .responseButton.responseNo:hover { background-color:#CC0000; }
+	.eventForm .responseButton.responseMaybe:hover { background-color:orange; }
 }
