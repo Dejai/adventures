@@ -4,7 +4,6 @@ const MyTrello = new TrelloWrapper("events");
 const MyEventPage = new EventPage();
 
 const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
-const notifyElement = "#pageMessages";
 const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 /*********************** GETTING STARTED *****************************/
