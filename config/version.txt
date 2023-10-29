@@ -1,6 +1,1 @@
 Version: 2.5.2
-
-# Updating Files with Version
-- Do a regex find-and-replace in VS:
-- Search for: \?v=.*"
-- Replace with: ?v=<version>"

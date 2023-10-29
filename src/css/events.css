@@ -21,12 +21,12 @@
 .eventForm .responseOptions { width:70%; margin:auto; }
 .eventForm label:hover { cursor:pointer; } 
 .eventForm .commentBox { width: 80%; background-color: #D4D1CD; color:#0f0f0f }
+
 /* Hiding parts in the form */
 .ShowChecklists-false { display:none; }
 .ShowComments-false { display:none; }
 
 /* Response Buttons */
-/* .eventForm .responseButton { margin-bottom:2%; border:1px solid black; border-radius:20px; padding:1%; line-height: 25px; vertical-align: middle; background-color: lightgray; color:black; cursor:pointer; transition: transform 0.1s linear; } */
 .eventForm .responseButton { margin-bottom:2%; border:1px solid black; border-radius:20px; padding:1%; line-height: 25px; vertical-align: middle; background-color: #D4D1CD; color:#0f0f0f; cursor:pointer; transition: transform 0.1s linear; }
 .eventForm .responseButton.responseYes.selected { background-color:#009933; color:white; }
 .eventForm .responseButton.responseNo.selected { background-color:#CC0000; color:white; }
