@@ -1,6 +1,6 @@
 
 /* The main sections */
-#eventName { margin-top:2%; font-family: Inter-Regular, Palatino, Helvetica, sans-serif; }
+#eventName { font-family: Inter-Regular, Palatino, Helvetica, sans-serif; }
 #eventOverviewSection { width:99%; margin:auto; font-size:110%;  font-family: Inter-Regular, Palatino, Helvetica, sans-serif;}
 #eventContentSection { width:95%; margin:auto; position:relative; font-family: Inter-Regular, Palatino, Helvetica, sans-serif; }
 
