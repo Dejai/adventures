@@ -136,8 +136,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			var videoIFrameTemplate = await MyTemplates.getTemplateAsync("src/templates/adventure/videoIFrame.html", content); 
 			MyDom.setContent("#videoFramePanel", {"innerHTML":videoIFrameTemplate});
 			// Always make sure stream element is configured
-			onConfigureStream();
 			setContentView("content");
+			onConfigureStream();
 			MyStream.playVideo();
 		}
 		// Modify URL when loading content
