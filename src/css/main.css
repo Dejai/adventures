@@ -42,15 +42,14 @@ body.pageBackground { margin:0% !important; color:#D4D1CD !important; background
 #closeMenuIcon { color:red !important; margin-right:2%; }
 
 /* Dropdown navigation */
-#dropdownNav { position:absolute; height:0; top:44px; left:0; right:0; width: 100%; overflow-y:hidden; z-index: 100; background-color: #D4D1CD; color: #0f0f0f; transition: ease 0.3s; }
-#dropdownNav.open { height: 75px; width:100%; padding:0%; text-align:center; right:0; }
-#dropdownNav .navRow { display:inline-block; padding:0%; width:100%; margin-bottom:1%; opacity:0; }
+#dropdownNav { position:absolute; opacity:0; height:0; top:44px; left:0; right:0; width: 100%; overflow-y:hidden; z-index: 100; background-color: #D4D1CD; color: #0f0f0f; transition: ease 0.4s; }
+#dropdownNav.open { display:table; opacity:100; width:100%; padding:0%; text-align:center; right:0; }
+#dropdownNav .navRow { display:inline-block; padding:0%; width:100%; opacity:0; }
 #dropdownNav.open .navRow { width:100%; opacity:100; transition: opacity ease 0.1s; margin:2% 0%; }
+#dropdownNav .userName { display:inline-block; }
 /* #dropdownNav .navItem:hover { background-color: #0f0f0f; color:#D4D1CD; } */
 
 /* Search */
-/* .searchBarContainer { display:inline-block; opacity:0; overflow-x:hidden; } */
-/* .searchBarContainer.open { width: 70%; opacity:100; transition: opacity ease 1.5s; } */
 #searchBarSection { display:inline-block; position:relative; top:10%; text-align:left; border-radius:20px; border:none; padding:2%;  }
 #searchBarSection #searchBarInput { border:none; opacity: 0; background-color:transparent; width:60%; outline: none; outline-offset: 0;  }
 #searchBarSection #searchBarInput:focus{ outline: none; outline-offset: 0;}
@@ -97,10 +96,9 @@ body.pageBackground { margin:0% !important; color:#D4D1CD !important; background
 	.mainHeading { margin-top:0.3%; text-align: center; width:100%; }
 
 	#dropdownNav { left:initial; width:150px; right:2%; }
-	#dropdownNav.open { height: 75px; width:150px; padding:1%; right:2%; }
-	#dropdownNav .navRow { display:inline-block; padding:0%; width:100%; margin-bottom:1%; opacity:0; }
-	#dropdownNav.open .navRow { width:100%; opacity:100; transition: opacity ease 0.1s; margin:5% 0%; }
-
+	#dropdownNav.open { width:150px; right:2%; }
+	/* #dropdownNav .navRow { display:inline-block; padding:0%; width:100%; opacity:0; } */
+	#dropdownNav.open .navRow { margin:5% 0%; }
 
 	#adventuresPanel.navOpen { display:flex !important; }
 	#mainTitle.fadeOnSearch { opacity:100 !important; }
@@ -116,10 +114,7 @@ body.pageBackground { margin:0% !important; color:#D4D1CD !important; background
 
 /* Large devices (laptops/desktops ) */
 @media only screen and (min-width: 900px) {
-	.userName.desktop { display:inline; }
-	.userName.mobile { display:none; }
 	.sideNav.open {width: 170px; }
-
 
 	/* #searchBarSection { width:40%; } */
 	.menuLogin .authLink { font-size: 24px; }
