@@ -51,39 +51,44 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			// Save in page manager
 			MyEventPage.TrelloCards = eventsJson?.map(x => new TrelloCard(x, trelloLabels));
 
-			// Loop through a set of cards, and based on their labels, determine what template to show & where to put it
 			var numSections = 0;
-			var hasForm = false;
-			for(var card of MyEventPage.TrelloCards)
+			// Get the Overview card
+			var overViewCard = MyEventPage.TrelloCards.filter(x => x.hasLabel("Overview"))?.[0];
+			if(overViewCard != undefined){
+				var eventName = overViewCard.Name; 
+				MyDom.setContent("#eventName", {"innerHTML":eventName});
+				var overviewHtml = await MyTemplates.getTemplateAsync("src/templates/events/overview.html", overViewCard);
+				MyDom.setContent("#eventOverviewSection", {"innerHTML": overviewHtml});
+				MyDom.showContent("#eventOverviewSection");
+				numSections += 1;
+			}
+
+			// Get the form cards
+			var formCards = MyEventPage.TrelloCards.filter(x => x.hasLabel("Form"));
+			var totalForms = formCards.length;
+			var formIdx = 0;
+			for(var card of formCards)
 			{
 				// Get comments on this card & filter by current user
 				var comments = await MyTrello.GetComments(card.CardID);
-				card.Comments = comments.map(x => new TrelloComment(x));
+				card.Comments = comments.map(comment => new TrelloComment(comment));
 
-				// If overview, show overview
-				if(card.hasLabel("Overview"))
-				{
-					var eventName = card.Name; //.split(" - ")?.[1] ?? "";
-					MyDom.setContent("#eventName", {"innerHTML":eventName});
-					var overviewHtml = await MyTemplates.getTemplateAsync("src/templates/events/overview.html", card);
-					MyDom.setContent("#eventOverviewSection", {"innerHTML": overviewHtml});
-					MyDom.showContent("#eventOverviewSection");
-					numSections += 1;
+				// Get checklists for this card
+				for(var checkListID of card.ChecklistIDs){
+					var checklistJson = await MyTrello.GetChecklist(checkListID);
+					var checklist = new TrelloChecklist(checklistJson);
+					card.Checklists[checklist.Key] = checklist;
+					card.ShowChecklists = Object.keys(card.Checklists).length > 0;
 				}
-				// Else, if form card
-				else if (card.hasLabel("Form"))
-				{
-					// Get checklists for this card
-					for(var checkListID of card.ChecklistIDs){
-						var checklistJson = await MyTrello.GetChecklist(checkListID);
-						var checklist = new TrelloChecklist(checklistJson);
-						card.Checklists[checklist.Key] = checklist;
-						card.ShowChecklists = Object.keys(card.Checklists).length > 0;
-					}
-					var cardHtml = await MyTemplates.getTemplateAsync("src/templates/events/form.html", card);
-					MyDom.setContent("#eventContentSection", {"innerHTML": cardHtml}, true);
-					numSections += 1;
-				}
+				
+				// Set form index
+				formIdx++;
+				card.FormIndex = `${formIdx} of ${totalForms}`
+
+				// Set the card template
+				var cardHtml = await MyTemplates.getTemplateAsync("src/templates/events/form.html", card);
+				MyDom.setContent("#eventContentSection", {"innerHTML": cardHtml}, true);
+				numSections += 1;
 			}
 
 			// If only overview was added, then count would only be 1; And if so, show no content

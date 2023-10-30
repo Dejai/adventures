@@ -34,7 +34,7 @@
 
 /* Submit buttons */
 .eventForm .formButtons { margin-top:5%; }
-.eventFormButton { position:absolute; font-size: 18px;border-radius: 30px; background-color: blue; padding: 2%; border: none; color: white; font-weight: bolder; cursor: pointer;  }
+.eventFormButton { z-index:50; position:absolute; font-size: 18px;border-radius: 30px; background-color: blue; padding: 2%; border: none; color: white; font-weight: bolder; cursor: pointer;  }
 .eventFormButton.left { left:0; }
 .eventFormButton.submit { display:none; }
 .eventFormButton.right { right:0; }
@@ -42,6 +42,10 @@
 .eventForm:nth-child(1) .eventFormButton.submit { display:none; }
 .eventForm:last-child .eventFormButton.right { display:none; }
 .eventForm:last-child .eventFormButton.submit { display:block !important; margin:auto; position:static; }
+
+.eventFormIndex { display:block !important; width:100%; font-size:20px; padding-top:2%; z-index:30; position:absolute; margin:auto; }
+.eventForm:last-child .eventFormIndex { display:none !important; }
+
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
