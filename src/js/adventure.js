@@ -275,7 +275,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	// Show the description
 	function onShowDescription(){
 		setContentView("description");
-		toggleSideNav();
+		toggleDropdownNav()
 	}
 
 	// Get and set content based on index plus/minus
