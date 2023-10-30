@@ -12,7 +12,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	MyDom.ready( async () => {
 
 		var userDetails = await MyAuth.onGetLoginDetails();
-		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
+		console.log(userDetails);
+		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "data-href": `auth/?action=${userDetails.action}`});
 		MyDom.setContent(".userName", {"innerText": userDetails.userName, "data-user-key": userDetails.userKey} );
 
 		// Get params from URL;
