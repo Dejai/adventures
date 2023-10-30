@@ -4,18 +4,17 @@
 #returnIconSection { position: fixed; top:2%; left:2%; text-align:left; }
 
 /*** SubMenu Section */
-/* .navIcon { z-index:99; color:#1F51FF !important; } */
 #rotate180deg { transform: rotateY(180deg); }
 
 /* Adventure */
 #returnHomeHeading { display:none; }
 #adventureTitleHeading { width:80%; }
 
-#subMenuSection { position:relative; height:40px; z-index:99; width:80%; margin:auto; text-align:center; }
+#subMenuSection { position:relative; height:40px; z-index:50; width:80%; margin:auto; text-align:center; }
 .subMenuItem { position:absolute; }
-.subMenuItemLeft { left:0; width:40%; text-align:left; }
-.subMenuItemMiddle { left:0; width:100%; z-index:-2; }
-.subMenuItemRight { right:0; width:40%; text-align:right; }
+.subMenuItemLeft { left:0; width:40%; text-align:left; z-index:50; }
+.subMenuItemMiddle { left:0; width:100%; z-index:40; }
+.subMenuItemRight { right:0; width:40%; text-align:right; z-index:50; }
 
 #contentTitle { display:inline-block; width: 100%; }
 .contentCreatorSection { font-size:smaller; display:inline-block; font-style: italic; }
@@ -33,20 +32,18 @@
 .contentPreviewBlock .previewNameSection { position:absolute; width:100%; bottom:2%; text-align:center; }
 .contentPreviewBlock .previewName { display:inline-block; background-color:gray; opacity:0.7; padding:1% 5%; border-radius:20px; transition:opacity 0.5s ease, color 0.5s ease; }
 .contentPreviewBlock:hover { transform: scale(1.02);}
-/* .contentPreviewBlock:hover .previewName { background-color:#303030	; color:white; opacity:100%;} */
 .contentPreviewBlock:hover .previewName { background-color:#f8f8ff	; color:#303030; opacity:100%;}
 .contentPreviewBlock:hover .playButtonIcon { transform: scale(1.2); }
 
 /*** Content View */
-#contentViewSection { clear: both; position: relative; height: 450px; z-index: 95; }
+#contentViewSection { clear: both; position: relative; height: 450px; z-index: 50; }
 .contentNav { position: absolute; padding-top:40%; font-size:45px; cursor:pointer; opacity:0%; transition: opacity 1.5s ease; }
 .conventNav:hover { background-color:lightgray; }
 .contentNav.left { left:1px; }
 .contentNav.right { right:1px; }
-.contentNav.visible { z-index:95; color:#FAF9F6 }
+.contentNav.visible { z-index:65; color:#FAF9F6 }
 .contentNav.visible.clickable { opacity:0.9; }
 .contentNav.visible.disabled { opacity:0.2; }
-/* #videoFramePanel { position:relative; } */
 #videoFramePanel:hover { cursor:pointer; }
 #videoFrame {  border: none; position: absolute; top:0; left: 0; height: 75%; width: 100%;}
 
@@ -92,7 +89,7 @@
 	#subMenuSection { width:35%; font-size:18px; }
 	#descriptionSection { width: 40%; }
 	#contentViewSection { width:50% }
-	.contentNav { z-index: 95; padding-top:35%; }
+	.contentNav { z-index: 60; padding-top:35%; }
 	.contentNav.clickable:hover { opacity:0.9; }
 	.contentNav.disabled:hover { opacity:0.2; }
 }

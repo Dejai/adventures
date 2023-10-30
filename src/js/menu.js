@@ -16,6 +16,24 @@ function toggleSideNav(){
     }
 }
 
+// Toggle the dropdown nav
+function toggleDropdownNav() {
+    var dropdownNav = document.querySelector("#dropdownNav");
+    var isOpen = (dropdownNav.classList.contains("open"));
+    if(!isOpen)
+    {
+        dropdownNav.classList.add("open");
+        MyDom.hideContent("#hamburgerMenuIcon");
+        MyDom.showContent("#closeMenuIcon");
+        // MyDom.addClass(".toggleOnSideNavMobile", "navOpen");
+    } else {
+        dropdownNav.classList.remove("open");
+        MyDom.showContent("#hamburgerMenuIcon");
+        MyDom.hideContent("#closeMenuIcon");
+        // MyDom.removeClass(".toggleOnSideNavMobile", "navOpen");
+    }
+}
+
 // Toggle the search bar
 var toggleSearchBar = (icon) => {
 

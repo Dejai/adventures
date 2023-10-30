@@ -9,11 +9,14 @@
 
 /********* Headers/Titles/Icons ***********************/
 /* General */
-body.theme_black_bg { background-color:black; color:#f8f8ff; }
+/* body.theme_black_bg { background-color:black; color:#f8f8ff; } */
+body.pageBackground { margin:0% !important; color:#D4D1CD !important; background-color:#0f0f0f !important; }
+
 .pageMessage { font-size: 16px; }
 .iconSize { font-size: 20px; }
 .iconSizeSmaller { font-size: 14px; }
 .loginAction { color: blue; }
+.loginAction:active { color:blue; }
 .loginAction:visited { color: blue; }
 
 .shareLinkSection { position:absolute; width:30%; text-align:right; font-size:90%; padding-right:1%; }
@@ -25,52 +28,34 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 .dtk-fade-out { opacity:0 !important; transition: opacity ease-out 0.2s; }
 
 /* Heading */
-.mainHeading { margin:0px; margin-top:2%; width:80%; text-align:left; }
+.mainHeading { margin:0px; margin-top:2%; width:90%; text-align:left; }
+#adventureTitle { font-size: 1.17em; }
 
-/* Menu */
-#userIconSection { position: fixed; top:2%; right:2%; z-index:100; }
-.userName.desktop { display:none; }
-.userName.mobile { display:inline-block; }
-
+/* Menu & Items */
+#menuSection { margin-bottom:5%; background-color: #D4D1CD; color: #0f0f0f;  }
 #menuItems { position: relative; height:48px; }
 .menuItem { position:absolute; height:100%; width:100%; }
 .menuItemLeft { left:0; text-align: left; }
 .menuItemRight { right:0; text-align:right; }
-
 .menuIcons { font-size:22px; margin-left:0.5%; position:relative; top: 20%; transition: ease 0.5s; }
-#hamburgerMenuIcon.navOpen { opacity: 0; }
-#closeMenuIcon { color:red !important; }
+#hamburgerMenuIcon { margin-right:2%; }
+#closeMenuIcon { color:red !important; margin-right:2%; }
 
-/* Side navigation */
-.sideNav { position:absolute; height:100%; background-color: black; color:#f8f8ff; width:0px; overflow-x:hidden; z-index:101;   }
-.sideNav.open {width: 100%; transition: ease 0.5s; }
-.sideNav.left { left:0; }
-.sideNav.right { right:0; }
-.sideNav .closeIcon { color: lightgray; display:inline-block; width:100%; text-align:center; margin-bottom:3%; font-size:25px; cursor:pointer; }
-.sideNav .navRow { display:inline-block; padding:1%; text-align:center; opacity:0; font-size:0px; width:100%; margin-bottom:2%; }
-.sideNav .navItem { border-top:2px solid #f8f8ff; border-bottom:2px solid #f8f8ff; background-color:#f8f8ff; margin-top:5%; cursor:pointer;  }
-.sideNav.open .navRow { opacity: 100; font-size:initial; transition: ease 0.9s; }
-
-/* Menu/Search Sections */
-.menuLoginSection #menuLoginDetails { padding-right:2%;  }
-.menuLogin:hover { cursor:pointer; }
-.menuLogin .authLink { cursor:pointer; font-size: 16px; }
-.menuLogin .authLink .login { color:orange !important; }
-.menuLogin .authLink .logout { color:#f8f8ff !important; }
-#menuDropdown { display:none;}
-#menuLoginSection.open { background-color: black; display:block !important;}
-#menuLoginSection.open #menuDropdown { display:block !important;}
+/* Dropdown navigation */
+#dropdownNav { position:absolute; opacity:0; height:0; top:44px; left:0; right:0; width: 100%; overflow-y:hidden; z-index: 100; background-color: #D4D1CD; color: #0f0f0f; transition: ease 0.4s; }
+#dropdownNav.open { display:table; opacity:100; width:100%; padding:0%; text-align:center; right:0; }
+#dropdownNav .navRow { display:inline-block; padding:0%; width:100%; opacity:0; }
+#dropdownNav.open .navRow { width:100%; opacity:100; transition: opacity ease 0.1s; margin:2% 0%; }
+#dropdownNav .userName { display:inline-block; }
+/* #dropdownNav .navItem:hover { background-color: #0f0f0f; color:#D4D1CD; } */
 
 /* Search */
-/* .searchBarContainer { display:inline-block; opacity:0; overflow-x:hidden; } */
-/* .searchBarContainer.open { width: 70%; opacity:100; transition: opacity ease 1.5s; } */
-
 #searchBarSection { display:inline-block; position:relative; top:10%; text-align:left; border-radius:20px; border:none; padding:2%;  }
 #searchBarSection #searchBarInput { border:none; opacity: 0; background-color:transparent; width:60%; outline: none; outline-offset: 0;  }
 #searchBarSection #searchBarInput:focus{ outline: none; outline-offset: 0;}
-#searchBarSection.active { width:60%;  background-color:#f8f8ff; transition: ease 0.5s; }
-#searchBarSection.active #searchBarInput { opacity: 100 !important; }
-#searchBarSection.active #searchToggleIcon { color:blue !important; }
+#searchBarSection.active { width:60%; background-color: #0f0f0f !important; transition: ease 0.5s; }
+#searchBarSection.active #searchBarInput { opacity: 100 !important; color:#D4D1CD; }
+#searchBarSection.active #searchToggleIcon { color:#D4D1CD !important; }
 .searchIcons { font-size:22px; float:right; margin-left: 2%; vertical-align: middle;}
 #searchClearIcon { color: red !important; }
 
@@ -81,9 +66,9 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 #adventuresPanel { width:95%; margin:auto; overflow-y:scroll; display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:10px; align-items:center; align-content:center;  }
 #adventuresPanel.navOpen { display:none !important; }
 .adventureBlock { height:200px; min-width:90%; max-width:90%; cursor:pointer; overflow:hidden; position:relative; border-radius: 25px; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
-.adventureBlock .nameSection { text-align:center; margin:0%; position: absolute; width: 100%;  z-index: 50; background-color: #f8f8ff;  padding: 1%; bottom: 0; }
+.adventureBlock .nameSection { text-align:center; margin:0%; position: absolute; width: 100%;  z-index: 50; background-color: #D4D1CD;  padding: 1%; bottom: 0; }
 .adventureBlock:hover { transform: scale(1.02);}
-.adventureBlock .loadingGif { display:block; margin:auto; text-align:center; width:20%;height:20%; }
+.adventureBlock .loadingGif { display:block; margin:auto; text-align:center; width:35px;height:35px; }
 .adventureBlock .showOnImageLoad { opacity: 0%; transition: opacity 2s ease; }
 .adventureBlock.visible .showOnImageLoad { opacity: 100%; }
 .adventureBlock.visible .loadingGif { display:none; }
@@ -104,9 +89,16 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+	#menuSection { margin-bottom:1%; }
+	#adventureTitle { font-size: 1.5em; }
 	#searchBarSection { top:5%; }
 	.menuIcons { top: 15%; }
 	.mainHeading { margin-top:0.3%; text-align: center; width:100%; }
+
+	#dropdownNav { left:initial; width:150px; right:2%; }
+	#dropdownNav.open { width:150px; right:2%; }
+	/* #dropdownNav .navRow { display:inline-block; padding:0%; width:100%; opacity:0; } */
+	#dropdownNav.open .navRow { margin:5% 0%; }
 
 	#adventuresPanel.navOpen { display:flex !important; }
 	#mainTitle.fadeOnSearch { opacity:100 !important; }
@@ -122,10 +114,7 @@ body.theme_black_bg { background-color:black; color:#f8f8ff; }
 
 /* Large devices (laptops/desktops ) */
 @media only screen and (min-width: 900px) {
-	.userName.desktop { display:inline; }
-	.userName.mobile { display:none; }
 	.sideNav.open {width: 170px; }
-
 
 	/* #searchBarSection { width:40%; } */
 	.menuLogin .authLink { font-size: 24px; }
