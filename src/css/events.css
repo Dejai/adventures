@@ -1,8 +1,8 @@
 
 /* The main sections */
-#eventName { font-family: Inter-Regular, Palatino, Helvetica, sans-serif; }
-#eventOverviewSection { width:99%; margin:auto; font-size:110%;  font-family: Inter-Regular, Palatino, Helvetica, sans-serif;}
-#eventContentSection { width:95%; margin:auto; position:relative; font-family: Inter-Regular, Palatino, Helvetica, sans-serif; }
+/* #eventName { font-family: Inter-Regular, Palatino, Helvetica, sans-serif; } */
+#eventOverviewSection { width:99%; margin:auto; font-size:110%; }
+#eventContentSection { width:95%; margin:auto; position:relative; }
 
 /* The event forms */
 .eventForm { margin-top:2%; margin-bottom:5%; border-top:solid #D4D1CD; border-width:thick; width:100%; margin:auto; position:absolute; }
@@ -11,7 +11,7 @@
 
 /* The parts in a form */
 .eventForm .eventDetailsTable { width:100%; margin:auto; margin-top:5%; }
-.eventForm .formTitle { font-family: Koulen, Palatino, Helvetica, sans-serif; margin:0%; margin-top:1%;}
+.eventForm .formTitle { margin:0%; margin-top:1%;}
 .eventForm .formDescription { margin:0%; }
 .eventForm .detailsTable { width:50%; margin:auto; margin-top:2%; }
 .eventForm .infoCell { padding:0.5%;  }

@@ -1,57 +1,43 @@
-@font-face {
-	font-family: Koulen;
-	src: url("https://dejai.github.io/scripts/fonts/koulen/Koulen-Regular.ttf");
-}
-@font-face {
-	font-family: Inter-Regular;
-	src: url("https://dejai.github.io/scripts/fonts/inter/static/Inter-Regular.ttf");
-}
-
 /********* Headers/Titles/Icons ***********************/
-/* General */
-/* body.theme_black_bg { background-color:black; color:#f8f8ff; } */
-body.pageBackground { margin:0% !important; color:#D4D1CD !important; background-color:#0f0f0f !important; }
-
 .pageMessage { font-size: 16px; }
 .iconSize { font-size: 20px; }
 .iconSizeSmaller { font-size: 14px; }
 .loginAction { color: blue; }
 .loginAction:active { color:blue; }
 .loginAction:visited { color: blue; }
-
 .shareLinkSection { position:absolute; width:30%; text-align:right; font-size:90%; padding-right:1%; }
-.loadingGif { width: 25%; height:25%; }
-
-/* TO BE MOVED TO GENERIC */
-.dtk-fade { opacity:0; }
-.dtk-fade-in { opacity:100 !important; transition: opacity ease-in 0.5s; }
-.dtk-fade-out { opacity:0 !important; transition: opacity ease-out 0.2s; }
+#loginRequiredButton { border-radius: 20px; padding:1%; border:none;}
+.versionText { font-size:smaller; font-style: italic;}
 
 /* Heading */
-.mainHeading { margin:0px; margin-top:2%; width:90%; text-align:left; }
+/* .mainHeading { margin:0px; margin-top:2%; width:90%; text-align:left; } */
 #adventureTitle { font-size: 1.17em; }
 
 /* Menu & Items */
-#menuSection { margin-bottom:5%; background-color: #D4D1CD; color: #0f0f0f;  }
-#menuItems { position: relative; height:48px; }
-.menuItem { position:absolute; height:100%; width:100%; }
-.menuItemLeft { left:0; text-align: left; }
-.menuItemRight { right:0; text-align:right; }
-.menuIcons { font-size:22px; margin-left:0.5%; position:relative; top: 20%; transition: ease 0.5s; }
+#menuSection { margin-bottom:5%; }
+#menuItems { position: relative; height:50px; }
+.menuItem { position:absolute; height:100%; width:100%; display:flex; align-items:center;  }
+.menuItemLeft { left:0; text-align: left; justify-content: left; }
+.menuItemRight { right:0; text-align:right; justify-content: right; }
+.menuIcons { font-size:22px; margin-left:0.5%; position:relative; transition: ease 0.5s; }
 #hamburgerMenuIcon { margin-right:2%; }
 #closeMenuIcon { color:red !important; margin-right:2%; }
 
 /* Dropdown navigation */
-#dropdownNav { position:absolute; opacity:0; height:0; top:44px; left:0; right:0; width: 100%; overflow-y:hidden; z-index: 100; background-color: #D4D1CD; color: #0f0f0f; transition: ease 0.4s; }
-#dropdownNav.open { display:table; opacity:100; width:100%; padding:0%; text-align:center; right:0; }
-#dropdownNav .navRow { display:inline-block; padding:0%; width:100%; opacity:0; }
-#dropdownNav.open .navRow { width:100%; opacity:100; transition: opacity ease 0.1s; margin:2% 0%; }
-#dropdownNav .userName { display:inline-block; }
+#dropdownNav { position:absolute; opacity:0; height:0; top:44px; left:0; right:0; width: 100%; overflow-y:hidden; z-index: 100; background-color: #D4D1CD; color: #0f0f0f; }
+#dropdownNav.open { display:table; opacity:100; width:100%; padding:0%; text-align:center; right:0; top: 50px; }
+#dropdownNav .navRow { display:inline-block; margin:2% 0%; padding:3% 0%; width:100%; opacity:0; text-align:center; }
+#dropdownNav.open .navRow { opacity:100; transition: opacity ease 0.7s;  }
+#dropdownNav .navRow-false { display: none !important; }
+#dropdownNav .navRow.versionText { padding:3% 1% !important; text-align:right; font-size:80%; }
+#dropdownNav .navRow.versionText span { margin-right:3%; }
+/* #dropdownNav .navRow .navIcon { margin-right:2%; } */
+/* #dropdownNav .userName { display:inline-block; } */
 /* #dropdownNav .navItem:hover { background-color: #0f0f0f; color:#D4D1CD; } */
 
 /* Search */
-#searchBarSection { display:inline-block; position:relative; top:10%; text-align:left; border-radius:20px; border:none; padding:2%;  }
-#searchBarSection #searchBarInput { border:none; opacity: 0; background-color:transparent; width:60%; outline: none; outline-offset: 0;  }
+#searchBarSection { display:inline-block; position:relative; text-align:left; border-radius:20px; border:none; padding:2%;  }
+#searchBarSection #searchBarInput { border:none; opacity: 0; background-color:transparent; width:60%; margin-left:2%; outline: none; outline-offset: 0;  }
 #searchBarSection #searchBarInput:focus{ outline: none; outline-offset: 0;}
 #searchBarSection.active { width:60%; background-color: #0f0f0f !important; transition: ease 0.5s; }
 #searchBarSection.active #searchBarInput { opacity: 100 !important; color:#D4D1CD; }
@@ -68,10 +54,10 @@ body.pageBackground { margin:0% !important; color:#D4D1CD !important; background
 .adventureBlock { height:200px; min-width:90%; max-width:90%; cursor:pointer; overflow:hidden; position:relative; border-radius: 25px; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
 .adventureBlock .nameSection { text-align:center; margin:0%; position: absolute; width: 100%;  z-index: 50; background-color: #D4D1CD;  padding: 1%; bottom: 0; }
 .adventureBlock:hover { transform: scale(1.02);}
-.adventureBlock .loadingGif { display:block; margin:auto; text-align:center; width:35px;height:35px; }
+.adventureBlock .loadingSpinner { display:block; margin:auto; text-align:center; width:35px;height:35px; }
 .adventureBlock .showOnImageLoad { opacity: 0%; transition: opacity 2s ease; }
 .adventureBlock.visible .showOnImageLoad { opacity: 100%; }
-.adventureBlock.visible .loadingGif { display:none; }
+.adventureBlock.visible .loadingSpinner { display:none; }
 .adventureBlockImageSection { height:100%; }
 .adventureBlock img { width:100%; height:100%; }
 .adventureBlockLink { color: #1F51FF !important; font-size: 16px !important }
@@ -89,27 +75,26 @@ body.pageBackground { margin:0% !important; color:#D4D1CD !important; background
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+	#menuItems { height: 40px; }
+	.menuItemLeft {  justify-content: center; }
+
 	#menuSection { margin-bottom:1%; }
 	#adventureTitle { font-size: 1.5em; }
-	#searchBarSection { top:5%; }
-	.menuIcons { top: 15%; }
-	.mainHeading { margin-top:0.3%; text-align: center; width:100%; }
 
 	#dropdownNav { left:initial; width:150px; right:2%; }
-	#dropdownNav.open { width:150px; right:2%; }
-	/* #dropdownNav .navRow { display:inline-block; padding:0%; width:100%; opacity:0; } */
-	#dropdownNav.open .navRow { margin:5% 0%; }
+	#dropdownNav.open { width:150px; right:1.5%; top:40px; border-top:2px solid #0f0f0f;  }
+	#dropdownNav .navRow { text-align:left; }
+	#dropdownNav.open .navRow { padding:5% 0%; padding-left:2%; }
 
 	#adventuresPanel.navOpen { display:flex !important; }
 	#mainTitle.fadeOnSearch { opacity:100 !important; }
-	#searchBarSection { padding:0.5%; }
-	#searchBarSection.active { width:20%; }
+	#searchBarSection { padding:0.3%; }
+	#searchBarSection.active { width:15%; }
 	#hamburgerMenuIcon { margin-left:0.1%; margin-right:2%; }
 	#closeMenuIcon { margin-left:0.1%; margin-right:2%; }
 
 	#mainTitle { text-align:center; }
 	.adventureBlock{ min-width:10%;}
-	.loadingGif { width: 5%; height:5%; }
 }
 
 /* Large devices (laptops/desktops ) */

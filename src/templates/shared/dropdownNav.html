@@ -1,0 +1,29 @@
+<div class="userName navRow navRow-{{IsLoggedIn}} centered">
+    <span class="userName" data-user-key="{{UserKey}}">{{UserText}}</span>
+</div>
+
+<div class="navRow navRow-{{ShowHome}} pointer" onclick="MyUrls.navigateTo('/')">
+    <i class="fa-solid fa-circle-left navIcon"></i>
+    <span>Adventures</span>
+</div>
+
+<div class="navRow navRow-{{ShowDetails}} pointer" onclick="onShowDescription()">
+    
+    <i class="fa-solid fa-circle-info navIcon"></i>
+    <span>Details</span>
+</div>
+
+<div class="navRow pointer" onclick="MyUrls.navigateTo('{{AuthUrlPath}}')">
+    <tr >
+        <td>
+            <i class="fa-solid fa-circle-user navIcon"></i>
+        </td>
+        <td>
+            <span class="userText">{{AuthText}}</span>
+        </td>
+    </tr>
+</div>
+
+<div class="navRow versionText">
+    <span>v2.6.2</span>
+</div>

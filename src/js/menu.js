@@ -1,20 +1,10 @@
-// Toggle the dropdown menu
-function toggleSideNav(){
-    var sideNav = document.querySelector(".sideNav");
-    var isOpen = (sideNav.classList.contains("open"));
-    if(!isOpen)
-    {
-        sideNav.classList.add("open");
-        MyDom.hideContent("#hamburgerMenuIcon");
-        MyDom.showContent("#closeMenuIcon");
-        MyDom.addClass(".toggleOnSideNavMobile", "navOpen");
-    } else {
-        sideNav.classList.remove("open");
-        MyDom.showContent("#hamburgerMenuIcon");
-        MyDom.hideContent("#closeMenuIcon");
-        MyDom.removeClass(".toggleOnSideNavMobile", "navOpen");
-    }
+// Load the drop down menu
+const loadDropdownMenu = async (loginDetails) => {
+    var userDetails = new UserDetails(loginDetails);
+    var menuDropdown = await MyTemplates.getTemplateAsync("src/templates/shared/dropdownNav.html", userDetails);
+    MyDom.setContent("#dropdownNav", {"innerHTML": menuDropdown} );
 }
+
 
 // Toggle the dropdown nav
 function toggleDropdownNav() {

@@ -10,10 +10,9 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	// Once doc is ready
 	MyDom.ready( async () => {
 		
-		var userDetails = await MyAuth.onGetLoginDetails();
-		console.log(userDetails);
-		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
-		MyDom.setContent(".userName", {"innerText": userDetails.userName, "data-user-key": userDetails.userKey} );
+		var loginDetails = await MyAuth.onGetLoginDetails();
+		loginDetails["ShowHome"] = true;
+		await loadDropdownMenu(loginDetails);
 
 		// Get params from URL;
 		let eventID = MyUrls.getSearchParam("id");
@@ -106,16 +105,15 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	// Get this adventure card & its list of videos
 	async function onGetEventList()
 	{
-		MyDom.showContent("#loadingGif");
-		// MyUrls.navigateTo("/");
-		// return;
 		try {
 			// Get list of events
 			var eventsJson = await MyTrello.GetLists("open");
 			var events = eventsJson?.map(x => new TrelloCard(x));
 			var eventsListHtml = await MyTemplates.getTemplateAsync("src/templates/events/eventList.html", events);
 			MyDom.setContent("#eventOverviewSection", {"innerHTML": eventsListHtml });
+			MyDom.setContent("#eventName", {"innerHTML": "Dejai's Events"});
 			MyDom.hideContent(".hideOnLoaded");
+			MyDom.hideContent(".hideOnListView");
 			MyDom.showContent(".showOnLoaded");
 		} catch (error){
 			MyLogger.LogError(error);

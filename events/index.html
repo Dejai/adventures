@@ -4,48 +4,48 @@
 	<!-- Base of the path -->
 	<base href="../" target="_blank">
 	<title>Event</title>
-	<link rel="stylesheet" type="text/css" href="src/css/main.css?v=2.5.8">
-	<link rel="stylesheet" type="text/css" href="src/css/events.css?v=2.5.8">
+	<link rel="stylesheet" type="text/css" href="src/css/main.css?v=2.6.2">
+	<link rel="stylesheet" type="text/css" href="src/css/events.css?v=2.6.2">
 	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dtk-styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body class="pageBackground">
-	<div id="menuSection" class="menuSection dtk-menu-sticky">
+<body class="dtk-margin-0 dtk-theme-cauldron">
+
+	<div id="menuSection" class="menuSection dtk-menu-sticky dtk-theme-cauldron-inverse">
 		<div id="menuItems">
 			<div class="menuItem menuItemLeft">
-				<h2 id="eventName" class="mainHeading"></h2>
+				<h2 id="eventName" class="mainHeading dtk-theme-cauldron-text1"></h2>
 			</div>
 			<div class="menuItem menuItemRight">
 				<i id="hamburgerMenuIcon" class="fa-solid fa-bars pointer menuIcons" onclick="toggleDropdownNav()"></i>
 				<i id="closeMenuIcon" class="fa-solid fa-xmark hidden pointer menuIcons" onclick="toggleDropdownNav()"></i>
-				<div id="dropdownNav">
-					<span class="userName navRow"></span>
-					<span class="navRow navItem">
-						<a class="authLink loginAction dtk-href-no-textdec" href="auth/?action=0" target="_top"></a>
-					</span>
+				<div id="dropdownNav" class="dtk-theme-cauldron-inverse dtk-theme-cauldron-text1">
+					<div class="userName navRow"><i class="fa-solid fa-user"></i></div>
+					<div class="navRow navItem authLink pointer" data-href="auth/?action=0" onclick="MyUrls.navigateTo(this.getAttribute('data-href'))"></div>
+					<div><span class="versionText">v2.6.2</span></div>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- A description of the event -->
-	<div id="eventOverviewSection" class="showOnLoaded centered hideOnSubmitted"></div>
+	<div id="eventOverviewSection" class="showOnLoaded centered hideOnSubmitted dtk-theme-cauldron-text1"></div>
 
 	<!-- The loading view -->
 	<div class="hideOnFormLoad centered showOnSubmitting hideOnSubmitted">
-		<span class="hideOnListView hideOnContentView hideOnDescriptionView" style="font-size:35px;"><i class="fa-solid fa-spinner dtk-spinning fast"></i></span>
+		<span class="hideOnListView hideOnContentView hideOnDescriptionView" style="font-size:35px;"><i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"></i></span>
 	</div>
 
 	<!-- Form for the event -->
-	<div id="eventContentSection" class="hideOnSubmitting showOnSubmitted" ></div>
+	<div id="eventContentSection" class="hideOnSubmitting showOnSubmitted dtk-theme-cauldron-text1" ></div>
 
 </body>
 <!-- Common Scripts -->
-<script src="https://dejai.github.io/scripts/js/v2/my.js?v=2.5.8"></script>
-<script src="https://dejai.github.io/scripts/js/v3/trellowrapper.js?v=2.5.8"></script>
+<script src="https://dejai.github.io/scripts/js/v2/my.js?v=2.6.2"></script>
+<script src="https://dejai.github.io/scripts/js/v3/trellowrapper.js?v=2.6.2"></script>
 <!-- My Adventure code -->
-<script type="text/javascript" src="src/js/models.js?v=2.5.8"></script>
-<script type="text/javascript" src="src/js/menu.js?v=2.5.8"></script>
-<script type="text/javascript" src="src/js/events.js?v=2.5.8"></script>
+<script type="text/javascript" src="src/js/models.js?v=2.6.2"></script>
+<script type="text/javascript" src="src/js/menu.js?v=2.6.2"></script>
+<script type="text/javascript" src="src/js/events.js?v=2.6.2"></script>
 </html>

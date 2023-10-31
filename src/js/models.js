@@ -333,3 +333,29 @@ class TrelloComment
 		this.Text = commentJson?.data?.text ?? "";
 	}
 }
+
+// Maps to a user who is logged in (or not)
+class UserDetails {
+	constructor(jsonObj, hasDetails=false){
+		
+		this.IsLoggedIn = (jsonObj?.IsLoggedIn) ?? false;
+		this.UserKey = jsonObj?.UserKey ?? "";
+
+		this.FirstName = jsonObj?.FirstName ?? "";
+		this.UserText = (this.FirstName != "") ? `Hi, ${this.FirstName}` : "";
+
+		this.AuthText = (this.IsLoggedIn) ? "Log out" : "Log in";
+		this.AuthAction = (this.IsLoggedIn) ? 0 : 1;
+		this.AuthUrlPath = `auth/?action=${this.AuthAction}`;
+
+		// Showing the home row
+		this.ShowHome = jsonObj?.ShowHome ?? false;
+
+		// Showing the details row
+		this.ShowDetails = (jsonObj?.ShowDetails ?? false) && this.IsLoggedIn;
+
+		// MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
+		// MyDom.setContent(".userName", {"innerText": userDetails.userName});
+	}
+
+}

@@ -11,9 +11,10 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	// Once doc is ready
 	MyDom.ready( async () => {
 
-		var userDetails = await MyAuth.onGetLoginDetails();
-		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
-		MyDom.setContent(".userName", {"innerText": userDetails.userName, "data-user-key": userDetails.userKey} );
+		var loginDetails = await MyAuth.onGetLoginDetails();
+		loginDetails["ShowHome"] = true;
+		loginDetails["ShowDetails"] = true;
+		await loadDropdownMenu(loginDetails);
 
 		// Get params from URL;
 		let adventureID = MyUrls.getSearchParam("id") ?? "";
@@ -27,8 +28,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	// Get this adventure card & its list of videos
 	async function onGetAdventure(adventureID)
 	{
-		MyDom.showContent("#loadingGif");
-
 		try {
 			MyTrello.GetCard(adventureID, async (resp) => {				
 				
@@ -89,13 +88,16 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 /********* CONTENT: Open/Load content *************************************/
 
 	// Adventure notify message
-	function onCantLoadContent(message="")
+	async function onCantLoadContent(message="")
 	{
-		var isLoggedIn = (document.querySelector(".userName")?.getAttribute("data-user-key") ?? "") != "";
-		var loginRequired = `<h3><i class="fa-solid fa-circle-user"></i> <a class="loginAction" href="auth/?action=1" target="_top">Login</a> required to view this content.</h3>`;
-		var couldNotLoadContent = `<h3>${frownyFace} Could not load content</h3>`;
-		var message = (message != "") ? message :  (!isLoggedIn) ? loginRequired : couldNotLoadContent;
-		MyLogger.Notify("#messageSection", message);
+		if(message != ""){
+			MyLogger.Notify("#messageSection", message);
+		} else {
+			var isLoggedIn = (document.querySelector(".userName")?.getAttribute("data-user-key") ?? "") != "";
+			var templateName = (!isLoggedIn) ? "loginRequired.html" : "couldNotLoad.html";
+			var content = await MyTemplates.getTemplateAsync(`src/templates/shared/${templateName}`, {});
+			MyLogger.Notify("#messageSection", content);
+		}
 	}
 
 	// Link from content list to content view
