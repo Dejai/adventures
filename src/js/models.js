@@ -342,7 +342,7 @@ class UserDetails {
 		this.UserKey = jsonObj?.UserKey ?? "";
 
 		this.FirstName = jsonObj?.FirstName ?? "";
-		this.UserText = (this.FirstName != "") ? `Hi, ${this.FirstName}` : "";
+		this.UserText = (this.FirstName != "") ? `Hi, ${this.FirstName}` : "Hi, Guest";
 
 		this.AuthText = (this.IsLoggedIn) ? "Log out" : "Log in";
 		this.AuthAction = (this.IsLoggedIn) ? 0 : 1;

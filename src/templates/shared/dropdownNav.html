@@ -1,19 +1,19 @@
-<div class="userName navRow navRow-{{IsLoggedIn}} centered">
+<div class="userName navRow centered">
     <span class="userName" data-user-key="{{UserKey}}">{{UserText}}</span>
 </div>
 
-<div class="navRow navRow-{{ShowHome}} pointer" onclick="MyUrls.navigateTo('/')">
+<div class="navRow navRow-{{ShowHome}} navRow-lefted pointer noselect" onclick="MyUrls.navigateTo('/')">
     <i class="fa-solid fa-circle-left navIcon"></i>
     <span>Adventures</span>
 </div>
 
-<div class="navRow navRow-{{ShowDetails}} pointer" onclick="onShowDescription()">
+<div class="navRow navRow-{{ShowDetails}} navRow-lefted pointer noselect" onclick="onShowDescription()">
     
     <i class="fa-solid fa-circle-info navIcon"></i>
     <span>Details</span>
 </div>
 
-<div class="navRow pointer" onclick="MyUrls.navigateTo('{{AuthUrlPath}}')">
+<div class="navRow navRow-lefted pointer noselect" onclick="MyUrls.navigateTo('{{AuthUrlPath}}')">
     <tr >
         <td>
             <i class="fa-solid fa-circle-user navIcon"></i>
