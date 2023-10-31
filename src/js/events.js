@@ -13,7 +13,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		var userDetails = await MyAuth.onGetLoginDetails();
 		console.log(userDetails);
 		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "data-href": `auth/?action=${userDetails.action}`});
-		MyDom.setContent(".userName", {"innerText": userDetails.userName, "data-user-key": userDetails.userKey} , true);
+		MyDom.setContent(".userName", {"innerHTML": `<i class="fa-solid fa-user"></i>${userDetails.userName}`, "data-user-key": userDetails.userKey});
 		var _userRow = (userDetails.isLoggedIn) ? MyDom.addClass("#dropdownNav .userName", "navRow") : MyDom.removeClass("#dropdownNav .userName", "navRow");
 
 		// Get params from URL;

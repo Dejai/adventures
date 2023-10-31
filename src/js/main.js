@@ -12,9 +12,11 @@ const MyHomePage = new AdventureHomePage();
 		await MyUrls.redirectFromCode();
 
 		// Set login details
-		var userDetails = await MyAuth.onGetLoginDetails();
-		MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
-		MyDom.setContent(".userName", {"innerText": userDetails.userName});
+		var loginDetails = await MyAuth.onGetLoginDetails();
+		await loadDropdownMenu(loginDetails);
+
+		// MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
+		// MyDom.setContent(".userName", {"innerText": userDetails.userName});
 		
 		// Load the adventures
 		onLoadAdventures().then().catch(err => {
