@@ -30,9 +30,8 @@
 .contentPreviewBlock .playButtonSection { position:absolute; width:100%; height:100%; text-align:center; }
 .contentPreviewBlock .playButtonIcon { font-size:280%; display: flex; width:100%; height:100%; align-items: center; justify-content: center; color:#f8f8ff; transition: transform 0.5s ease; }
 .contentPreviewBlock .previewNameSection { position:absolute; width:100%; bottom:2%; text-align:center; }
-.contentPreviewBlock .previewName { display:inline-block; background-color:gray; opacity:0.7; padding:1% 5%; border-radius:20px; transition:opacity 0.5s ease, color 0.5s ease; }
+.contentPreviewBlock .previewName { display:inline-block; background-color:#f8f8ff; color:#303030; opacity:100; padding:1% 5%; border-radius:20px; transition:opacity 0.5s ease, color 0.5s ease; }
 .contentPreviewBlock:hover { transform: scale(1.02);}
-.contentPreviewBlock:hover .previewName { background-color:#f8f8ff	; color:#303030; opacity:100%;}
 .contentPreviewBlock:hover .playButtonIcon { transform: scale(1.2); }
 
 /*** Content View */
@@ -77,6 +76,9 @@
 @media only screen and (min-width: 768px) {
 	#returnHomeHeading { display:inline; text-align:left; }
 	#adventureDescription { width:60%; margin:auto; font-size:20px; }
+	.contentPreviewBlock .previewName { opacity:0.7; }
+	.contentPreviewBlock:hover .previewName { opacity:100%;}
+
 	#subMenuSection { width:60%; }
 	#descriptionSection { width: 50%; }
 	#contentViewSection { width:60% }
