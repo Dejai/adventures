@@ -124,14 +124,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 		// Set content title & author
 		var contentTitle = content?.Name ?? "";
-		var contentCreator = content?.Creator ?? "";
-		// Check to see if I should exclude this creator
-		var excludeCreators = ["Derrick Fyfield", "Dancing Lion", "Dejai"];
-		var toBeExcluded = (excludeCreators.filter(x => contentCreator.includes(x)).length > 0);
-		// Only show creators if available & not excluded
-		if(contentCreator != "" && !toBeExcluded) {
-			contentTitle += `<br/><span class="contentCreatorSection">by: ${content.Creator}</span>`;
-		}
+		contentTitle += (content.ShowCreator == "Yes") ? `<br/><span class="contentCreatorSection">by: ${content.Creator}</span>` : "";
 		MyDom.setContent("#contentTitle", {"innerHTML": contentTitle });
 		
 		if(content instanceof StreamVideo) {
