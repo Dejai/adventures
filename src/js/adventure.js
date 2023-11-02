@@ -198,6 +198,9 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	// Set the current view of things
 	function setContentView(state="default")
 	{
+		// Hide the error content by default
+		MyDom.hideContent(".showOnError");
+
 		// Defaults to list view of content
 		switch(state)
 		{
