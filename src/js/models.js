@@ -212,6 +212,7 @@ class StreamVideo
 		this.AdventureID = videoObj?.adventureID ?? "";
 		this.ContentID = videoObj?.uid ?? "";
 		this.Creator = videoObj?.creator ?? "";
+		this.ShowCreator = videoObj?.showCreator ?? "No";
 		this.Name = videoObj?.name ?? "";
 		this.Description = videoObj?.description ?? "";
 		this.Duration = videoObj?.duration ?? 0;
