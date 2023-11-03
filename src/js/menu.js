@@ -5,6 +5,17 @@ const loadDropdownMenu = async (loginDetails) => {
     MyDom.setContent("#dropdownNav", {"innerHTML": menuDropdown} );
 }
 
+// Listen for clicks outside of dropdown nav
+function onClickOutsideDropdownNav(e) {
+    console.log("Checking to close dropdown");
+    var dropdownNav = document.querySelector("#dropdownNav");
+    var targetElement = e.target;
+    var isMenuIcon = targetElement.classList.contains("menuIcons");
+    var targetInDropdown = dropdownNav.contains(targetElement);
+    if(targetElement != undefined && !isMenuIcon && !targetInDropdown) {
+        toggleDropdownNav("close");
+    }
+}
 
 // Toggle the dropdown nav
 function toggleDropdownNav(state="") {
@@ -19,13 +30,14 @@ function toggleDropdownNav(state="") {
             dropdownNav.classList.add("open");
             MyDom.hideContent("#hamburgerMenuIcon");
             MyDom.showContent("#closeMenuIcon");
+            window.addEventListener("click", onClickOutsideDropdownNav);
             break;
         default:
             dropdownNav.classList.remove("open");
             MyDom.showContent("#hamburgerMenuIcon");
-            MyDom.hideContent("#closeMenuIcon");    
+            MyDom.hideContent("#closeMenuIcon");   
+            window.removeEventListener("click", onClickOutsideDropdownNav);
             break;
-
     }
 }
 
