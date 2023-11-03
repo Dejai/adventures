@@ -23,6 +23,8 @@ const MyHomePage = new AdventureHomePage();
 			onCantLoadAdventures(err);
 			MyLogger.LogError(err);
 		});
+
+		// Add general listener
 	});
 
 /******** GETTING STARTED: Loading the Adventures & Labels; Check if logged in user***************************/
