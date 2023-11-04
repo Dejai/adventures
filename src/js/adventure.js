@@ -93,7 +93,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		if(message != ""){
 			MyLogger.Notify("#messageSection", message);
 		} else {
-			var isLoggedIn = (document.querySelector(".userName")?.getAttribute("data-user-key") ?? "") != "";
+			var isLoggedIn = (document.querySelector("#userKeyElement")?.getAttribute("data-user-key") ?? "") != "";
 			var templateName = (!isLoggedIn) ? "loginRequired.html" : "couldNotLoad.html";
 			var content = await MyTemplates.getTemplateAsync(`src/templates/shared/${templateName}`, {});
 			MyLogger.Notify("#messageSection", content);

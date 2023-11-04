@@ -354,9 +354,5 @@ class UserDetails {
 
 		// Showing the details row
 		this.ShowDetails = (jsonObj?.ShowDetails ?? false) && this.IsLoggedIn;
-
-		// MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
-		// MyDom.setContent(".userName", {"innerText": userDetails.userName});
 	}
-
 }

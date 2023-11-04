@@ -31,9 +31,6 @@
 #dropdownNav .navRow-false { display: none !important; }
 #dropdownNav .navRow.versionText { padding:3% 1% !important; text-align:right; font-size:80%; }
 #dropdownNav .navRow.versionText span { margin-right:3%; }
-/* #dropdownNav .navRow .navIcon { margin-right:2%; } */
-/* #dropdownNav .userName { display:inline-block; } */
-/* #dropdownNav .navItem:hover { background-color: #0f0f0f; color:#D4D1CD; } */
 
 /* Search */
 #searchBarSection { display:inline-block; position:relative; text-align:left; border-radius:20px; border:none; padding:2%;  }
