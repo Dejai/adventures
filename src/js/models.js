@@ -220,6 +220,7 @@ class StreamVideo
 		this.Ready = videoObj?.readyToStream ?? false;
 		this.Signed = videoObj?.requireSignedURLs ?? false;
 		this.Urls = videoObj?.urls ?? {}
+		this.RAW = videoObj;
 	}
 }
 

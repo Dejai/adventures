@@ -14,7 +14,6 @@ const MyCloudFlare = new CloudflareWrapper();
 
 		// Set login details
 		var loginDetails = await MyAuth.onGetLoginDetails();
-		await MyCloudFlare.Session(loginDetails?.UserKey ?? "");
 		await loadDropdownMenu(loginDetails);
 	
 		// Load the adventures
@@ -59,6 +58,7 @@ const MyCloudFlare = new CloudflareWrapper();
 				if(numberOfVideos > 0) {
 					var randIndex = (numberOfVideos > 1) ? Math.floor(Math.random()*adventureVideos.length) : 0;
 					adventure.CoverContent = new StreamVideo(adventureVideos[randIndex]);
+					console.log(adventure);
 				}
 				// Add adventure as we go
 				var adventureBlockTemplate = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", adventure);
