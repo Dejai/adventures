@@ -2,6 +2,7 @@
 /************************ GLOBAL VARIABLES ****************************************/
 const MyTrello = new TrelloWrapper("adventures");
 const MyHomePage = new AdventureHomePage();
+const MyCloudFlare = new CloudflareWrapper();
 
 /*********************** GETTING STARTED *****************************/
 
@@ -13,8 +14,9 @@ const MyHomePage = new AdventureHomePage();
 
 		// Set login details
 		var loginDetails = await MyAuth.onGetLoginDetails();
+		await MyCloudFlare.Session(loginDetails?.UserKey ?? "");
 		await loadDropdownMenu(loginDetails);
-		
+	
 		// Load the adventures
 		onLoadAdventures().then().catch(err => {
 			onCantLoadAdventures(err);
@@ -52,7 +54,7 @@ const MyHomePage = new AdventureHomePage();
 			for(var adventure of adventures)
 			{
 				var adventureID = adventure?.AdventureID ?? "No Adventure ID";
-				var adventureVideos = await CloudflareWrapper.GetVideos(adventureID);
+				var adventureVideos = await MyCloudFlare.GetVideos(adventureID);
 				var numberOfVideos = adventureVideos.length;
 				if(numberOfVideos > 0) {
 					var randIndex = (numberOfVideos > 1) ? Math.floor(Math.random()*adventureVideos.length) : 0;

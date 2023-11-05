@@ -7,7 +7,6 @@ const loadDropdownMenu = async (loginDetails) => {
 
 // Listen for clicks outside of dropdown nav
 function onClickOutsideDropdownNav(e) {
-    console.log("Checking to close dropdown");
     var dropdownNav = document.querySelector("#dropdownNav");
     var targetElement = e.target;
     var isMenuIcon = targetElement.classList.contains("menuIcons");

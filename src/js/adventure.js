@@ -2,6 +2,7 @@
 /************************ GLOBAL VARIABLES ****************************************/
 const MyTrello = new TrelloWrapper("adventures");
 const MyAdventurePage = new AdventurePage();
+const MyCloudFlare = new CloudflareWrapper();
 const MyStream = new StreamManager();
 
 const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
@@ -43,7 +44,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				MyDom.setContent("#adventureDescription", {"innerHTML":adventure.MoreDetails});
 
 				// Get the adventure Videos for this adventure
-				var adventureVideos = await CloudflareWrapper.GetVideos(adventure.AdventureID);
+				var adventureVideos = await MyCloudFlare.GetVideos(adventure.AdventureID);
 				var streamVideos = adventureVideos.map(x => new StreamVideo(x));
 				// Sort the stream videos by date (oldest first);
 				streamVideos.sort( (a,b) => {
@@ -241,7 +242,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	// Navigate back to the last view
 	function onPreviousView(){
 		var lastViewState = MyAdventurePage.getLastViewState();
-		console.log(lastViewState);
 		// If only one content, then just go back to all adventures
 		if(lastViewState == "home"){
 			MyUrls.navigateTo("/");
