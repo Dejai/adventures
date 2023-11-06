@@ -92,7 +92,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 			// If only overview was added, then count would only be 1; And if so, show no content
 			if(numSections <= 1){
-				var isLoggedIn = (document.querySelector(".userName")?.getAttribute("data-user-key") ?? "") != "";
+				var isLoggedIn = (document.querySelector("#userKeyElement")?.getAttribute("data-user-key") ?? "") != "";
 				var title = (!isLoggedIn) ? "Login Required" : `<i class="fa-regular fa-face-frown"></i> Can't Load the Content`;
 				var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/noContent.html", { "Title": title, "IsLoggedIn": isLoggedIn });
 				MyDom.setContent("#eventContentSection", {"innerHTML": evHtml});	
@@ -125,7 +125,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 		// Get form sections
 		var formSections = document.querySelectorAll(".eventForm");
-		var userKey = document.querySelector(".userName")?.getAttribute("data-user-key");
+		var userKey = document.querySelector("#userKeyElement")?.getAttribute("data-user-key");
 		var prevs = 0;
 		for(var form of formSections)
 		{
@@ -187,7 +187,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			MyDom.showContent(".showOnSubmitting");
 
 			var forms = Array.from(document.querySelectorAll(".eventForm"));
-			var userKey = document.querySelector(".userName")?.getAttribute("data-user-key");
+			var userKey = document.querySelector("#userKeyElement")?.getAttribute("data-user-key");
 			for(var form of forms)
 			{
 				var cardID = form.getAttribute("data-form-id");
@@ -206,8 +206,18 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 					await MyTrello.CreateCardComment(cardID, comment);
 				}
 			}
+
+			// Create a submitted card
+			var responseList = await MyTrello.GetListByName("Responses");
+			var listID = responseList?.id ?? "";
+			if(listID != ""){
+				var submittedBy = "Response submitted by: " + userKey;
+				await MyTrello.CreateCard(listID, submittedBy);
+			}
+
 			var submittedHtml = await MyTemplates.getTemplateAsync("src/templates/events/submitted.html", {});
 			MyDom.setContent("#eventContentSection", {"innerHTML": submittedHtml });
+			
 		} catch(err){
 			MyLogger.LogError(err);
 			var errorHtml = await MyTemplates.getTemplateAsync("src/templates/events/error.html", {});

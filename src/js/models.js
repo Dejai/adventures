@@ -117,6 +117,7 @@ class AdventurePage
 
 		// Keep track of scroll location
 		this.Scroll = { "X": 0, "Y": 0}
+		
 	}
 
 	// Set the current adventure
@@ -220,6 +221,7 @@ class StreamVideo
 		this.Ready = videoObj?.readyToStream ?? false;
 		this.Signed = videoObj?.requireSignedURLs ?? false;
 		this.Urls = videoObj?.urls ?? {}
+		this.RAW = videoObj;
 	}
 }
 
@@ -354,9 +356,5 @@ class UserDetails {
 
 		// Showing the details row
 		this.ShowDetails = (jsonObj?.ShowDetails ?? false) && this.IsLoggedIn;
-
-		// MyDom.setContent(".authLink", {"innerText": userDetails.actionText, "href": `auth/?action=${userDetails.action}`});
-		// MyDom.setContent(".userName", {"innerText": userDetails.userName});
 	}
-
 }
