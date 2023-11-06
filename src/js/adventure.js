@@ -123,6 +123,13 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	{
 		var content = MyAdventurePage.getContentByID(contentID);
 
+		// If content is signed & user is not logged in, then just show default view
+		var userKey = MyCookies.getCookie( MyCookies.getCookieName("Session") );
+		if(content.Signed && userKey == undefined){
+			setContentView("default");
+			return;
+		}
+
 		// Set content title & author
 		var contentTitle = content?.Name ?? "";
 		contentTitle += (content.ShowCreator == "Yes") ? `<br/><span class="contentCreatorSection">by: ${content.Creator}</span>` : "";

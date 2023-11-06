@@ -58,7 +58,6 @@ const MyCloudFlare = new CloudflareWrapper();
 				if(numberOfVideos > 0) {
 					var randIndex = (numberOfVideos > 1) ? Math.floor(Math.random()*adventureVideos.length) : 0;
 					adventure.CoverContent = new StreamVideo(adventureVideos[randIndex]);
-					console.log(adventure);
 				}
 				// Add adventure as we go
 				var adventureBlockTemplate = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", adventure);

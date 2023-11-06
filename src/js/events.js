@@ -208,14 +208,12 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			}
 
 			// Create a submitted card
-			// var responseList = await MyTrello.GetListByName("Responses");
-			// var listID = responseList?.id ?? "";
-			// if(listID != ""){
-			// 	var submittedBy = "Response submitted by: " + userKey;
-			// 	console.log(submittedBy);
-			// 	console.log(listID);
-			// 	// await MyTrello.CreateCard(listID, submittedBy);
-			// }
+			var responseList = await MyTrello.GetListByName("Responses");
+			var listID = responseList?.id ?? "";
+			if(listID != ""){
+				var submittedBy = "Response submitted by: " + userKey;
+				await MyTrello.CreateCard(listID, submittedBy);
+			}
 
 			var submittedHtml = await MyTemplates.getTemplateAsync("src/templates/events/submitted.html", {});
 			MyDom.setContent("#eventContentSection", {"innerHTML": submittedHtml });

@@ -117,6 +117,7 @@ class AdventurePage
 
 		// Keep track of scroll location
 		this.Scroll = { "X": 0, "Y": 0}
+		
 	}
 
 	// Set the current adventure
