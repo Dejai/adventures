@@ -271,10 +271,10 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 	// On going to the next video
 	function onNext(){
-		var nextClickable = document.querySelector("#contentNavRight")?.classList?.contains("clickable") ?? false;
-		if(nextClickable){
+		// var nextClickable = document.querySelector("#contentNavRight")?.classList?.contains("clickable") ?? false;
+		// if(nextClickable){
 			onChangeContent("next");
-		}
+		// }
 	}
 
 	// Show the description

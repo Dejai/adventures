@@ -50,6 +50,12 @@ const MyCloudFlare = new CloudflareWrapper();
 
 			// Loop through adventures & add to page
 			var append = false;
+			var advBlock = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", {});
+			for(var adv of adventures){
+				MyDom.setContent("#adventuresPanel", {"innerHTML":advBlock}, append);
+				append = true;
+			}
+
 			for(var adventure of adventures)
 			{
 				var adventureID = adventure?.AdventureID ?? "No Adventure ID";
@@ -59,10 +65,19 @@ const MyCloudFlare = new CloudflareWrapper();
 					var randIndex = (numberOfVideos > 1) ? Math.floor(Math.random()*adventureVideos.length) : 0;
 					adventure.CoverContent = new StreamVideo(adventureVideos[randIndex]);
 				}
+				var placeholder = document.querySelector(".adventureBlock.placeholder");
+				var placeholderImg = placeholder?.querySelector("img");
+				var placeholderLink = placeholder?.querySelector(".adventureBlockLink");
+				var placeholderName = placeholder?.querySelector(".adventureName");
+				placeholder.setAttribute("data-adventure-id", adventure.AdventureID);
+				placeholder.classList.remove("placeholder");
+				placeholderImg.src = adventure.CoverContent.Urls.thumbnail;
+				placeholderLink.href = `./adventure/?id=${adventure.AdventureID}`;
+				placeholderName.innerHTML = adventure.Name;
 				// Add adventure as we go
-				var adventureBlockTemplate = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", adventure);
-				MyDom.setContent("#adventuresPanel", {"innerHTML":adventureBlockTemplate}, append);
-				append = true;
+				// var adventureBlockTemplate = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", adventure);
+				// MyDom.setContent("#adventuresPanel", {"innerHTML":adventureBlockTemplate}, append);
+				// append = true;
 			}
 			
 		} catch (err){

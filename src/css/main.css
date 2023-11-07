@@ -48,7 +48,7 @@
 /*** Adventures List */
 #adventuresPanel { width:95%; margin:auto; display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:10px; align-items:center; align-content:center;  }
 #adventuresPanel.navOpen { display:none !important; }
-.adventureBlock { height:200px; min-width:90%; max-width:90%; cursor:pointer; overflow:hidden; position:relative; border-radius: 25px; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
+.adventureBlock { margin-bottom:2%; height:200px; min-width:90%; max-width:90%; cursor:pointer; overflow:hidden; position:relative; border-radius: 25px; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
 .adventureBlock .nameSection { text-align:center; margin:0%; position: absolute; width: 100%;  z-index: 50; background-color: #D4D1CD;  padding: 1%; bottom: 0; }
 .adventureBlock:hover { transform: scale(1.02);}
 .adventureBlock .loadingSpinner { display:block; margin:auto; text-align:center; width:35px;height:35px; }
@@ -93,7 +93,7 @@
 	#closeMenuIcon { margin-left:0.1%; margin-right:2%; }
 
 	#mainTitle { text-align:center; }
-	.adventureBlock{ min-width:10%;}
+	.adventureBlock{ min-width:350px; }
 }
 
 /* Large devices (laptops/desktops ) */

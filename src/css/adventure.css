@@ -37,8 +37,11 @@
 
 /*** Content View */
 #contentViewSection { clear: both; position: relative; height: 450px; z-index: 50; }
-.contentNav { position: absolute; padding-top:40%; font-size:45px; cursor:pointer; opacity:0%; transition: opacity 1.5s ease; }
-.conventNav:hover { background-color:lightgray; }
+
+#contentNavSection { position:relative; width:80%; margin:auto; }
+.contentNav { position: absolute; font-size:18px; cursor:pointer; transition: opacity 1.5s ease; z-index:20; }
+.contentNav i { vertical-align: middle;}
+/* .conventNav:hover { background-color:lightgray; } */
 .contentNav.left { left:1px; }
 .contentNav.right { right:1px; }
 .contentNav.visible { z-index:65; color:#FAF9F6 }
@@ -47,11 +50,14 @@
 #videoFramePanel:hover { cursor:pointer; }
 #videoFrame {  border: none; position: absolute; top:0; left: 0; height: 75%; width: 100%;}
 
+
+
+
 /*** MEDIA SECTIONS ***/
 @media only screen and (max-width: 400px){
 	#subMenuSection { width:90%; }
 	#contentViewSection { height:350px; }
-	.contentNav { padding-top:25%; }
+	/* .contentNav { padding-top:25%; } */
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -63,13 +69,14 @@
 @media only screen and (min-width: 600px) {
 	#subMenuSection { width:70%; }
 	#contentViewSection { height:450px; margin:auto; }
-	.contentNav { padding-top:30%; }
+	/* .contentNav { padding-top:30%; } */
 	#videoFrame { height:90%; }
 }
 
 @media only screen and (min-width: 700px) {
 	.contentPreviewBlock { min-width:10%; }
 	#subMenuSection { width:70%; }
+	#contentNavSection { width:70%; }
 	#contentViewSection { width:70% }
 }
 
@@ -85,25 +92,25 @@
 	#subMenuSection { width:60%; }
 	#descriptionSection { width: 50%; }
 	#contentViewSection { width:60% }
-	.contentNav { padding-top:30%; }
+	/* .contentNav { padding-top:30%; } */
 	#videoFrame { height:100%; }
 }
 
 /* Large devices (laptops/desktops ) */
 @media only screen and (min-width: 900px) {
 	#subMenuSection { width:35%; font-size:18px; }
+	#contentNavSection { width:10%; font-size:18px; padding-top:1%; }
 	#descriptionSection { width: 40%; }
 	#contentViewSection { width:50% }
-	.contentNav { z-index: 60; padding-top:35%; }
-	.contentNav.clickable:hover { opacity:0.9; }
-	.contentNav.disabled:hover { opacity:0.2; }
+	/* .contentNav { z-index: 60; padding-top:35%; } */
+	/* .contentNav.clickable:hover { opacity:0.9; } */
+	/* .contentNav.disabled:hover { opacity:0.2; } */
 }
 
 @media only screen and (min-width: 1000px) {
 	#contentViewSection { height:350px; }
-	.contentNav.left { left:20px; }
-	.contentNav.right { right:20px; }
-
+	/* .contentNav.left { left:20px; } */
+	/* .contentNav.right { right:20px; } */
 }
 
 /* Larger Devices */
