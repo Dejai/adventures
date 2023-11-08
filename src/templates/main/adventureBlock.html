@@ -1,11 +1,11 @@
-<div data-adventure-id="{{AdventureID}}" class="adventureBlock">
+<div data-adventure-id="{{AdventureID}}" class="adventureBlock placeholder">
     <span class="loadingSpinner" style="font-size:35px;"><i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"></i></span>
     <div class="adventureBlockImageSection showOnImageLoad">
-        <img src="{{CoverContent.Urls.thumbnail}}" alt="img" onclick="onNavigateToAdventure(event)" onload="onPictureLoaded(this)"/>
+        <img src="{{CoverContent.Urls.thumbnail}}" alt="" onclick="onNavigateToAdventure(event)" onload="onPictureLoaded(this)"/>
     </div>
     <h3 class="nameSection showOnImageLoad">
         <a class="adventureBlockLink dtk-href-no-textdec" href="./adventure/?id={{AdventureID}}">
-            {{Name}}
+            <span class="adventureName">{{Name}}</span>
             &nbsp;
             <i class="fa fa-external-link openLinkIcon" aria-hidden="true"></i>
         </a>

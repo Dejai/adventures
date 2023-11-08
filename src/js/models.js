@@ -23,7 +23,10 @@ class Adventure
 
 	// Add content to this adventure
 	addContent(contentList){
+		var idx = 0;
 		contentList.forEach( (c) =>{
+			idx++;
+			c.ContentIndex = idx;
 			this.Content.push(c);
 		});
 	}

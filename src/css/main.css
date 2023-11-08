@@ -48,7 +48,7 @@
 /*** Adventures List */
 #adventuresPanel { width:95%; margin:auto; display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:10px; align-items:center; align-content:center;  }
 #adventuresPanel.navOpen { display:none !important; }
-.adventureBlock { height:200px; min-width:90%; max-width:90%; cursor:pointer; overflow:hidden; position:relative; border-radius: 25px; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
+.adventureBlock { margin-bottom:2%; height:200px; min-width:90%; max-width:90%; cursor:pointer; overflow:hidden; position:relative; border-radius: 25px; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
 .adventureBlock .nameSection { text-align:center; margin:0%; position: absolute; width: 100%;  z-index: 50; background-color: #D4D1CD;  padding: 1%; bottom: 0; }
 .adventureBlock:hover { transform: scale(1.02);}
 .adventureBlock .loadingSpinner { display:block; margin:auto; text-align:center; width:35px;height:35px; }
@@ -75,32 +75,26 @@
 	#menuItems { height: 40px; }
 	.menuItemLeft {  justify-content: center; }
 	#loginRequiredButton { border-radius: 20px; padding:0.5%; border:none;}
-
 	#menuSection { margin-bottom:1%; }
 	#adventureTitle { font-size: 1.5em; }
-
 	#dropdownNav { left:initial; width:150px; right:2%; }
 	#dropdownNav.open { width:150px; right:1.5%; top:40px; border-top:2px solid #0f0f0f;  }
-	/* #dropdownNav .navRow { text-align:left; } */
 	#dropdownNav.open .navRow { padding:5% 0%; }
 	#dropdownNav.open .navRow-lefted { text-align:left; padding-left:2%; }
-
 	#adventuresPanel.navOpen { display:flex !important; }
 	#mainTitle.fadeOnSearch { opacity:100 !important; }
 	#searchBarSection { padding:0.3%; }
 	#searchBarSection.active { width:15%; }
 	#hamburgerMenuIcon { margin-left:0.1%; margin-right:2%; }
 	#closeMenuIcon { margin-left:0.1%; margin-right:2%; }
-
 	#mainTitle { text-align:center; }
-	.adventureBlock{ min-width:10%;}
+	.adventureBlock{ min-width:350px; }
 }
 
 /* Large devices (laptops/desktops ) */
 @media only screen and (min-width: 900px) {
+	.adventureBlock { margin-bottom:1.5%; }
 	.sideNav.open {width: 170px; }
-
-	/* #searchBarSection { width:40%; } */
 	.menuLogin .authLink { font-size: 24px; }
 	.iconSize { font-size: 22px; }
 	.iconSizeSmaller { font-size: 16px; }
