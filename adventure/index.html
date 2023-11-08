@@ -4,8 +4,8 @@
 	<!-- Base of the path -->
 	<base href="../" target="_blank">
 	<title>Dejai's Adventures</title>
-	<link rel="stylesheet" type="text/css" href="src/css/main.css?v=2.7.2">
-	<link rel="stylesheet" type="text/css" href="src/css/adventure.css?v=2.7.2">
+	<link rel="stylesheet" type="text/css" href="src/css/main.css?v=2.7.2.1">
+	<link rel="stylesheet" type="text/css" href="src/css/adventure.css?v=2.7.2.1">
 	<link rel="stylesheet" type="text/css" href="https://dejai.github.io/scripts/css/dtk-styles.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -52,39 +52,36 @@
 
 	<!-- The Content View section -->
 	<div id="contentViewSection" class="hidden showOnContentView hideOnDescriptionView hideOnListView">
-		<!-- <div id="contentNavLeft" class="contentNav left" >
-			<i class="fa-solid fa-chevron-left" onclick="onPrev()"></i>
-		</div>
-		<div id="contentNavRight" class="contentNav right" >
-			<i class="fa-solid fa-chevron-right" onclick="onNext()"></i>
-		</div> -->
+		
 		<div id="videoFramePanel"></div>
+	
+		<!-- Content Nav Section -->
+		<div id="contentNavSection" class="hidden centered showOnContentView hideOnListView hideOnDescriptionView">
+			<div id="contentNavPrev" class="contentNavItem contentNavAction left pointer" onclick="onPrev()">
+				<i class="fa-solid fa-circle-arrow-left" ></i>
+				<span>prev</span>	
+			</div>
+			<div class="contentNavItem contentNavIndex centered">
+				<span id="contentIndex"></span> of <span id="contentTotal"></span>
+			</div>
+			<div id="contentNavNext" class="contentNavItem contentNavAction right pointer" onclick="onNext()">
+				<span>next</span>
+				<i class="fa-solid fa-circle-arrow-right"></i>
+			</div>
+		</div>
 	</div>
 
-	<!-- Content Nav Section -->
-	<!-- <div id="contentNavSection" class="hidden centered showOnContentView hideOnListView hideOnDescriptionView">
-		<div class="contentNav left pointer" onclick="onPrev()">
-			<i class="fa-solid fa-circle-arrow-left" ></i>
-			<span>prev</span>	
-		</div>
-		<div class="contentNav centered" style="width:100%; z-index:-10">
-			1 of 21
-		</div>
-		<div class="contentNav right pointer" onclick="onNext()">
-			<span>next</span>
-			<i class="fa-solid fa-circle-arrow-right"></i>
-		</div>
-    </div> -->
+	
 
 </body>
 <!-- Stream Embed API -->
 <script src="https://embed.videodelivery.net/embed/sdk.latest.js"></script>
 <!-- Common Scripts -->
-<script src="https://dejai.github.io/scripts/js/v2/my.js?v=2.7.2"></script>
-<script src="https://dejai.github.io/scripts/js/v2/trellowrapper.js?v=2.7.2"></script>
-<script src="https://dejai.github.io/scripts/js/v3/cloudflarewrapper.js?v=2.7.2"></script>
+<script src="https://dejai.github.io/scripts/js/v2/my.js?v=2.7.2.1"></script>
+<script src="https://dejai.github.io/scripts/js/v2/trellowrapper.js?v=2.7.2.1"></script>
+<script src="https://dejai.github.io/scripts/js/v3/cloudflarewrapper.js?v=2.7.2.1"></script>
 <!-- My Adventure code -->
-<script type="text/javascript" src="src/js/models.js?v=2.7.2"></script>
-<script type="text/javascript" src="src/js/menu.js?v=2.7.2"></script>
-<script type="text/javascript" src="src/js/adventure.js?v=2.7.2"></script>
+<script type="text/javascript" src="src/js/models.js?v=2.7.2.1"></script>
+<script type="text/javascript" src="src/js/menu.js?v=2.7.2.1"></script>
+<script type="text/javascript" src="src/js/adventure.js?v=2.7.2.1"></script>
 </html>

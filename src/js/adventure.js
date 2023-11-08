@@ -65,6 +65,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// Load the video preview templates
 				var contentPreviewTemplate = await MyTemplates.getTemplateAsync("src/templates/adventure/contentPreview.html", streamVideos);
 				MyDom.setContent("#contentListSection", {"innerHTML": contentPreviewTemplate});
+				MyDom.setContent("#contentTotal", {"innerHTML": streamVideos.length});
 
 				// If param ID is set or there is only, load that video immediately 
 				var contentID = MyUrls.getSearchParam("content");
@@ -134,6 +135,9 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		var contentTitle = content?.Name ?? "";
 		contentTitle += (content.ShowCreator == "Yes") ? `<br/><span class="contentCreatorSection">by: ${content.Creator}</span>` : "";
 		MyDom.setContent("#contentTitle", {"innerHTML": contentTitle });
+
+		// Set content index
+		MyDom.setContent("#contentIndex", {"innerHTML": content.ContentIndex});
 		
 		if(content instanceof StreamVideo) {
 			var videoIFrameTemplate = await MyTemplates.getTemplateAsync("src/templates/adventure/videoIFrame.html", content); 
@@ -218,11 +222,15 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 				// Show the content
 				MyDom.showContent(".showOnContentView");
 				MyDom.hideContent(".hideOnContentView");
-				// Show/hide the prev button
-				var _back = MyAdventurePage.getContentCount() == 1 ? MyDom.hideContent(".hideIfOneContent") : MyDom.showContent(".hideIfOneContent");
 				//Showing/hiding the next/prev buttons
-				var _next = MyAdventurePage.hasNextContent() ? MyDom.replaceClass("#contentNavRight", "disabled", "clickable") : MyDom.replaceClass("#contentNavRight", "clickable", "disabled");
-				var _prev = MyAdventurePage.hasPrevContent() ? MyDom.replaceClass("#contentNavLeft", "disabled", "clickable") : MyDom.replaceClass("#contentNavLeft", "clickable", "disabled");
+				var _next = MyAdventurePage.hasNextContent() ? MyDom.addClass("#contentNavNext", "clickable") : MyDom.removeClass("#contentNavNext", "clickable");
+				var _prev = MyAdventurePage.hasPrevContent() ? MyDom.addClass("#contentNavPrev", "clickable") : MyDom.removeClass("#contentNavPrev", "clickable");
+				// If there is only one content, adjust navigation buttons
+				if(MyAdventurePage.getContentCount() == 1){
+					MyDom.hideContent(".hideIfOneContent");
+					MyDom.hideContent("#contentNavNext");
+					MyDom.hideContent("#contentNavPrev");
+				}
 				break;
 			case "description":
 				MyDom.showContent(".showOnDescriptionView");
@@ -263,18 +271,16 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 	// On navigate back to a content list
 	function onPrev(){
-		var prevClickable = document.querySelector("#contentNavLeft")?.classList?.contains("clickable") ?? false;
-		if(prevClickable){
+		if(document.querySelector("#contentNavPrev.clickable") != undefined){
 			onChangeContent("prev");
 		}
 	}
 
 	// On going to the next video
 	function onNext(){
-		// var nextClickable = document.querySelector("#contentNavRight")?.classList?.contains("clickable") ?? false;
-		// if(nextClickable){
+		if(document.querySelector("#contentNavNext.clickable") != undefined){
 			onChangeContent("next");
-		// }
+		}
 	}
 
 	// Show the description

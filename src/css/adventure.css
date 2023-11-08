@@ -1,22 +1,16 @@
-
 /*** Menu Section */
 .showDescriptionIcon { color: limegreen; vertical-align: middle; }
 #returnIconSection { position: fixed; top:2%; left:2%; text-align:left; }
 
-/*** SubMenu Section */
+/*** Messages Section */
 #messageSection { padding-top:3%; }
-#rotate180deg { transform: rotateY(180deg); }
 
-/* Adventure */
-#returnHomeHeading { display:none; }
-#adventureTitleHeading { width:80%; }
-
+/* Sub menu for title area */
 #subMenuSection { position:relative; height:40px; z-index:50; width:80%; margin:auto; text-align:center; }
 .subMenuItem { position:absolute; }
 .subMenuItemLeft { left:0; width:40%; text-align:left; z-index:50; }
 .subMenuItemMiddle { left:0; width:100%; z-index:40; }
 .subMenuItemRight { right:0; width:40%; text-align:right; z-index:50; }
-
 #contentTitle { display:inline-block; width: 100%; }
 .contentCreatorSection { font-size:smaller; display:inline-block; font-style: italic; }
 
@@ -26,7 +20,8 @@
 
 /*** Content List */
 #contentListSection { display:flex; flex-wrap: wrap; flex-direction: row; justify-content: center; gap:10px; align-items:center; align-content:center;  }
-.contentPreviewBlock { height:200px; min-width:80%; max-width:90%; cursor:pointer; position:relative; overflow:hidden; display:relative; border-radius:20px; text-align:center; transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
+.contentPreviewBlock { margin-bottom:2%; height:200px; min-width:80%; max-width:90%; cursor:pointer; position:relative; overflow:hidden; display:relative; border-radius:20px; text-align:center; 
+	transition: width 0.5s ease, height 0.5s ease, transform 0.5s ease; }
 .contentPreviewBlock img { width: 100%; height:100%; }
 .contentPreviewBlock .playButtonSection { position:absolute; width:100%; height:100%; text-align:center; }
 .contentPreviewBlock .playButtonIcon { font-size:280%; display: flex; width:100%; height:100%; align-items: center; justify-content: center; color:#f8f8ff; transition: transform 0.5s ease; }
@@ -36,40 +31,30 @@
 .contentPreviewBlock:hover .playButtonIcon { transform: scale(1.2); }
 
 /*** Content View */
-#contentViewSection { clear: both; position: relative; height: 450px; z-index: 50; }
+#contentViewSection { position: relative; width:95%; z-index: 50; margin:auto; }
+#videoFramePanel { position:relative; width: 100%; padding-top: 56.25%; /*Aspect Ratio of 16:9 (9/16 as a percentage)*/ }
+#videoFrame {  border: none; position: absolute; top:0; left: 0; height: 100%; width: 100%;}
 
-#contentNavSection { position:relative; width:80%; margin:auto; }
-.contentNav { position: absolute; font-size:18px; cursor:pointer; transition: opacity 1.5s ease; z-index:20; }
-.contentNav i { vertical-align: middle;}
-/* .conventNav:hover { background-color:lightgray; } */
-.contentNav.left { left:1px; }
-.contentNav.right { right:1px; }
-.contentNav.visible { z-index:65; color:#FAF9F6 }
-.contentNav.visible.clickable { opacity:0.9; }
-.contentNav.visible.disabled { opacity:0.2; }
-#videoFramePanel:hover { cursor:pointer; }
-#videoFrame {  border: none; position: absolute; top:0; left: 0; height: 75%; width: 100%;}
-
-
-
+/* Content navigation */
+#contentNavSection { position:relative; font-size:18px; width:80%; margin:auto; padding-top:3%;  }
+.contentNavItem { position:absolute; transition: opacity 0.4s ease; }
+.contentNavIndex { width:100%; z-index:-10; }
+.contentNavAction { opacity: 0.2; z-index:20; }
+.contentNavAction i { vertical-align: middle;}
+.contentNavAction.clickable { opacity:100; }
+.contentNavAction.left { left:1px; }
+.contentNavAction.right { right:1px; }
 
 /*** MEDIA SECTIONS ***/
 @media only screen and (max-width: 400px){
 	#subMenuSection { width:90%; }
-	#contentViewSection { height:350px; }
-	/* .contentNav { padding-top:25%; } */
-}
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 500px) {
-	#videoFrame { height:90%; }
+	#contentNavSection { width: 90%; }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
 	#subMenuSection { width:70%; }
-	#contentViewSection { height:450px; margin:auto; }
-	/* .contentNav { padding-top:30%; } */
+	#contentNavSection { width: 70%; }
 	#videoFrame { height:90%; }
 }
 
@@ -83,37 +68,29 @@
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
 	#messageSection { padding-top:0%; }
-
-	#returnHomeHeading { display:inline; text-align:left; }
 	#adventureDescription { width:60%; margin:auto; font-size:20px; }
+	.contentPreviewBlock { margin-bottom:1%; }
 	.contentPreviewBlock .previewName { opacity:0.7; }
 	.contentPreviewBlock:hover .previewName { opacity:100%;}
-
 	#subMenuSection { width:60%; }
+	#contentNavSection { width:60%; } 
 	#descriptionSection { width: 50%; }
-	#contentViewSection { width:60% }
-	/* .contentNav { padding-top:30%; } */
+	#contentViewSection { width:60%; }
 	#videoFrame { height:100%; }
 }
 
 /* Large devices (laptops/desktops ) */
 @media only screen and (min-width: 900px) {
 	#subMenuSection { width:35%; font-size:18px; }
-	#contentNavSection { width:10%; font-size:18px; padding-top:1%; }
+	#contentNavSection { width:50%; }
 	#descriptionSection { width: 40%; }
-	#contentViewSection { width:50% }
-	/* .contentNav { z-index: 60; padding-top:35%; } */
-	/* .contentNav.clickable:hover { opacity:0.9; } */
-	/* .contentNav.disabled:hover { opacity:0.2; } */
+	#contentViewSection { width:45% }
 }
 
-@media only screen and (min-width: 1000px) {
-	#contentViewSection { height:350px; }
-	/* .contentNav.left { left:20px; } */
-	/* .contentNav.right { right:20px; } */
+@media only screen and (min-width: 1200px) {
+	#contentNavSection { width:40%; }
 }
 
-/* Larger Devices */
-@media only screen and (min-device-width:1200px) {
-	#contentViewSection { height:550px; }
+@media only screen and (min-width: 1500px) {
+	#contentNavSection { width:30%; }
 }
