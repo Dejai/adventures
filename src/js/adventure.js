@@ -16,6 +16,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		loginDetails["ShowHome"] = true;
 		loginDetails["ShowDetails"] = true;
 		await loadDropdownMenu(loginDetails);
+		MyCookies.setCookie( MyCookies.getCookieName("UserKey"), loginDetails?.UserKey ?? "");
+
 
 		// Get params from URL;
 		let adventureID = MyUrls.getSearchParam("id") ?? "";
@@ -125,8 +127,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		var content = MyAdventurePage.getContentByID(contentID);
 
 		// If content is signed & user is not logged in, then just show default view
-		var userKey = MyCookies.getCookie( MyCookies.getCookieName("Session") );
-		if(content.Signed && userKey == undefined){
+		var userKey = MyCookies.getCookie( MyCookies.getCookieName("UserKey") ) ?? "";
+		if(content.Signed && userKey == ""){
 			setContentView("default");
 			return;
 		}
