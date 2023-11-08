@@ -32,58 +32,58 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	async function onGetAdventure(adventureID)
 	{
 		try {
-			MyTrello.GetCard(adventureID, async (resp) => {				
-				
-				var adventure = new Adventure(resp);
 
-				if(adventure.AdventureID == ""){
-					onCantLoadContent();
-					return;
-				}
-				
-				// Set the name & description
-				MyDom.setContent("#adventureTitle", {"innerHTML":adventure.Name});
-				MyDom.setContent("#adventureDescription", {"innerHTML":adventure.MoreDetails});
+			// Get adventure from Trello card
+			var cardDetails = await MyTrello.GetCard(adventureID);
+			var adventure = new Adventure(cardDetails);
+			
+			if(adventure.AdventureID == ""){
+				onCantLoadContent();
+				return;
+			}
+			
+			// Set the name & description
+			MyDom.setContent("#adventureTitle", {"innerHTML":adventure.Name});
+			MyDom.setContent("#adventureDescription", {"innerHTML":adventure.MoreDetails});
 
-				// Get the adventure Videos for this adventure
-				var adventureVideos = await MyCloudFlare.GetVideos(adventure.AdventureID);
-				var streamVideos = adventureVideos.map(x => new StreamVideo(x));
-				// Sort the stream videos by date (oldest first);
-				streamVideos.sort( (a,b) => {
-					return (a.Date - b.Date);
-				});
-				// Add the videos to the adventure instance
-				adventure.addContent(streamVideos);
-
-				// Set the current adventure
-				MyAdventurePage.setAdventure(adventure);
-
-				// If no content, show error message & stop processing
-				if(MyAdventurePage.getContentCount() == 0){
-					onCantLoadContent(`<h3>${frownyFace} <span style="color:red;">No content found to load.</span> </h3>`);
-					return;
-				}
-
-				// Load the video preview templates
-				var contentPreviewTemplate = await MyTemplates.getTemplateAsync("src/templates/adventure/contentPreview.html", streamVideos);
-				MyDom.setContent("#contentListSection", {"innerHTML": contentPreviewTemplate});
-				MyDom.setContent("#contentTotal", {"innerHTML": streamVideos.length});
-
-				// If param ID is set or there is only, load that video immediately 
-				var contentID = MyUrls.getSearchParam("content");
-				
-				// If there is only one video, also set immediately;
-				if( (MyAdventurePage.getContentCount() == 1) ){
-					contentID = MyAdventurePage.getContentByIndex(0)?.ContentID ?? contentID;
-				}
-
-				// Use the content ID to load the content
-				if(contentID != undefined) {
-					onLoadContent(contentID);
-				} else {
-					setContentView("default");
-				}
+			// Get the adventure Videos for this adventure
+			var adventureVideos = await MyCloudFlare.GetVideos(adventure.AdventureID);
+			var streamVideos = adventureVideos.map(x => new StreamVideo(x));
+			// Sort the stream videos by date (oldest first);
+			streamVideos.sort( (a,b) => {
+				return (a.Date - b.Date);
 			});
+			// Add the videos to the adventure instance
+			adventure.addContent(streamVideos);
+
+			// Set the current adventure
+			MyAdventurePage.setAdventure(adventure);
+
+			// If no content, show error message & stop processing
+			if(MyAdventurePage.getContentCount() == 0){
+				onCantLoadContent(`<h3>${frownyFace} <span style="color:red;">No content found to load.</span> </h3>`);
+				return;
+			}
+
+			// Load the video preview templates
+			var contentPreviewTemplate = await MyTemplates.getTemplateAsync("src/templates/adventure/contentPreview.html", streamVideos);
+			MyDom.setContent("#contentListSection", {"innerHTML": contentPreviewTemplate});
+			MyDom.setContent("#contentTotal", {"innerHTML": streamVideos.length});
+
+			// If param ID is set or there is only, load that video immediately 
+			var contentID = MyUrls.getSearchParam("content");
+			
+			// If there is only one video, also set immediately;
+			if( (MyAdventurePage.getContentCount() == 1) ){
+				contentID = MyAdventurePage.getContentByIndex(0)?.ContentID ?? contentID;
+			}
+
+			// Use the content ID to load the content
+			if(contentID != undefined) {
+				onLoadContent(contentID);
+			} else {
+				setContentView("default");
+			}
 		} catch (error){
 			MyLogger.LogError(error);
 		}
