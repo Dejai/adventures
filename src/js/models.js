@@ -351,9 +351,7 @@ class UserDetails {
 		this.UserText = (this.FirstName != "") ? `Hi, ${this.FirstName}` : "Hi, Guest";
 
 		this.AuthText = (this.IsLoggedIn) ? "Log out" : "Log in";
-		this.AuthAction = (this.IsLoggedIn) ? 0 : 1;
-		this.AuthAction2 = (this.IsLoggedIn) ? "logout" : "login";
-		this.AuthUrlPath = `auth/?action=${this.AuthAction}`;
+		this.AuthAction = (this.IsLoggedIn) ? "logout" : "login";
 
 		// Showing the home row
 		this.ShowHome = jsonObj?.ShowHome ?? false;
