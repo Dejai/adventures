@@ -352,6 +352,7 @@ class UserDetails {
 
 		this.AuthText = (this.IsLoggedIn) ? "Log out" : "Log in";
 		this.AuthAction = (this.IsLoggedIn) ? 0 : 1;
+		this.AuthAction2 = (this.IsLoggedIn) ? "logout" : "login";
 		this.AuthUrlPath = `auth/?action=${this.AuthAction}`;
 
 		// Showing the home row
