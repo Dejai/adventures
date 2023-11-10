@@ -60,8 +60,11 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 				var template = await MyFetch.call("GET", templateRequestUrl , { responseType: "text"});
 				if(isOverview){
 					MyDom.setContent("#eventName", {"innerHTML":cardName});
+					MyDom.addClass("#eventName", "dtk-fade-in");
 					MyDom.setContent("#eventOverviewSection", {"innerHTML": template});
 					MyDom.showContent("#eventOverviewSection");
+					MyDom.addClass("#eventOverviewSection", "dtk-fade-in");
+
 					isOverview = false;
 				} else {
 					MyDom.setContent("#eventContentSection", {"innerHTML": template}, true);
