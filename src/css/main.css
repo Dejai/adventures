@@ -12,7 +12,7 @@
 /* Heading */
 /* .mainHeading { margin:0px; margin-top:2%; width:90%; text-align:left; } */
 #adventureTitle { font-size: 1.17em; }
-#mainTitle.fadeOnSearch { opacity:0; }
+#mainTitle { opacity:0; }
 
 /* Menu & Items */
 #menuSection { margin-bottom:5%; }
@@ -88,6 +88,7 @@
 	#hamburgerMenuIcon { margin-left:0.1%; margin-right:2%; }
 	#closeMenuIcon { margin-left:0.1%; margin-right:2%; }
 	#mainTitle { text-align:center; }
+	#mainTitle.dtk-fade-out { opacity:100 !important; }
 	.adventureBlock{ min-width:350px; }
 }
 
