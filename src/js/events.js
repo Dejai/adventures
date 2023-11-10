@@ -44,7 +44,7 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 		try {
 			// Get the cards of the event
 			var eventsJson = await MyTrello.GetCards(eventListID);
-			
+
 			// Save in page manager
 			MyEventPage.TrelloCards = eventsJson?.map(x => new TrelloCard(x));
 
@@ -181,13 +181,13 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 				// 	await MyTrello.DeleteCardComment(cardID, prevID);
 				// }
 
-				var buttonText = form.querySelector(".responseButton.selected")?.innerText;
+				var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim();
 				var commentText = form.querySelector(".commentBox")?.value;
 				var response = buttonText ?? commentText ?? "";
 				if(cardID != undefined && response != "")
 				{
 					comment = `${userKey} ~ ${response}`;
-					MyLogger.LogInfo("Creating comment: " + comment);
+					MyLogger.LogInfo(`Creating comment on ${cardID} : ${comment}`);
 					await MyTrello.CreateCardComment(cardID, comment);
 				}
 			}
@@ -197,6 +197,7 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 			var listID = responseList?.id ?? "";
 			if(listID != ""){
 				var submittedBy = "Response submitted by: " + userKey;
+				MyLogger.LogInfo("Creating response card: " + submittedBy);
 				await MyTrello.CreateCard(listID, submittedBy);
 			}
 
