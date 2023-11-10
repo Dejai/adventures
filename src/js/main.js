@@ -22,7 +22,10 @@ const MyCloudFlare = new CloudflareWrapper();
 			MyLogger.LogError(err);
 		});
 
-		// Add general listener
+		// After loading adventures, then show the main title:
+		setTimeout( ()=>{
+			MyDom.addClass("#mainTitle", 'dtk-fade-in');
+		}, 1000);
 	});
 
 /******** GETTING STARTED: Loading the Adventures;  Check if logged in user***************************/

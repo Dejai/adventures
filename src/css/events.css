@@ -1,7 +1,7 @@
 
 /* The main sections */
-/* #eventName { font-family: Inter-Regular, Palatino, Helvetica, sans-serif; } */
-#eventOverviewSection { width:99%; margin:auto; font-size:110%; }
+#eventName { opacity:0; }
+#eventOverviewSection { opacity:0; width:99%; margin:auto; font-size:110%; }
 #eventContentSection { width:95%; margin:auto; position:relative; }
 
 /* The event forms */
