@@ -21,7 +21,7 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 			await onGetEventDetails(eventID);
 
 			// Mark any previous responses
-			onSetPreviousResponse();
+			// onSetPreviousResponse();
 
 			// Show the first form
 			var firstForm = document.querySelector(".eventFormFade");
@@ -42,57 +42,40 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 	// Get the details of an event
 	async function onGetEventDetails(eventListID){
 		try {
-			// Get labels for the cards
-			var trelloLabels = await MyTrello.GetLabels();
 			// Get the cards of the event
 			var eventsJson = await MyTrello.GetCards(eventListID);
+
 			// Save in page manager
-			MyEventPage.TrelloCards = eventsJson?.map(x => new TrelloCard(x, trelloLabels));
+			MyEventPage.TrelloCards = eventsJson?.map(x => new TrelloCard(x));
 
 			var numSections = 0;
-			// Get the Overview card
-			var overViewCard = MyEventPage.TrelloCards.filter(x => x.hasLabel("Overview"))?.[0];
-			if(overViewCard != undefined){
-				var eventName = overViewCard.Name; 
-				MyDom.setContent("#eventName", {"innerHTML":eventName});
-				var overviewHtml = await MyTemplates.getTemplateAsync("src/templates/events/overview.html", overViewCard);
-				MyDom.setContent("#eventOverviewSection", {"innerHTML": overviewHtml});
-				MyDom.showContent("#eventOverviewSection");
-				numSections += 1;
-			}
-
 			// Get the form cards
-			var formCards = MyEventPage.TrelloCards.filter(x => x.hasLabel("Form"));
-			var totalForms = formCards.length;
-			var formIdx = 0;
+			var formCards = MyEventPage.TrelloCards;
+			var isOverview = true;
 			for(var card of formCards)
 			{
-				// Get comments on this card & filter by current user
-				var comments = await MyTrello.GetComments(card.CardID);
-				card.Comments = comments.map(comment => new TrelloComment(comment));
-
-				// Get checklists for this card
-				for(var checkListID of card.ChecklistIDs){
-					var checklistJson = await MyTrello.GetChecklist(checkListID);
-					var checklist = new TrelloChecklist(checklistJson);
-					card.Checklists[checklist.Key] = checklist;
-					card.ShowChecklists = Object.keys(card.Checklists).length > 0;
+				var cardName = card?.Name ?? "";
+				var templateName = (isOverview) ? "Overview" : encodeURIComponent(cardName);
+				var templateRequestUrl = `https://templates.dejaithekid.com/event/?key=${templateName}`
+				var template = await MyFetch.call("GET", templateRequestUrl , { responseType: "text"});
+				if(isOverview){
+					MyDom.setContent("#eventName", {"innerHTML":cardName});
+					MyDom.setContent("#eventOverviewSection", {"innerHTML": template});
+					MyDom.showContent("#eventOverviewSection");
+					isOverview = false;
+				} else {
+					MyDom.setContent("#eventContentSection", {"innerHTML": template}, true);
 				}
-				
-				// Set form index
-				formIdx++;
-				card.FormIndex = `${formIdx} of ${totalForms}`
-
-				// Set the card template
-				var cardHtml = await MyTemplates.getTemplateAsync("src/templates/events/form.html", card);
-				MyDom.setContent("#eventContentSection", {"innerHTML": cardHtml}, true);
 				numSections += 1;
+				// Get comments on this card & filter by current user
+				// var comments = await MyTrello.GetComments(card.CardID);
+				// card.Comments = comments.map(comment => new TrelloComment(comment));
 			}
 
 			// If only overview was added, then count would only be 1; And if so, show no content
 			if(numSections <= 1){
 				var isLoggedIn = MyCookies.getCookie( MyCookies.getCookieName("UserKey") ) != "";
-				var title = (!isLoggedIn) ? "Login Required" : `<i class="fa-regular fa-face-frown"></i> Can't Load the Content`;
+				var title = (!isLoggedIn) ? "Login Required" : `<i class="fa-regular fa-face-frown"></i>Sorry, couldn't load this content. Try again later.`;
 				var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/noContent.html", { "Title": title, "IsLoggedIn": isLoggedIn });
 				MyDom.setContent("#eventContentSection", {"innerHTML": evHtml});	
 			}
@@ -193,18 +176,18 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 			for(var form of forms)
 			{
 				var cardID = form.getAttribute("data-form-id");
-				var prevID = form.getAttribute("data-prev-response") ?? "";
-				if(prevID != ""){
-					await MyTrello.DeleteCardComment(cardID, prevID);
-				}
+				// var prevID = form.getAttribute("data-prev-response") ?? "";
+				// if(prevID != ""){
+				// 	await MyTrello.DeleteCardComment(cardID, prevID);
+				// }
 
-				var buttonText = form.querySelector(".responseButton.selected")?.innerText;
+				var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim();
 				var commentText = form.querySelector(".commentBox")?.value;
 				var response = buttonText ?? commentText ?? "";
 				if(cardID != undefined && response != "")
 				{
 					comment = `${userKey} ~ ${response}`;
-					MyLogger.LogInfo("Creating comment: " + comment);
+					MyLogger.LogInfo(`Creating comment on ${cardID} : ${comment}`);
 					await MyTrello.CreateCardComment(cardID, comment);
 				}
 			}
@@ -214,6 +197,7 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 			var listID = responseList?.id ?? "";
 			if(listID != ""){
 				var submittedBy = "Response submitted by: " + userKey;
+				MyLogger.LogInfo("Creating response card: " + submittedBy);
 				await MyTrello.CreateCard(listID, submittedBy);
 			}
 

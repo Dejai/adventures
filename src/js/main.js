@@ -25,7 +25,7 @@ const MyCloudFlare = new CloudflareWrapper();
 		// Add general listener
 	});
 
-/******** GETTING STARTED: Loading the Adventures & Labels; Check if logged in user***************************/
+/******** GETTING STARTED: Loading the Adventures;  Check if logged in user***************************/
 
 	// Load the set of adventures on the home page
 	async function onLoadAdventures() {

@@ -8,7 +8,6 @@ class Adventure
 		this.Description = cardDetails["desc"] ?? "";
 
 		this.Date = new Date(cardDetails["start"]) ?? "";
-		this.Labels = cardDetails["idLabels"] ?? "";
 		this.MonthYear = this.getMonthYear();
 
 		// The content of this adventure
@@ -77,8 +76,6 @@ class Adventure
 		let year = this.Date.getFullYear()
 		return `${month}, ${year}`;
 	}
-
-	hasLabel(labelID){ return this.Labels.includes(labelID); }
 }
 
 // Class to store the adventures home page
@@ -231,7 +228,7 @@ class StreamVideo
 // Class for Trello Cards
 class TrelloCard
 {
-	constructor(trelloCard, trelloLabels=[])
+	constructor(trelloCard)
 	{
 		// Check if display name search param exists
 		this.ShowLegalName = (MyUrls.getSearchParam("fn") ?? "" == "1");
@@ -247,18 +244,8 @@ class TrelloCard
 		this.CardLabels = trelloCard?.idLabels ?? [];
 		this.DateLastUpdated = new Date(trelloCard?.dateLastActivity);
 
-		this.TrelloLabels = {};
-		trelloLabels?.forEach( (label) => {
-			this.TrelloLabels[label.name] = label.id;
-		});
-
 		// The comments on this card
 		this.Comments = [];
-
-		// Showing sections
-		this.ShowComments = this.hasLabel("Comments");
-		this.ShowChecklists = false;
-		
 	}
 
 	// Set key values on this card
@@ -271,17 +258,6 @@ class TrelloCard
 							.replaceAll("\n", "<br/>")
 							.replaceAll("Dejai", (this.ShowLegalName) ? "Derrick" : "Dejai")
 		return formatted;
-	}
-
-	// Check if this card has a label (by name)
-	hasLabel(name){
-		return this.CardLabels.includes( (this.TrelloLabels[name] ?? "") ); 
-	}
-
-	//  Return if this game is published
-	isFormCard(){
-		var formID = this.TrelloLabels["Form"] ?? undefined;
-		return this.CardLabels.includes(formID);
 	}
 }
 
