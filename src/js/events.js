@@ -42,33 +42,30 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 	// Get the details of an event
 	async function onGetEventDetails(eventListID){
 		try {
-			// Get labels for the cards
-			var trelloLabels = await MyTrello.GetLabels();
 			// Get the cards of the event
 			var eventsJson = await MyTrello.GetCards(eventListID);
+			
 			// Save in page manager
-			MyEventPage.TrelloCards = eventsJson?.map(x => new TrelloCard(x, trelloLabels));
+			MyEventPage.TrelloCards = eventsJson?.map(x => new TrelloCard(x));
 
 			var numSections = 0;
-			// Get the Overview card
-			var overViewCard = MyEventPage.TrelloCards.filter(x => x.hasLabel("Overview"))?.[0];
-			if(overViewCard != undefined){
-				var eventName = overViewCard.Name; 
-				MyDom.setContent("#eventName", {"innerHTML":eventName});
-				var overviewHtml = `<div><p>${overViewCard.Description}</p></div>`;
-				MyDom.setContent("#eventOverviewSection", {"innerHTML": overviewHtml});
-				MyDom.showContent("#eventOverviewSection");
-				numSections += 1;
-			}
-
 			// Get the form cards
-			var formCards = MyEventPage.TrelloCards.filter(x => x.hasLabel("Form"));
+			var formCards = MyEventPage.TrelloCards;
+			var isOverview = true;
 			for(var card of formCards)
 			{
-				var cardName = card?.Name;
-				var cardNameEncoded = encodeURIComponent(cardName);
-				var template = await MyFetch.call("GET", `https://templates.dejaithekid.com/event/?key=${cardNameEncoded}`, { responseType: "text"});
-				MyDom.setContent("#eventContentSection", {"innerHTML": template}, true);
+				var cardName = card?.Name ?? "";
+				var templateName = (isOverview) ? "Overview" : encodeURIComponent(cardName);
+				var templateRequestUrl = `https://templates.dejaithekid.com/event/?key=${templateName}`
+				var template = await MyFetch.call("GET", templateRequestUrl , { responseType: "text"});
+				if(isOverview){
+					MyDom.setContent("#eventName", {"innerHTML":cardName});
+					MyDom.setContent("#eventOverviewSection", {"innerHTML": template});
+					MyDom.showContent("#eventOverviewSection");
+					isOverview = false;
+				} else {
+					MyDom.setContent("#eventContentSection", {"innerHTML": template}, true);
+				}
 				numSections += 1;
 				// Get comments on this card & filter by current user
 				// var comments = await MyTrello.GetComments(card.CardID);
