@@ -84,7 +84,7 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 			}
 		} catch (error){
 			MyLogger.LogError(error);
-			var errMessage = `<i class="fa-regular fa-face-frown"></i> <span>Sorry, couldn't load the content.</span><p>${error.message}</p>`;
+			var errMessage = `<i class="fa-regular fa-face-frown"></i> <span>Sorry, couldn't load the content right now.</span><p>Try again later.</p>`;
 			MyDom.setContent("#eventContentSection", {"innerHTML": errMessage});	
 		}
 	}

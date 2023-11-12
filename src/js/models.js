@@ -152,6 +152,11 @@ class AdventurePage
 		}
 	}
 
+	// Peek at current view state
+	currentViewState(){
+		return this.ViewStates[this.ViewStates.length-1] ?? "default";
+	}
+
 	// Get number of adventures
 	getContentCount(){
 		return this.Adventure.Content.length;
