@@ -162,8 +162,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 		// Get the short link for this content
 		var shortLink = await MyUrls.getCodeFromPath();
-		MyDom.setContent("#shareContentShortLink", {"data-short-link": shortLink});
-		MyDom.showContent(".shareContentLinkSection");
+		MyDom.setContent("#shareContentShortLinkSection", {"data-short-link": shortLink});
+		MyDom.showContent("#shareContentShortLinkSection");
 	}
 
 
