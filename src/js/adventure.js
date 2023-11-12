@@ -23,6 +23,9 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		let adventureID = MyUrls.getSearchParam("id") ?? "";
 		if(adventureID != undefined){
 			onGetAdventure(adventureID);
+			var shortLink = await MyUrls.getCodeFromPath();
+			MyDom.setContent("#shareAdventureLinkSection", {"data-short-link": shortLink});
+			MyDom.showContent("#shareAdventureLinkSection");
 		}
 	});
 
@@ -49,6 +52,11 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			// Get the adventure Videos for this adventure
 			var adventureVideos = await MyCloudFlare.GetVideos(adventure.AdventureID);
 			var streamVideos = adventureVideos.map(x => new StreamVideo(x));
+			if(streamVideos.length > 1){
+				MyDom.setContent("#overviewVideoCount", {"innerHTML": `${streamVideos.length} videos`});
+				MyDom.addClass("#overviewVideoCount", "pill");
+			}
+
 			// Sort the stream videos by date (oldest first);
 			streamVideos.sort( (a,b) => {
 				return (a.Date - b.Date);
@@ -154,27 +162,37 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 		// Get the short link for this content
 		var shortLink = await MyUrls.getCodeFromPath();
-		MyDom.setContent(".shortLink", {"data-short-link": shortLink});
-		MyDom.showContent(".shareLinkSection");
+		MyDom.setContent("#shareContentShortLinkSection", {"data-short-link": shortLink});
+		MyDom.showContent("#shareContentShortLinkSection");
 	}
 
 
 	// Copy the content
-	function onCopyShortLink() {
-		var shortLinkVal = document.querySelector(".shortLink")?.getAttribute("data-short-link") ?? "n/a";
+	function onCopyShortLink(item) {
 
-		 // Copy the text inside the text field
-		navigator.clipboard.writeText(shortLinkVal);
+		try{
+			var section = item.closest(".shareLinkSection");
+			if(section != undefined){
+				var shortLinkVal = section.getAttribute("data-short-link") ?? "n/a";
+				
+				console.log(shortLinkVal);
 
-		// Alert the copied text
-		MyDom.showContent(".showOnLinkCopied");
-		MyDom.hideContent(".hideOnLinkCopied");
-
-		// Reset copy
-		setTimeout( ()=> {
-			MyDom.showContent(".hideOnLinkCopied");
-			MyDom.hideContent(".showOnLinkCopied");
-		}, 2000);
+				// Copy the text inside the text field
+			   navigator.clipboard.writeText(shortLinkVal);
+	   
+			   // Alert the copied text
+			   MyDom.showContent(".showOnLinkCopied", section);
+			   MyDom.hideContent(".hideOnLinkCopied", section);
+	   
+			   // Reset copy
+			   setTimeout( ()=> {
+				   MyDom.showContent(".showAfterLinkCopied");
+				   MyDom.hideContent(".hideAfterLinkCopied");
+			   }, 2000);
+			}
+		} catch(err){
+			MyLogger.LogError(err);
+		}		
 	  }
 
 	// Configure the stream object
@@ -189,8 +207,11 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		});
 
 		// What to do if video is playing
-		MyStream.onVideoEvent("playing", (event) => {
-			showNavButtons();
+		MyStream.onVideoEvent("playing", () => {
+			var currViewState = MyAdventurePage.currentViewState();
+			if(currViewState != "content"){
+				MyStream.pauseVideo();
+			}
 		});
 
 		// What to do if video is playing

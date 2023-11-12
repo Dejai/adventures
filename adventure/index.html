@@ -29,15 +29,27 @@
 		<span class="hideOnListView hideOnContentView hideOnDescriptionView" style="font-size:35px;"><i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"></i></span>
 	</div>
 
+	<!-- Adventure Quick Overview section (plus share button) -->
+	<div id="overviewSection" class="centered hidden showOnContentLoaded showOnListView hideOnContentView hideOnDescriptionView">
+		<span id="overviewVideoCount"></span>
+		<span id="overviewPhotoCount"></span>
+		<span id="shareAdventureLinkSection" data-short-link="" class="shareLinkSection pointer hidden">
+			<span class="shareLink showAfterLinkCopied hideOnLinkCopied" onclick="onCopyShortLink(this)">
+				<i class="fa-regular fa-share-from-square shortLink"></i><span style="padding-left:0.2%;">share</span>
+			</span>
+			<span class="hidden showOnLinkCopied hideAfterLinkCopied">Link copied</span>
+		</span>
+	</div>
+
 	<!-- The back button when looking at content or description -->
 	<div id="subMenuSection" class="hidden showOnContentView showOnDescriptionView hideOnListView showOnError" >
 		<span class="subMenuItem subMenuItemLeft fa fa-chevron-circle-left pointer iconSize hidden showOnContentView showOnDescriptionView hideOnListView hideIfOneContent" onclick="onPreviousView()"></span>
 		<span id="contentTitle" class="subMenuItem subMenuItemMiddle hidden centered showOnContentView hideOnDescriptionView"></span>
-		<span class="shareLinkSection pointer subMenuItem subMenuItemRight hidden">
-			<span class="shareLink hideOnLinkCopied">
-				<i data-short-link="" class="fa-regular fa-share-from-square shortLink " onclick="onCopyShortLink()"></i>&nbsp;<span onclick="onCopyShortLink()">share</span>
+		<span id="shareContentShortLinkSection" data-short-link="" class="shareLinkSection pointer subMenuItem subMenuItemRight hidden hideOnDescriptionView">
+			<span class="shareLink showAfterLinkCopied hideOnLinkCopied" onclick="onCopyShortLink(this)">
+				<i class="fa-regular fa-share-from-square shortLink "></i><span style="padding-left:0.2%;">share</span>
 			</span>
-			<span class="hidden showOnLinkCopied">Link copied</span>
+			<span class="hidden showOnLinkCopied hideAfterLinkCopied">Link copied</span>
 		</span>
 	</div>
 
@@ -48,7 +60,7 @@
 	</div>
 
 	<!-- The Content List Section -->
-	<div id="contentListSection" class="centered hidden toggleOnSideNavMobile showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView"></div>
+	<div id="contentListSection" class="centered hidden showOnContentLoaded showOnListView hideOnDescriptionView hideOnContentView"></div>
 
 	<!-- The Content View section -->
 	<div id="contentViewSection" class="hidden showOnContentView hideOnDescriptionView hideOnListView">

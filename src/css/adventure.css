@@ -5,6 +5,10 @@
 /*** Messages Section */
 #messageSection { padding-top:3%; }
 
+/* Adventure overview section */
+#overviewSection { width: 90%; margin:auto; margin-bottom:5%; }
+#overviewSection .pill { padding:2%; border-radius:20px; border:1px solid #D4D1CD; margin-right:2%; }
+
 /* Sub menu for title area */
 #subMenuSection { position:relative; height:40px; z-index:50; width:80%; margin:auto; text-align:center; }
 .subMenuItem { position:absolute; }
@@ -67,6 +71,9 @@
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+	#overviewSection { width: 50%; margin-bottom:1%; }
+	#overviewSection .pill { padding:0.5%; margin-right:0.5%; }
+
 	#messageSection { padding-top:0%; }
 	#adventureDescription { width:60%; margin:auto; font-size:20px; }
 	.contentPreviewBlock { margin-bottom:1%; }

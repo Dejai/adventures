@@ -24,7 +24,7 @@ function toggleDropdownNav(state="") {
     switch(state) {
         case "open":
             // Close the dropdown nave it happens to be open
-            toggleSearchBar("close");
+            toggleSearchBar("hide");
             // Show the section
             dropdownNav.classList.add("open");
             MyDom.hideContent("#hamburgerMenuIcon");
@@ -54,17 +54,13 @@ var toggleSearchBar = (state="") => {
             MyDom.addClass("#searchBarSection", "active");
             MyDom.addClass(".fadeOnSearch", "dtk-fade-out");
             MyDom.hideContent(".hideOnSearch");
-            if(inputField != undefined){
+            if(inputField != undefined) {
                 inputField.disabled = false; 
                 inputField.focus();
             }
             break;
         default:
-            // Find the button to clear search & click it
-            document.querySelector("#searchClearIcon")?.click();
-            if(inputField != undefined){
-                inputField.disabled = true;
-            }
+            if(inputField != undefined){ inputField.disabled = true; }
             // Control visibility with classes
             MyDom.removeClass("#searchBarSection", "active");
             MyDom.addClass(".fadeOnSearch", "dtk-fade-in");
