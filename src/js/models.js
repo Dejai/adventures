@@ -1,21 +1,21 @@
 // Class to store the presentation of an adventure
 class Adventure
 {
-	//Build new adventure display
-	constructor(cardDetails){
-		this.AdventureID = cardDetails["id"] ?? "";
-		this.Name = cardDetails["name"] ?? "";
-		this.Description = cardDetails["desc"] ?? "";
 
-		this.Date = new Date(cardDetails["start"]) ?? "";
+	constructor(jsonDetails){
+		this.AccessGroup = jsonDetails?.accessGroup ?? "";
+		this.AdventureID = jsonDetails?.adventureID ?? "";
+		this.Date = new Date(jsonDetails?.date) ?? "";
+		this.Name = jsonDetails?.name ?? "";
+		this.Status = jsonDetails?.status ?? "";
+		// this.Thumbnail = jsonDetails?.thumbnail ?? `https://thumbnails.dejaithekid.com/adventures_${AdventureID}.jpg`;
+		this.Thumbnail = `https://thumbnails.dejaithekid.com/adventures_${this.AdventureID}.jpg`;
+		this.Description = jsonDetails?.description ?? "";
+
+		// Calculated fields
 		this.MonthYear = this.getMonthYear();
-
-		// The content of this adventure
-		this.CoverContent = {};
 		this.Content = [];
 		this.CurrentContentIdx = 0;
-
-		// Special adjustment for details
 		this.FirstParagraph = this.Description.split("\n")[0];
 		this.MoreDetails = this.Description.replaceAll("\n", "<br/>");
 	}
@@ -223,6 +223,7 @@ class StreamVideo
 		this.Description = videoObj?.description ?? "";
 		this.Duration = videoObj?.duration ?? 0;
 		this.Date = new Date(videoObj?.date);
+		this.Order = Number(videoObj?.order ?? "1");
 		this.Ready = videoObj?.readyToStream ?? false;
 		this.Signed = videoObj?.requireSignedURLs ?? false;
 		this.Urls = videoObj?.urls ?? {}

@@ -1,6 +1,5 @@
 
 /************************ GLOBAL VARIABLES ****************************************/
-const MyTrello = new TrelloWrapper("adventures");
 const MyAdventurePage = new AdventurePage();
 const MyCloudFlare = new CloudflareWrapper();
 const MyStream = new StreamManager();
@@ -37,8 +36,10 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		try {
 
 			// Get adventure from Trello card
-			var cardDetails = await MyTrello.GetCard(adventureID);
-			var adventure = new Adventure(cardDetails);
+
+			var adventureDetails = await MyFetch.call("GET", `https://files.dejaithekid.com/adventure/?key=${adventureID}`);
+			console.log(adventureDetails);
+			var adventure = new Adventure(adventureDetails);
 			
 			if(adventure.AdventureID == ""){
 				onCantLoadContent();
@@ -51,7 +52,11 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 			// Get the adventure Videos for this adventure
 			var adventureVideos = await MyCloudFlare.GetVideos(adventure.AdventureID);
+			console.log(adventureVideos);
 			var streamVideos = adventureVideos.map(x => new StreamVideo(x));
+			console.log(streamVideos);
+			streamVideos.sort( (a, b) => { return a.Order - b.Order });
+
 			if(streamVideos.length > 1){
 				MyDom.setContent("#overviewVideoCount", {"innerHTML": `${streamVideos.length} videos`});
 				MyDom.addClass("#overviewVideoCount", "pill");
