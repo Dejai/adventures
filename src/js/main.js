@@ -34,8 +34,12 @@ const MyCloudFlare = new CloudflareWrapper();
 	async function onLoadAdventures() {
 
 		try{
-			var adventuresJson = await MyTrello.GetCardsByListName("Adventures");
-			var adventures = adventuresJson.map(x => new Adventure(x));
+			// var adventuresJson = await MyTrello.GetCardsByListName("Adventures");
+
+			var adventuresList = await MyFetch.call("GET", "https://files.dejaithekid.com/adventures");
+			console.log(adventuresList);
+			var adventures = adventuresList.map(x => new Adventure(x));
+			console.log(adventures);
 
 			// If nothing, then show error message
 			if(adventures.length == 0){
@@ -52,36 +56,38 @@ const MyCloudFlare = new CloudflareWrapper();
 			MyHomePage.addAdventures(adventures);
 
 			// Loop through adventures & add to page
-			var append = false;
-			var advBlock = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", {});
-			for(var adv of adventures){
-				MyDom.setContent("#adventuresPanel", {"innerHTML":advBlock}, append);
-				append = true;
-			}
+			var advBlock = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", adventures);
+			MyDom.setContent("#adventuresPanel", {"innerHTML":advBlock});
 
-			for(var adventure of adventures)
-			{
-				var adventureID = adventure?.AdventureID ?? "No Adventure ID";
-				var adventureVideos = await MyCloudFlare.GetVideos(adventureID);
-				var numberOfVideos = adventureVideos.length;
-				if(numberOfVideos > 0) {
-					var randIndex = (numberOfVideos > 1) ? Math.floor(Math.random()*adventureVideos.length) : 0;
-					adventure.CoverContent = new StreamVideo(adventureVideos[randIndex]);
-				}
-				var placeholder = document.querySelector(".adventureBlock.placeholder");
-				var placeholderImg = placeholder?.querySelector("img");
-				var placeholderLink = placeholder?.querySelector(".adventureBlockLink");
-				var placeholderName = placeholder?.querySelector(".adventureName");
-				placeholder.setAttribute("data-adventure-id", adventure.AdventureID);
-				placeholder.classList.remove("placeholder");
-				placeholderImg.src = adventure.CoverContent.Urls.thumbnail;
-				placeholderLink.href = `./adventure/?id=${adventure.AdventureID}`;
-				placeholderName.innerHTML = adventure.Name;
-				// Add adventure as we go
-				// var adventureBlockTemplate = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", adventure);
-				// MyDom.setContent("#adventuresPanel", {"innerHTML":adventureBlockTemplate}, append);
-				// append = true;
-			}
+			var hasImg = adventures.filter(x => x.Thumbnail != "" || x.Name.includes("Ice"));
+			console.log(hasImg);
+			// for(var adv of adventures){
+			// 	append = true;
+			// }
+
+			// for(var adventure of adventures)
+			// {
+			// 	var adventureID = adventure?.AdventureID ?? "No Adventure ID";
+			// 	var adventureVideos = await MyCloudFlare.GetVideos(adventureID);
+			// 	// var numberOfVideos = adventureVideos.length;
+			// 	// if(numberOfVideos > 0) {
+			// 	// 	var randIndex = (numberOfVideos > 1) ? Math.floor(Math.random()*adventureVideos.length) : 0;
+			// 	// 	adventure.CoverContent = new StreamVideo(adventureVideos[randIndex]);
+			// 	// }
+			// 	var placeholder = document.querySelector(".adventureBlock.placeholder");
+			// 	var placeholderImg = placeholder?.querySelector("img");
+			// 	var placeholderLink = placeholder?.querySelector(".adventureBlockLink");
+			// 	var placeholderName = placeholder?.querySelector(".adventureName");
+			// 	placeholder.setAttribute("data-adventure-id", adventure.AdventureID);
+			// 	placeholder.classList.remove("placeholder");
+			// 	placeholderImg.src = adventure.CoverContent.Urls.thumbnail;
+			// 	placeholderLink.href = `./adventure/?id=${adventure.AdventureID}`;
+			// 	placeholderName.innerHTML = adventure.Name;
+			// 	// Add adventure as we go
+			// 	// var adventureBlockTemplate = await MyTemplates.getTemplateAsync("src/templates/main/adventureBlock.html", adventure);
+			// 	// MyDom.setContent("#adventuresPanel", {"innerHTML":adventureBlockTemplate}, append);
+			// 	// append = true;
+			// }
 			
 		} catch (err){
 			onCantLoadAdventures("Something went wrong!");
