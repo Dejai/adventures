@@ -1,6 +1,5 @@
 
 /************************ GLOBAL VARIABLES ****************************************/
-const MyTrello = new TrelloWrapper("adventures");
 const MyHomePage = new AdventureHomePage();
 const MyCloudFlare = new CloudflareWrapper();
 
@@ -34,8 +33,6 @@ const MyCloudFlare = new CloudflareWrapper();
 	async function onLoadAdventures() {
 
 		try{
-			// var adventuresJson = await MyTrello.GetCardsByListName("Adventures");
-
 			var adventuresList = await MyFetch.call("GET", "https://files.dejaithekid.com/adventures");
 			console.log(adventuresList);
 			var adventures = adventuresList.map(x => new Adventure(x));

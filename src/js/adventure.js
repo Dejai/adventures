@@ -1,6 +1,5 @@
 
 /************************ GLOBAL VARIABLES ****************************************/
-const MyTrello = new TrelloWrapper("adventures");
 const MyAdventurePage = new AdventurePage();
 const MyCloudFlare = new CloudflareWrapper();
 const MyStream = new StreamManager();
