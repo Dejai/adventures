@@ -39,22 +39,27 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 
 			var adventureDetails = await MyFetch.call("GET", `https://files.dejaithekid.com/adventure/?key=${adventureID}`);
 			console.log(adventureDetails);
-			var adventure = new Adventure(adventureDetails);
-			
-			if(adventure.AdventureID == ""){
-				onCantLoadContent();
+
+			// If this is an error, then show the message
+			if( (adventureDetails?.isError ?? false) == true) {
+				MyLogger.Notify("#messageSection", `<h3>${frownyFace} <span>You don't have access to this content.</h3>`);
 				return;
 			}
 			
+			// Create adventure object
+			var adventure = new Adventure(adventureDetails);
+			if( adventure.AdventureID == ""){
+				MyLogger.Notify("#messageSection", `<h3>${frownyFace} <span>Could not load this content. Something went wrong.</h3>`);
+				return;
+			}
+
 			// Set the name & description
 			MyDom.setContent("#adventureTitle", {"innerHTML":adventure.Name});
 			MyDom.setContent("#adventureDescription", {"innerHTML":adventure.MoreDetails});
 
 			// Get the adventure Videos for this adventure
 			var adventureVideos = await MyCloudFlare.GetVideos(adventure.AdventureID);
-			console.log(adventureVideos);
 			var streamVideos = adventureVideos.map(x => new StreamVideo(x));
-			console.log(streamVideos);
 			streamVideos.sort( (a, b) => { return a.Order - b.Order });
 
 			if(streamVideos.length > 1){
