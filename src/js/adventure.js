@@ -38,7 +38,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			// Get adventure from Trello card
 
 			var adventureDetails = await MyFetch.call("GET", `https://files.dejaithekid.com/adventure/?key=${adventureID}`);
-			console.log(adventureDetails);
 
 			// If this is an error, then show the message
 			if( (adventureDetails?.isError ?? false) == true) {
@@ -185,8 +184,6 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			if(section != undefined){
 				var shortLinkVal = section.getAttribute("data-short-link") ?? "n/a";
 				
-				console.log(shortLinkVal);
-
 				// Copy the text inside the text field
 			   navigator.clipboard.writeText(shortLinkVal);
 	   
