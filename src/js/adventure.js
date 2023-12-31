@@ -22,7 +22,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		let adventureID = MyUrls.getSearchParam("id") ?? "";
 		if(adventureID != undefined){
 			onGetAdventure(adventureID);
-			var shortLink = await MyUrls.getCodeFromPath();
+			var shortLink = await onGetShareLink();
 			MyDom.setContent("#shareAdventureLinkSection", {"data-short-link": shortLink});
 			MyDom.showContent("#shareAdventureLinkSection");
 		}
@@ -35,9 +35,8 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	{
 		try {
 
-			// Get adventure from Trello card
-
-			var adventureDetails = await MyFetch.call("GET", `https://files.dejaithekid.com/adventure/?key=${adventureID}`);
+			// Get adventure from Cloudflare
+			var adventureDetails = await MyCloudFlare.Files("GET", `/adventure/?key=${adventureID}`);
 
 			// If this is an error, then show the message
 			if( (adventureDetails?.isError ?? false) == true) {
@@ -57,7 +56,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			MyDom.setContent("#adventureDescription", {"innerHTML":adventure.MoreDetails});
 
 			// Get the adventure Videos for this adventure
-			var adventureVideos = await MyCloudFlare.GetVideos(adventure.AdventureID);
+			var adventureVideos = await MyCloudFlare.Files("GET", `/stream/?search=${adventure.AdventureID}`);
 			var streamVideos = adventureVideos.map(x => new StreamVideo(x));
 			streamVideos.sort( (a, b) => { return a.Order - b.Order });
 
@@ -104,6 +103,25 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		} catch (error){
 			MyLogger.LogError(error);
 		}
+	}
+
+	// Get the link that can be used to share 
+	async function onGetShareLink(){
+		var fullPath = location.pathname + location.search;
+		var encodedPath = encodeURIComponent(fullPath);
+
+		// Attempt without a code
+		var results1 = await MyCloudFlare.KeyValues("GET", `/path/?value=${encodedPath}`);
+		var code = results1?.key ?? "";
+
+		// Attempt with a new code
+		if(code == ""){
+			var newCode = MyHelper.getCode(5);
+			var newPair = { "key": newCode, "value": encodedPath};
+			var results2 = await MyCloudFlare.KeyValues("POST", `/path`, { body: JSON.stringify(newPair) });
+			code = results2?.key ?? "";
+		}
+		return location.origin+"?code=" + code.toLowerCase();
 	}
 
 /********* CONTENT: Open/Load content *************************************/
@@ -170,7 +188,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 		onModifyUrl({"content": contentID});
 
 		// Get the short link for this content
-		var shortLink = await MyUrls.getCodeFromPath();
+		var shortLink = await onGetShareLink();
 		MyDom.setContent("#shareContentShortLinkSection", {"data-short-link": shortLink});
 		MyDom.showContent("#shareContentShortLinkSection");
 	}

@@ -9,7 +9,15 @@ const MyCloudFlare = new CloudflareWrapper();
 	MyDom.ready( async() => {
 
 		// Check for auto-redirect
-		await MyUrls.redirectFromCode();
+		var code = MyUrls.getSearchParam("code") ?? "";
+		if(code != ""){
+			var newPath = await MyCloudFlare.KeyValues("GET", `/path/?key=${code}`);
+			if(newPath?.path ?? "" != ""){
+				MyUrls.navigateTo(newPath.path);
+			} else { 
+				MyUrls.navigateTo("/");
+			}
+		}
 
 		// Set login details
 		var loginDetails = await MyAuth.onGetLoginDetails();
@@ -33,7 +41,8 @@ const MyCloudFlare = new CloudflareWrapper();
 	async function onLoadAdventures() {
 
 		try{
-			var adventuresList = await MyFetch.call("GET", "https://files.dejaithekid.com/adventures");
+			// Get the list of adventures
+			var adventuresList = await MyCloudFlare.Files("GET", "/adventures");
 			var adventures = adventuresList.map(x => new Adventure(x));
 
 			// If nothing, then show error message

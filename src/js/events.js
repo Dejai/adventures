@@ -1,9 +1,10 @@
 
 /************************ GLOBAL VARIABLES ****************************************/
-const MyTrello = new TrelloWrapper("events");
+const MyCloudFlare = new CloudflareWrapper();
 const MyEventPage = new EventPage();
 
 const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
+const spinner = `<i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"></i>`
 
 /*********************** GETTING STARTED *****************************/
 	// Once doc is ready
@@ -15,136 +16,52 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 
 		// Get params from URL;
 		let eventID = MyUrls.getSearchParam("id");
-		if(eventID != undefined){
-
-			// Get all the event details
-			await onGetEventDetails(eventID);
-
-			// Mark any previous responses
-			// onSetPreviousResponse();
-
-			// Show the first form
-			var firstForm = document.querySelector(".eventFormFade");
-			if(firstForm != undefined){
-				firstForm.classList.add("active");
+		try {
+			if(eventID == undefined){
+				throw new Error("Could not find requested event");
 			}
+			// Get event details
+			var eventDetails = await MyCloudFlare.Files("GET", `/event/?key=${eventID}`);
+			var event = new Event(eventDetails);
+			MyEventPage.setEvent(event);
 
-			// Hide the spinning loader
-			MyDom.hideContent(".hideOnFormLoad");
+			// Set event name
+			MyDom.setContent("#eventName", {"innerHTML":event.Name});
+			MyDom.addClass("#eventName", "dtk-fade-in");
 
-		} else {
-			onGetEventList();
+			// Get event content
+			var template = await MyCloudFlare.Files("GET", `/template/?key=${event.Template}`, { responseType: "text" });
+			MyDom.setContent("#mainContent", {"innerHTML": template});
+
+			// Get response (if exists)
+			var response = await MyCloudFlare.Files("GET", `/event/response/?key=${event.EventKey}`);
+			onSetPreviousResponse(response);
+
+		} catch(err){
+			MyLogger.LogError(err);
+			MyDom.setContent("#mainContent", {"innerHTML": "Could not load requested content." });
 		}
 	});
 
+	
+
 /********* SETUP: Create the key things used throughout the file *************************************/
 
-	// Get the details of an event
-	async function onGetEventDetails(eventListID){
-		try {
-			// Get the cards of the event
-			var eventsJson = await MyTrello.GetCards(eventListID);
-
-			// Save in page manager
-			MyEventPage.TrelloCards = eventsJson?.map(x => new TrelloCard(x));
-
-			var numSections = 0;
-			// Get the form cards
-			var formCards = MyEventPage.TrelloCards;
-			var isOverview = true;
-			for(var card of formCards)
-			{
-				var cardName = card?.Name ?? "";
-				var templateName = (isOverview) ? "Overview" : encodeURIComponent(cardName);
-				var templateRequestUrl = `https://templates.dejaithekid.com/event/?key=${templateName}`
-				var template = await MyFetch.call("GET", templateRequestUrl , { responseType: "text"});
-				if(isOverview){
-					MyDom.setContent("#eventName", {"innerHTML":cardName});
-					MyDom.addClass("#eventName", "dtk-fade-in");
-					MyDom.setContent("#eventOverviewSection", {"innerHTML": template});
-					MyDom.showContent("#eventOverviewSection");
-					MyDom.addClass("#eventOverviewSection", "dtk-fade-in");
-
-					isOverview = false;
+	// If user has responded to this event already, show them their previous response
+	function onSetPreviousResponse(responseObj){
+		if( !(responseObj?.isError ?? false) ){
+			for(var key of Object.keys(responseObj)){
+				if(key == "comments") {
+					MyDom.setContent(".eventForm .commentBox", {"innerHTML": responseObj.comments, "innerText": responseObj.comments });
 				} else {
-					MyDom.setContent("#eventContentSection", {"innerHTML": template}, true);
-				}
-				numSections += 1;
-				// Get comments on this card & filter by current user
-				// var comments = await MyTrello.GetComments(card.CardID);
-				// card.Comments = comments.map(comment => new TrelloComment(comment));
-			}
-
-			// If only overview was added, then count would only be 1; And if so, show no content
-			if(numSections <= 1){
-				var isLoggedIn = MyCookies.getCookie( MyCookies.getCookieName("UserKey") ) != "";
-				var title = (!isLoggedIn) ? "Login Required" : `<i class="fa-regular fa-face-frown"></i>Sorry, couldn't load this content. Try again later.`;
-				var evHtml = await MyTemplates.getTemplateAsync("src/templates/events/noContent.html", { "Title": title, "IsLoggedIn": isLoggedIn });
-				MyDom.setContent("#eventContentSection", {"innerHTML": evHtml});	
-			}
-		} catch (error){
-			MyLogger.LogError(error);
-			var errMessage = `<i class="fa-regular fa-face-frown"></i> <span>Sorry, couldn't load the content right now.</span><p>Try again later.</p>`;
-			MyDom.setContent("#eventContentSection", {"innerHTML": errMessage});	
-		}
-	}
-
-	// Get this adventure card & its list of videos
-	async function onGetEventList()
-	{
-		try {
-			// Get list of events
-			var eventsJson = await MyTrello.GetLists("open");
-			var events = eventsJson?.map(x => new TrelloCard(x));
-			var eventsListHtml = await MyTemplates.getTemplateAsync("src/templates/events/eventList.html", events);
-			MyDom.setContent("#eventOverviewSection", {"innerHTML": eventsListHtml });
-			MyDom.setContent("#eventName", {"innerHTML": "Dejai's Events"});
-			MyDom.hideContent(".hideOnLoaded");
-			MyDom.hideContent(".hideOnListView");
-			MyDom.showContent(".showOnLoaded");
-		} catch (error){
-			MyLogger.LogError(error);
-		}
-	}
-
-	// After loading form, set the previous responses
-	function onSetPreviousResponse(){
-
-		// Get form sections
-		var formSections = document.querySelectorAll(".eventForm");
-		var userKey = MyCookies.getCookie( MyCookies.getCookieName("UserKey") ) ?? "";
-		var prevs = 0;
-		for(var form of formSections)
-		{
-			var cardID = form.getAttribute("data-form-id");
-			var buttons = Array.from(form.querySelectorAll(".responseButton")) ?? [];
-			var commentBox = form.querySelector(".commentBox");
-
-			// Comments on card
-			var cardComments  = MyEventPage.TrelloCards.filter(x => x.CardID == cardID)?.[0]?.Comments;
-			var userComment = cardComments?.filter(comment => comment.Text.startsWith(userKey))?.[0] ?? undefined;
-			if(userComment != undefined)
-			{
-				var justComment = userComment.Text.split(" ~ ").map(x => x.trim())?.[1] ?? "";
-				// Matching button
-				var matchingButton = buttons.filter(x => x.innerText == justComment)?.[0] ?? undefined;
-				if(matchingButton != undefined){
-					form.setAttribute("data-prev-response", userComment.CommentID);
-					prevs += 1;
-					matchingButton.click();
-				}
-
-				// Comment box
-				if(commentBox != undefined){
-					form.setAttribute("data-prev-response", userComment.CommentID);
-					commentBox.value = justComment;
-					commentBox.innerText = justComment;
+					var buttons = Array.from(document.querySelectorAll(`[data-form-id='${key}'] .responseButtonGroup button`));
+					var response = responseObj[key];
+					var buttonMatch = buttons.filter(x => x.innerText == response)?.[0];
+					if(buttonMatch != undefined){
+						buttonMatch.click();
+					}
 				}
 			}
-		}
-		// If there is at least one previous answer, then update the submit button
-		if(prevs > 0){
-			MyDom.setContent("#formsSubmitButton", {"innerText": "UPDATE"});
 		}
 	}
 
@@ -170,49 +87,30 @@ const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 	async function onSubmitResponses(){
 
 		try{
-			MyDom.hideContent(".hideOnSubmitting");
-			MyDom.showContent(".showOnSubmitting");
-
+			var event = MyEventPage.Event;
 			var forms = Array.from(document.querySelectorAll(".eventForm"));
-			var userKey = MyCookies.getCookie( MyCookies.getCookieName("UserKey") ) ?? "";
 
+			// Setup the responses in an object
+			var responseObj = {}
+			responseObj["comments"] = MyDom.getContent(".commentBox")?.value ?? "";
 			for(var form of forms)
 			{
-				var cardID = form.getAttribute("data-form-id");
-				// var prevID = form.getAttribute("data-prev-response") ?? "";
-				// if(prevID != ""){
-				// 	await MyTrello.DeleteCardComment(cardID, prevID);
-				// }
-
-				var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim();
-				var commentText = form.querySelector(".commentBox")?.value;
-				var response = buttonText ?? commentText ?? "";
-				if(cardID != undefined && response != "")
-				{
-					comment = `${userKey} ~ ${response}`;
-					MyLogger.LogInfo(`Creating comment on ${cardID} : ${comment}`);
-					await MyTrello.CreateCardComment(cardID, comment);
-				}
+				var formID = form.getAttribute("data-form-id");
+				var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "";
+				responseObj[formID] = buttonText;
 			}
-
-			// Create a submitted card
-			var responseList = await MyTrello.GetListByName("Responses");
-			var listID = responseList?.id ?? "";
-			if(listID != ""){
-				var submittedBy = "Response submitted by: " + userKey;
-				MyLogger.LogInfo("Creating response card: " + submittedBy);
-				await MyTrello.CreateCard(listID, submittedBy);
+			// Show saving info & save to cloudflare
+			MyDom.setContent("#mainContent", {"innerHTML": `<h2>Saving ${spinner} </h2>` });
+			var createResp = await MyCloudFlare.Files("POST", `/event/response/?key=${event.EventKey}`, { body: JSON.stringify(responseObj)});
+			if( (createResp?.isError ?? false)) {
+				throw new Error(createResp?.message ?? "Something went wrong");
 			}
-
 			var submittedHtml = await MyTemplates.getTemplateAsync("src/templates/events/submitted.html", {});
-			MyDom.setContent("#eventContentSection", {"innerHTML": submittedHtml });
-			
+			MyDom.setContent("#mainContent", {"innerHTML": submittedHtml });
+
 		} catch(err){
 			MyLogger.LogError(err);
 			var errorHtml = await MyTemplates.getTemplateAsync("src/templates/events/error.html", {});
-			MyDom.setContent("#eventContentSection", {"innerHTML": errorHtml });
-		} finally {
-			MyDom.hideContent(".hideOnSubmitted");
-			MyDom.showContent(".showOnSubmitted");
+			MyDom.setContent("#mainContent", {"innerHTML": errorHtml });
 		}
 	}
