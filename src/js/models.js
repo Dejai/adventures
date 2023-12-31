@@ -1,6 +1,5 @@
 // Class to store the presentation of an adventure
-class Adventure
-{
+class Adventure {
 
 	constructor(jsonDetails){
 		this.AccessGroup = jsonDetails?.accessGroup ?? "";
@@ -201,6 +200,7 @@ class EventPage
 {
 	constructor(){
 		this.TrelloCards = [];
+		this.Event = undefined;
 	}
 
 	// Add a set of cards
@@ -208,6 +208,20 @@ class EventPage
 		for(var c of cards){
 			this.TrelloCards.push(c);
 		}
+	}
+
+	setEvent(event){
+		this.Event = event;
+	}
+}
+
+// Class to map to a single Event
+class Event { 
+	constructor(jsonDetails){
+		this.Name = jsonDetails?.Name ?? "";
+		this.EventKey = jsonDetails?.EventKey ?? "";
+		this.EventID = jsonDetails?.EventID ?? "";
+		this.Template = jsonDetails?.Template ?? "";
 	}
 }
 
