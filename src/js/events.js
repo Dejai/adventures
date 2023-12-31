@@ -48,11 +48,8 @@ const spinner = `<i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"><
 
 	// If user has responded to this event already, show them their previous response
 	function onSetPreviousResponse(responseObj){
-		console.log(responseObj);
 		if( !(responseObj?.isError ?? false) ){
-
 			for(var key of Object.keys(responseObj)){
-				console.log(key);
 				if(key == "comments") {
 					MyDom.setContent(".eventForm .commentBox", {"innerHTML": responseObj.comments, "innerText": responseObj.comments });
 				} else {
