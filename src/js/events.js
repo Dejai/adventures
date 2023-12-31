@@ -1,6 +1,5 @@
 
 /************************ GLOBAL VARIABLES ****************************************/
-const MyTrello = new TrelloWrapper("events");
 const MyCloudFlare = new CloudflareWrapper();
 const MyEventPage = new EventPage();
 
@@ -43,6 +42,8 @@ const spinner = `<i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"><
 			MyDom.setContent("#mainContent", {"innerHTML": "Could not load requested content." });
 		}
 	});
+
+	
 
 /********* SETUP: Create the key things used throughout the file *************************************/
 
