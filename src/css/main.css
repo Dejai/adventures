@@ -75,7 +75,7 @@
 @media only screen and (min-width: 768px) {
 	#menuItems { height: 40px; }
 	.menuItemLeft {  justify-content: center; }
-	#loginRequiredButton { border-radius: 20px; padding:0.5%; border:none;}
+	#loginRequiredButton { border-radius: 20px; padding:1%; border:none;}
 	#menuSection { margin-bottom:1%; }
 	#adventureTitle { font-size: 1.5em; }
 	#dropdownNav { left:initial; width:150px; right:2%; }
