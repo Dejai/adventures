@@ -56,7 +56,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 			MyDom.setContent("#adventureDescription", {"innerHTML":adventure.MoreDetails});
 
 			// Get the adventure Videos for this adventure
-			var adventureVideos = await MyCloudFlare.GetVideos(adventure.AdventureID);
+			var adventureVideos = await MyCloudFlare.Files("GET", `/stream/?search=${adventure.AdventureID}`);
 			var streamVideos = adventureVideos.map(x => new StreamVideo(x));
 			streamVideos.sort( (a, b) => { return a.Order - b.Order });
 
