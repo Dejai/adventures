@@ -100,7 +100,7 @@ const spinner = `<i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"><
 				responseObj[formID] = buttonText;
 			}
 			// Show saving info & save to cloudflare
-			MyDom.setContent("#mainContent", {"innerHTML": `<h2>Saving ... ${spinner} </h2>` });
+			MyDom.setContent("#mainContent", {"innerHTML": `<h2>Saving ${spinner} </h2>` });
 			var createResp = await MyCloudFlare.Files("POST", `/event/response/?key=${event.EventKey}`, { body: JSON.stringify(responseObj)});
 			if( (createResp?.isError ?? false)) {
 				throw new Error(createResp?.message ?? "Something went wrong");

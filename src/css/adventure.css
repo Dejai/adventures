@@ -76,7 +76,7 @@
 
 	#messageSection { padding-top:0%; }
 	#adventureDescription { width:60%; margin:auto; font-size:20px; }
-	.contentPreviewBlock { margin-bottom:1%; }
+	.contentPreviewBlock { margin-bottom:1%; min-width:300px; }
 	.contentPreviewBlock .previewName { opacity:0.7; }
 	.contentPreviewBlock:hover .previewName { opacity:100%;}
 	#subMenuSection { width:60%; }
