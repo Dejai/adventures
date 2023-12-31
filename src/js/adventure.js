@@ -35,7 +35,7 @@ const frownyFace = `<i class="fa-regular fa-face-frown"></i>`;
 	{
 		try {
 
-			// Get adventure from Trello card
+			// Get adventure from Cloudflare
 			var adventureDetails = await MyCloudFlare.Files("GET", `/adventure/?key=${adventureID}`);
 
 			// If this is an error, then show the message
