@@ -26,7 +26,9 @@ const spinner = `<i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"><
 			MyEventPage.setEvent(event);
 
 			// Set event name
-			MyDom.setContent("#eventName", {"innerHTML":event.Name});
+			var useFN = MyUrls.getSearchParam("fn") ?? "0";
+			var eventName = (useFN == "1") ? event.Name.replace("Dejai", "Derrick") : event.Name;
+			MyDom.setContent("#eventName", {"innerHTML":eventName});
 			MyDom.addClass("#eventName", "dtk-fade-in");
 
 			// Get event content
