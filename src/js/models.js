@@ -210,10 +210,10 @@ class EventPage
 // Class to map to a single Event
 class Event { 
 	constructor(jsonDetails){
-		this.Name = jsonDetails?.Name ?? "";
-		this.EventKey = jsonDetails?.EventKey ?? "";
-		this.EventID = jsonDetails?.EventID ?? "";
-		this.Template = jsonDetails?.Template ?? "";
+		this.Name = jsonDetails?.name ?? "";
+		this.EventKey = jsonDetails?.eventKey ?? "";
+		this.EventID = jsonDetails?.eventID ?? "";
+		this.Template = jsonDetails?.template ?? "";
 	}
 }
 
