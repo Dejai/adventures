@@ -46,6 +46,15 @@
 .eventFormIndex { display:block !important; width:100%; font-size:20px; padding-top:2%; z-index:30; position:absolute; margin:auto; }
 .eventForm:last-child .eventFormIndex { display:none !important; }
 
+/* Event info sections */
+.eventInfoSection { text-align: left; width: 95%; margin: auto; }
+.eventInfoSection .highlight { color: orange; font-style:italic;}
+.eventInfoSubsection.collapsable { transition: opacity,height ease 1s; }
+.eventInfoSubsection.collapsable.collapsed { opacity: 0; height: 0px; overflow-y: scroll; }
+.eventInfoSubsection.collapsable.open { padding-left:5%; margin-bottom:3%; }
+
+.eventInfoSection a:link { color: #448ef6; text-decoration: none; }
+.eventInfoSection a:visited { color: #448ef6; text-decoration: none; }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
@@ -56,4 +65,10 @@
 	.eventForm .responseButton.responseYes:hover { background-color:#009933; }
 	.eventForm .responseButton.responseNo:hover { background-color:#CC0000; }
 	.eventForm .responseButton.responseMaybe:hover { background-color:orange; }
+
+	/* Event info sections */
+	.infoSectionHeader { text-align: center; }
+	.eventInfoSubsection.collapsable.open { padding-left:15%; margin-bottom:10%; }
+	.eventInfoSection { width: 35%; }
+
 }
