@@ -39,7 +39,7 @@ MyDom.ready( async () => {
 		var _action = (loginDetails.IsLoggedIn) ? MyDom.showContent(".showIfLoggedIn") : MyDom.showContent(".showIfNotLoggedIn");
 
 		// Get response (if exists)
-		var response = await MyCloudFlare.Files("GET", `/event/response/?key=${event.EventKey}`);
+		var response = await MyCloudFlare.Files("GET", `/event/user/response/?key=${event.EventKey}`);
 		onSetPreviousResponse(response);
 
 	} catch(err){
