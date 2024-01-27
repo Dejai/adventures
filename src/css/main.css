@@ -8,6 +8,7 @@
 .shareContentLinkSection { position:absolute; width:30%; text-align:right; font-size:90%; padding-right:1%; }
 #loginRequiredButton { border-radius: 20px; padding:2%; border:none;}
 .versionText { font-size:smaller; font-style: italic;}
+.mobileInput { font-size: 16px !important; }
 
 /* Heading */
 /* .mainHeading { margin:0px; margin-top:2%; width:90%; text-align:left; } */
