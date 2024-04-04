@@ -5,6 +5,7 @@ const MyEventPage = new EventPage();
 
 const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 const spinner = `<i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"></i>`
+const spinnerSlow = `<i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1500"></i>`
 
 /*********************** GETTING STARTED *****************************/
 // Once doc is ready
@@ -22,6 +23,15 @@ MyDom.ready( async () => {
 		}
 		// Get event details
 		var eventDetails = await MyCloudFlare.Files("GET", `/event/?key=${eventID}`);
+		if(eventDetails?.login ?? false){
+			MyDom.setContent("#mainContent", {"innerHTML": `<h2>Login Required.</h2><p>Redirecting to login screen ${spinnerSlow}</p>` });
+			await new Promise( (resolve) => {
+				setTimeout( () => {
+					resolve(true)
+				}, 2000)
+			});
+			await MyAuth.onAuthAction("login")
+		}
 		var event = new Event(eventDetails);
 		MyEventPage.setEvent(event);
 
@@ -44,7 +54,7 @@ MyDom.ready( async () => {
 
 	} catch(err){
 		MyLogger.LogError(err);
-		MyDom.setContent("#mainContent", {"innerHTML": "Could not load requested content." });
+		MyDom.setContent("#mainContent", {"innerHTML": "<h2>Could not load requested content.</h2>" });
 	}
 });
 
@@ -96,9 +106,11 @@ async function onSubmitResponses(){
 		responseObj["comments"] = MyDom.getContent(".commentBox")?.value ?? "";
 		for(var form of forms)
 		{
-			var formID = form.getAttribute("data-form-id");
+			var formID = form.getAttribute("data-form-id") ?? "";
 			var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "";
-			responseObj[formID] = buttonText;
+			if(formID != ""){
+				responseObj[formID] = buttonText;
+			}
 		}
 		// Show saving info & save to cloudflare
 		MyDom.setContent("#mainContent", {"innerHTML": `<h2>Saving ${spinner} </h2>` });
