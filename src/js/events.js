@@ -87,10 +87,24 @@ function onSelectResponseOption(button){
 // Navigate to previous or next form
 function onNavigateForms (button, direction="next"){
 	var form = button.closest(".eventForm");
-	var sibling = (direction == "prev") ? form.previousElementSibling : form.nextElementSibling;
-	if(sibling != undefined && sibling.classList.contains("eventForm")){
+	let response = form.querySelector(".responseButton.selected");
+	let jump = MyEventPage.JumpBack ?? response?.getAttribute("data-jump-to-form");
+
+	// Get the next form to go to
+	let nextForm = (direction == "prev") ? form.previousElementSibling : form.nextElementSibling
+	if(jump != undefined){
+		nextForm = document.querySelector(`[data-form-id="${jump}"]`) ?? nextForm;
+		
+		let jumpBack = (direction == "next") ? form.getAttribute("data-form-id") : "";
+		MyEventPage.setJumpBack(jumpBack)
+	}
+
+	// If next form is valid, then go to it
+	if(nextForm != undefined && nextForm.classList.contains("eventForm")){
 		form.classList.remove("active");
-		sibling.classList.add("active");
+		nextForm.classList.add("active");
+		form.classList.add("viewed");  // confirming that a section was viewed
+		useWindowScroll("top", 0.01);
 	}
 }
 
@@ -99,7 +113,7 @@ async function onSubmitResponses(){
 
 	try{
 		var event = MyEventPage.Event;
-		var forms = Array.from(document.querySelectorAll(".eventForm"));
+		var forms = Array.from(document.querySelectorAll(".eventForm.viewed"));
 
 		// Setup the responses in an object
 		var responseObj = {}
@@ -108,10 +122,11 @@ async function onSubmitResponses(){
 		{
 			var formID = form.getAttribute("data-form-id") ?? "";
 			var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "";
-			if(formID != ""){
+			if(formID != "" && !responseObj.hasOwnProperty(formID)){
 				responseObj[formID] = buttonText;
 			}
 		}
+
 		// Show saving info & save to cloudflare
 		MyDom.setContent("#mainContent", {"innerHTML": `<h2>Saving ${spinner} </h2>` });
 		var createResp = await MyCloudFlare.Files("POST", `/event/user/response/?key=${event.EventKey}`, { body: JSON.stringify(responseObj)});

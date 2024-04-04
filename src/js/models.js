@@ -200,10 +200,15 @@ class EventPage
 {
 	constructor(){
 		this.Event = undefined;
+		this.JumpBack = undefined;  // this is only used to navigate BACK to a form if "jump-to" is used
 	}
 
 	setEvent(event){
 		this.Event = event;
+	}
+
+	setJumpBack(id){
+		this.JumpBack = (id != "") ? id : undefined;
 	}
 }
 
