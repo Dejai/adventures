@@ -218,7 +218,6 @@ class Event {
 		this.Name = jsonDetails?.name ?? "";
 		this.EventKey = jsonDetails?.eventKey ?? "";
 		this.EventID = jsonDetails?.eventID ?? "";
-		this.Template = jsonDetails?.template ?? "";
 	}
 }
 
