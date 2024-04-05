@@ -23,15 +23,6 @@ MyDom.ready( async () => {
 		}
 		// Get event details
 		var eventDetails = await MyCloudFlare.Files("GET", `/event/?key=${eventID}`);
-		if(eventDetails?.login ?? false){
-			MyDom.setContent("#mainContent", {"innerHTML": `<h2>Login Required.</h2><p>Redirecting to login screen ${spinnerSlow}</p>` });
-			await new Promise( (resolve) => {
-				setTimeout( () => {
-					resolve(true)
-				}, 2000)
-			});
-			await MyAuth.onAuthAction("login")
-		}
 		var event = new Event(eventDetails);
 		MyEventPage.setEvent(event);
 
