@@ -5,9 +5,9 @@
 #eventContentSection { width:95%; margin:auto; position:relative; }
 
 /* The event forms */
-.eventForm { margin-top:2%; margin-bottom:5%; border-top:solid #D4D1CD; border-width:thick; width:100%; margin:auto; position:absolute; }
-.eventFormFade { opacity: 0; transition: opacity ease 0.2s; }
-.eventFormFade.active { opacity: 100 !important; z-index:50;  }
+.eventForm { margin-top:2%; margin-bottom:5%; border-top:solid #D4D1CD; border-width:thick; width:100%; margin:auto; position:absolute; height: 0px; overflow: hidden; }
+.eventFormFade { opacity: 0; transition: opacity ease 0.2s 0.1s; }
+.eventFormFade.active { overflow: visible; opacity: 100 !important; z-index:50; }
 
 /* The parts in a form */
 .eventForm .eventDetailsTable { width:100%; margin:auto; margin-top:5%; }
