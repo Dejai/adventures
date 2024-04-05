@@ -5,6 +5,7 @@ const MyEventPage = new EventPage();
 
 const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 const spinner = `<i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"></i>`
+const spinnerSlow = `<i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1500"></i>`
 
 /*********************** GETTING STARTED *****************************/
 // Once doc is ready
@@ -22,6 +23,15 @@ MyDom.ready( async () => {
 		}
 		// Get event details
 		var eventDetails = await MyCloudFlare.Files("GET", `/event/?key=${eventID}`);
+		if(eventDetails?.login ?? false){
+			MyDom.setContent("#mainContent", {"innerHTML": `<h2>Login Required.</h2><p>Redirecting to login screen ${spinnerSlow}</p>` });
+			await new Promise( (resolve) => {
+				setTimeout( () => {
+					resolve(true)
+				}, 2000)
+			});
+			await MyAuth.onAuthAction("login")
+		}
 		var event = new Event(eventDetails);
 		MyEventPage.setEvent(event);
 
@@ -44,7 +54,7 @@ MyDom.ready( async () => {
 
 	} catch(err){
 		MyLogger.LogError(err);
-		MyDom.setContent("#mainContent", {"innerHTML": "Could not load requested content." });
+		MyDom.setContent("#mainContent", {"innerHTML": "<h2>Could not load requested content.</h2>" });
 	}
 });
 
@@ -77,10 +87,24 @@ function onSelectResponseOption(button){
 // Navigate to previous or next form
 function onNavigateForms (button, direction="next"){
 	var form = button.closest(".eventForm");
-	var sibling = (direction == "prev") ? form.previousElementSibling : form.nextElementSibling;
-	if(sibling != undefined && sibling.classList.contains("eventForm")){
+	let response = form.querySelector(".responseButton.selected");
+	let jump = MyEventPage.JumpBack ?? response?.getAttribute("data-jump-to-form");
+
+	// Get the next form to go to
+	let nextForm = (direction == "prev") ? form.previousElementSibling : form.nextElementSibling
+	if(jump != undefined){
+		nextForm = document.querySelector(`[data-form-id="${jump}"]`) ?? nextForm;
+		
+		let jumpBack = (direction == "next") ? form.getAttribute("data-form-id") : "";
+		MyEventPage.setJumpBack(jumpBack)
+	}
+
+	// If next form is valid, then go to it
+	if(nextForm != undefined && nextForm.classList.contains("eventForm")){
 		form.classList.remove("active");
-		sibling.classList.add("active");
+		nextForm.classList.add("active");
+		form.classList.add("viewed");  // confirming that a section was viewed
+		useWindowScroll("top", 0.01);
 	}
 }
 
@@ -89,17 +113,20 @@ async function onSubmitResponses(){
 
 	try{
 		var event = MyEventPage.Event;
-		var forms = Array.from(document.querySelectorAll(".eventForm"));
+		var forms = Array.from(document.querySelectorAll(".eventForm.viewed"));
 
 		// Setup the responses in an object
 		var responseObj = {}
 		responseObj["comments"] = MyDom.getContent(".commentBox")?.value ?? "";
 		for(var form of forms)
 		{
-			var formID = form.getAttribute("data-form-id");
+			var formID = form.getAttribute("data-form-id") ?? "";
 			var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "";
-			responseObj[formID] = buttonText;
+			if(formID != "" && !responseObj.hasOwnProperty(formID)){
+				responseObj[formID] = buttonText;
+			}
 		}
+
 		// Show saving info & save to cloudflare
 		MyDom.setContent("#mainContent", {"innerHTML": `<h2>Saving ${spinner} </h2>` });
 		var createResp = await MyCloudFlare.Files("POST", `/event/user/response/?key=${event.EventKey}`, { body: JSON.stringify(responseObj)});
