@@ -94,7 +94,6 @@ function onNavigateForms (button, direction="next"){
 	if(nextForm != undefined && nextForm.classList.contains("eventForm")){
 		form.classList.remove("active");
 		nextForm.classList.add("active");
-		form.classList.add("viewed");  // confirming that a section was viewed
 		useWindowScroll("top", 0.01);
 	}
 }
@@ -104,7 +103,7 @@ async function onSubmitResponses(){
 
 	try{
 		var event = MyEventPage.Event;
-		var forms = Array.from(document.querySelectorAll(".eventForm.viewed"));
+		var forms = Array.from(document.querySelectorAll(".eventForm"));
 
 		// Setup the responses in an object
 		var responseObj = {}
@@ -112,9 +111,13 @@ async function onSubmitResponses(){
 		for(var form of forms)
 		{
 			var formID = form.getAttribute("data-form-id") ?? "";
-			var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "";
-			if(formID != "" && !responseObj.hasOwnProperty(formID)){
-				responseObj[formID] = buttonText;
+			if(formID == "comments"){
+				responseObj["comments"] = MyDom.getContent(".commentBox")?.value ?? "";
+			} else { 
+				var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "";
+				if(formID != ""){
+					responseObj[formID] = buttonText;
+				}
 			}
 		}
 
