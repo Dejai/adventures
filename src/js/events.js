@@ -113,6 +113,7 @@ async function onSubmitResponses(){
 			var formID = form.getAttribute("data-form-id") ?? "";
 			var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "default";
 			if(formID != "" && formID != "comments"){
+				alert("Setting " + formID + " to " + buttonText);
 				responseObj[formID] = buttonText;
 			}
 		}
