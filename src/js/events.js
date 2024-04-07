@@ -117,9 +117,14 @@ async function onSubmitResponses(){
 			}
 		}
 
+		// Debugging submission
+		let debug = MyUrls.getSearchParam("debug") ??  "0";
+		if(debug == "1"){
+			alert(JSON.stringify(responseObj));
+		}
+
 		// Show saving info & save to cloudflare
 		MyDom.setContent("#mainContent", {"innerHTML": `<h2>Saving ${spinner} </h2>` });
-		alert(JSON.stringify(responseObj));
 		var createResp = await MyCloudFlare.Files("POST", `/event/user/response/?key=${event.EventKey}`, { body: JSON.stringify(responseObj)});
 		if( (createResp?.isError ?? false)) {
 			throw new Error(createResp?.message ?? "Something went wrong");
