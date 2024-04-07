@@ -111,13 +111,9 @@ async function onSubmitResponses(){
 		for(var form of forms)
 		{
 			var formID = form.getAttribute("data-form-id") ?? "";
-			if(formID == "comments"){
-				responseObj["comments"] = MyDom.getContent(".commentBox")?.value ?? "";
-			} else { 
-				var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "";
-				if(formID != ""){
-					responseObj[formID] = buttonText;
-				}
+			var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "";
+			if(formID != "" && formID != "comments"){
+				responseObj[formID] = buttonText;
 			}
 		}
 
