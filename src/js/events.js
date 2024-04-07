@@ -111,7 +111,7 @@ async function onSubmitResponses(){
 		for(var form of forms)
 		{
 			var formID = form.getAttribute("data-form-id") ?? "";
-			var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "";
+			var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "default";
 			if(formID != "" && formID != "comments"){
 				responseObj[formID] = buttonText;
 			}
