@@ -52,6 +52,12 @@ MyDom.ready( async () => {
 
 // If user has responded to this event already, show them their previous response
 function onSetPreviousResponse(responseObj){
+
+	// If this is an error response, don't bother adding
+	if(responseObj?.isError ?? false){
+		return;
+	}
+
 	for(let pair of Object.entries(responseObj)){
 		let key = pair[0] ?? "";
 		let val = pair[1] ?? "";
