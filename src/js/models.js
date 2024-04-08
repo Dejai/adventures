@@ -221,6 +221,17 @@ class Event {
 	}
 }
 
+// Class to represent a response to an event
+class EventResponse {
+	constructor(){
+		this.Answers = {}
+	}
+
+	setAnswer(key, value){
+		this.Answers[key] = value;
+	}
+}
+
 // Class to store the video details
 class StreamVideo
 {
