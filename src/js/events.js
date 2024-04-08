@@ -2,6 +2,7 @@
 /************************ GLOBAL VARIABLES ****************************************/
 const MyCloudFlare = new CloudflareWrapper();
 const MyEventPage = new EventPage();
+const MyEventResponse = new EventResponse();
 
 const touchEvent = "ontouchstart" in window ? "touchstart" : "click";
 const spinner = `<i class="fa-solid fa-spinner dtk-spinning dtk-spinning-1000"></i>`
@@ -51,17 +52,17 @@ MyDom.ready( async () => {
 
 // If user has responded to this event already, show them their previous response
 function onSetPreviousResponse(responseObj){
-	if( !(responseObj?.isError ?? false) ){
-		for(var key of Object.keys(responseObj)){
-			if(key == "comments") {
-				MyDom.setContent(".eventForm .commentBox", {"innerHTML": responseObj.comments, "innerText": responseObj.comments });
-			} else {
-				var buttons = Array.from(document.querySelectorAll(`[data-form-id='${key}'] .responseButtonGroup button`));
-				var response = responseObj[key];
-				var buttonMatch = buttons.filter(x => x.innerText == response)?.[0];
-				if(buttonMatch != undefined){
-					buttonMatch.click();
-				}
+	for(let pair of Object.entries(responseObj)){
+		let key = pair[0] ?? "";
+		let val = pair[1] ?? "";
+		MyEventResponse.setAnswer(key, val);
+
+		if(key == "comments"){
+			MyDom.setContent(".eventForm .commentBox", {"innerHTML": val, "innerText": val } );
+		} else { 
+			let button = document.querySelector(`[data-response-group="${key}"][data-response-value="${val}"]`)
+			if(button != undefined){
+				button.classList.add("selected")
 			}
 		}
 	}
@@ -69,10 +70,12 @@ function onSetPreviousResponse(responseObj){
 
 // Selecting response option
 function onSelectResponseOption(button){
-	var groupID = button.getAttribute("data-response-group");
+	let groupID = button.getAttribute("data-response-group");
+	let buttonVal = button.getAttribute("data-response-value") ??  "";
 	// Clear selected from all buttons
 	MyDom.removeClass(`[data-response-group="${groupID}"]`, "selected");
 	button.classList.add("selected");
+	MyEventResponse.setAnswer(groupID, buttonVal);
 }
 
 // Navigate to previous or next form
@@ -103,30 +106,19 @@ async function onSubmitResponses(){
 
 	try{
 		var event = MyEventPage.Event;
-		var forms = Array.from(document.querySelectorAll(".eventForm"));
 
 		// Setup the responses in an object
-		var responseObj = {}
-		responseObj["comments"] = MyDom.getContent(".commentBox")?.value ?? "";
-		for(var form of forms)
-		{
-			var formID = form.getAttribute("data-form-id") ?? "";
-			var buttonText = form.querySelector(".responseButton.selected")?.innerText?.replaceAll("\n", "")?.trim() ?? "default";
-			alert("Setting " + formID + " to " + buttonText);
-			if(formID != "" && formID != "comments"){
-				responseObj[formID] = buttonText;
-			}
-		}
+		let comments = MyDom.getContent(".commentBox")?.value ?? ""
+		MyEventResponse.setAnswer("comments", comments);
 
 		// Show saving info & save to cloudflare
 		MyDom.setContent("#mainContent", {"innerHTML": `<h2>Saving ${spinner} </h2>` });
-		var createResp = await MyCloudFlare.Files("POST", `/event/user/response/?key=${event.EventKey}`, { body: JSON.stringify(responseObj)});
+		var createResp = await MyCloudFlare.Files("POST", `/event/user/response/?key=${event.EventKey}`, { body: JSON.stringify(MyEventResponse.Answers)});
 		if( (createResp?.isError ?? false)) {
 			throw new Error(createResp?.message ?? "Something went wrong");
 		}
 		var submittedHtml = await MyTemplates.getTemplateAsync("src/templates/events/submitted.html", {});
 		MyDom.setContent("#mainContent", {"innerHTML": submittedHtml });
-
 	} catch(err){
 		MyLogger.LogError(err);
 		var errorHtml = await MyTemplates.getTemplateAsync("src/templates/events/error.html", {});
