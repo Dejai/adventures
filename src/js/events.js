@@ -34,7 +34,7 @@ MyDom.ready( async () => {
 		MyDom.addClass("#eventName", "dtk-fade-in");
 
 		// Get event content
-		var template = await MyCloudFlare.Files("GET", `/template/?type=event&key=${event.EventKey}`, { responseType: "text" });
+		var template = await MyCloudFlare.Files("GET", `/template/?key=${event.EventKey}`, { responseType: "text" });
 		MyDom.setContent("#mainContent", {"innerHTML": template});
 
 		// Show hide subcontent
