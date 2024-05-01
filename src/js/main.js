@@ -8,6 +8,20 @@ const MyCloudFlare = new CloudflareWrapper();
 	// Once doc is ready
 	MyDom.ready( async() => {
 
+		// Check for evite code first
+		const invite = MyUrls.getSearchParam("invite") ?? "";
+		if(invite != ""){
+			const isLoggedIn = await MyAuth.isLoggedIn();
+			if(!isLoggedIn){
+				await MyAuth.onAuthAction("login");
+			} else {
+				let processEvite = await MyCloudFlare.Files("POST", `/invite/?key=${invite}`);
+				if(processEvite.proccessed ?? false){
+					MyUrls.modifySearch( { 'invite': '' } )
+				}
+			}
+		}
+
 		// Check for auto-redirect
 		var code = MyUrls.getSearchParam("code") ?? "";
 		if(code != ""){
