@@ -134,7 +134,7 @@ const MyCloudFlare = new CloudflareWrapper();
 		var parent = target.closest(".adventureBlock");
 		var adventureID = parent.getAttribute("data-adventure-id");
 		if(adventureID != undefined){
-			MyUrls.navigateTo(`/adventure/?id=${adventureID}`);
+			MyUrls.navigateTo(`/archive/adventure/?id=${adventureID}`);
 		}
 	}
 
